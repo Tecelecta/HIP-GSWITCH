@@ -10,9 +10,9 @@
 template<typename G, typename F>
 __global__ void 
 __inspect_EC(active_set_t as, G g, F f, stat_t stat, config_t conf){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
-  const int lane = threadIdx.x&31;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+  const int lane = hipThreadIdx_x&31;
   int active_num = 0;
   for(int idx=gtid; idx<as.size; idx+=STRIDE){
     bool tag_previous = as.bitmap.is_active(idx);
@@ -30,15 +30,15 @@ __inspect_EC(active_set_t as, G g, F f, stat_t stat, config_t conf){
 
   __syncthreads();
   active_num = blockReduceSum(active_num);
-  if(!threadIdx.x) atomicAdd(&stat.dg_runtime_info[0], active_num);
+  if(!hipThreadIdx_x) atomicAdd(&stat.dg_runtime_info[0], active_num);
 }
 
 template<typename G, typename F>
 __global__ void
 __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
-  const int lane = threadIdx.x&31;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+  const int lane = hipThreadIdx_x&31;
   const int* __restrict__ odegree = g.dg_odegree;
   //const int* __restrict__ idegree = g.directed? g.dgr_odegree : g.dg_odegree;
   int active_num = 0;
@@ -75,27 +75,27 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
 
   __syncthreads();
   active_num = blockReduceSum(active_num);
-  if(!threadIdx.x) atomicAdd(&stat.dg_runtime_info[0], active_num);
+  if(!hipThreadIdx_x) atomicAdd(&stat.dg_runtime_info[0], active_num);
   
   __syncthreads();
   inactive_num = blockReduceSum(inactive_num);
-  if(!threadIdx.x) atomicAdd(&stat.dg_runtime_info[1], inactive_num);
+  if(!hipThreadIdx_x) atomicAdd(&stat.dg_runtime_info[1], inactive_num);
 
   __syncthreads();
   push_workload = blockReduceSum(push_workload);
-  if(!threadIdx.x) atomicAdd(&stat.dg_runtime_info[2], push_workload);
+  if(!hipThreadIdx_x) atomicAdd(&stat.dg_runtime_info[2], push_workload);
 
   __syncthreads();
   pull_workload = blockReduceSum(pull_workload);
-  if(!threadIdx.x) atomicAdd(&stat.dg_runtime_info[3], pull_workload);
+  if(!hipThreadIdx_x) atomicAdd(&stat.dg_runtime_info[3], pull_workload);
 
   __syncthreads();
   max_push_deg = blockReduceSum(max_push_deg);
-  if(!threadIdx.x) atomicMax(&stat.dg_runtime_info[4], max_push_deg);
+  if(!hipThreadIdx_x) atomicMax(&stat.dg_runtime_info[4], max_push_deg);
 
   __syncthreads();
   max_pull_deg = blockReduceSum(max_pull_deg);
-  if(!threadIdx.x) atomicAdd(&stat.dg_runtime_info[5], max_pull_deg);
+  if(!hipThreadIdx_x) atomicAdd(&stat.dg_runtime_info[5], max_pull_deg);
 }
 
 

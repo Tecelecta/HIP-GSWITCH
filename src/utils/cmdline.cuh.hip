@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <getopt.h>
 #include <sys/stat.h>
-#include <cuda.h>
+#include <hip.h>
 #include <sstream>
 
 #include "utils/common.cuh"
@@ -174,7 +174,7 @@ void parse_cmd(int argc, char** argv, std::string exec = "test"){
     //exit(0);
   //}
 
-  cudaSetDevice(cmd_opt.device);
+  hipSetDevice(cmd_opt.device);
 }
 
 #endif

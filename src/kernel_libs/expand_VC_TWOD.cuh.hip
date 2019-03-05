@@ -18,17 +18,17 @@ __phase1_light(active_set_t as, G g, F f){
   
   __shared__ vdata_t sv[BSZ];
 
-  int base = blockIdx.x*BSZ;
+  int base = hipBlockIdx_x*BSZ;
   // step1: load into shared memory
-  for(int i=threadIdx.x; i<BSZ; i+=blockDim.x){
+  for(int i=hipThreadIdx_x; i<BSZ; i+=hipBlockDim_x){
     // WARNING: 2d-partition with edge weight not implemented.
     if(base+i<g.nvertexs) sv[i] = f.emit(base+i, NULL, g);
   }
   __syncthreads();
 
   // step2: store parial contribution int ot stream buffer
-  for(int i=g.dg_chunks.ces[blockIdx.x]+threadIdx.x; i<g.dg_chunks.ces[blockIdx.x+1]; i+=blockDim.x){
-    int pos_to_write = g.dg_chunks.spf[i>>3] + (threadIdx.x&7);
+  for(int i=g.dg_chunks.ces[hipBlockIdx_x]+hipThreadIdx_x; i<g.dg_chunks.ces[hipBlockIdx_x+1]; i+=hipBlockDim_x){
+    int pos_to_write = g.dg_chunks.spf[i>>3] + (hipThreadIdx_x&7);
     int pos_to_read  = g.dg_chunks.sps[i];
     if(pos_to_read != -1)
       f.data.sb[pos_to_write] = sv[pos_to_read];
@@ -43,9 +43,9 @@ __phase1_heavy(active_set_t as, G g, F f){
 
   __shared__ vdata_t sv[BSZ];
   // step1: load into shared memory
-  int base = g.dg_chunks.hid[blockIdx.x]*BSZ;
-  int write_base = g.dg_chunks.dpf[blockIdx.x];
-  for(int i=threadIdx.x; i<BSZ; i+=blockDim.x){
+  int base = g.dg_chunks.hid[hipBlockIdx_x]*BSZ;
+  int write_base = g.dg_chunks.dpf[hipBlockIdx_x];
+  for(int i=hipThreadIdx_x; i<BSZ; i+=hipBlockDim_x){
     // WARNING: 2d-partition with edge weight not implemented.
     if(base+i<g.nvertexs) sv[i] = f.emit(base+i,NULL,g);
     f.data.sb[write_base+i] = f.data.zero;
@@ -55,7 +55,7 @@ __phase1_heavy(active_set_t as, G g, F f){
   // step2: accumulate partial contribution and store them into stream buffer
   int cur = -1;
   vdata_t val = f.data.zero;
-  for(int i=g.dg_chunks.segpos[blockIdx.x]+threadIdx.x; i<g.dg_chunks.segpos[blockIdx.x+1]; i+=blockDim.x){
+  for(int i=g.dg_chunks.segpos[hipBlockIdx_x]+hipThreadIdx_x; i<g.dg_chunks.segpos[hipBlockIdx_x+1]; i+=hipBlockDim_x){
     int x = g.dg_chunks.segs[i];
     if(x==-1) continue;
     if(x<0){
@@ -79,15 +79,15 @@ __phase2(active_set_t as, G g, F f){
   __shared__ vdata_t sv[BSZ];
 
   // step1: load into shared memory
-  int base = blockIdx.x*BSZ;
-  for(int i=threadIdx.x; i<BSZ; i+=blockDim.x){
+  int base = hipBlockIdx_x*BSZ;
+  for(int i=hipThreadIdx_x; i<BSZ; i+=hipBlockDim_x){
     sv[i] = f.data.zero;
   }
 
   __syncthreads();
 
   // step2: accumulate partial contribution
-  for(int i=g.dg_chunks.cey[blockIdx.x]+threadIdx.x; i<g.dg_chunks.cey[blockIdx.x+1]; i+=blockDim.x){
+  for(int i=g.dg_chunks.cey[hipBlockIdx_x]+hipThreadIdx_x; i<g.dg_chunks.cey[hipBlockIdx_x+1]; i+=hipBlockDim_x){
     if( !__equals(f.data.sb[i], f.data.zero) && g.dg_chunks.spt[i]>=0) f.compAtomic(&sv[g.dg_chunks.spt[i]], f.data.sb[i], g);
     //if(g.dg_chunks.spt[i]>=0) f.compAtomic(&sv[g.dg_chunks.spt[i]], f.data.sb[i], g);
     //atomicAdd(&sv[g.dg_chunks.spt[i]], g.dg_chunks.sb[i]);
@@ -96,7 +96,7 @@ __phase2(active_set_t as, G g, F f){
   __syncthreads();
 
   // step3: update vertex data
-  for(int i=threadIdx.x; i<BSZ; i+=blockDim.x){
+  for(int i=hipThreadIdx_x; i<BSZ; i+=hipBlockDim_x){
     if(base+i<g.nvertexs) *f.wa_of(base+i) = sv[i];
   }
 }

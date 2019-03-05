@@ -1,7 +1,7 @@
 #ifndef __BLOCK_SCAN_CUH
 #define __BLOCK_SCAN_CUH
 
-#include <cuda.h>
+#include <hip.h>
 
 
 // this struct is modifiled from gunrock
@@ -25,7 +25,7 @@ struct Block_Scan{
 
     static __device__ __tbdinline__ 
     void Warp_Scan(T thread_in, T &thread_out, T &sum){
-      int lane_id = threadIdx.x & WARP_THREADS_MASK;
+      int lane_id = hipThreadIdx_x & WARP_THREADS_MASK;
       T &lane_local = thread_out;
       T lane_recv;
 
@@ -77,7 +77,7 @@ struct Block_Scan{
 
     static __device__ __tbdinline__ 
     void Warp_Scan(T thread_in, T &thread_out){
-      int lane_id = threadIdx.x & WARP_THREADS_MASK;
+      int lane_id = hipThreadIdx_x & WARP_THREADS_MASK;
       T &lane_local = thread_out;
       T lane_recv;
       lane_local = thread_in;
@@ -122,14 +122,14 @@ struct Block_Scan{
 
     static __device__ __tbdinline__ void Warp_LogicScan(int thread_in, T &thread_out){
       unsigned int warp_flag = __ballot(thread_in);
-      int lane_id = threadIdx.x & WARP_THREADS_MASK;
+      int lane_id = hipThreadIdx_x & WARP_THREADS_MASK;
       unsigned int lane_mask = (1 << lane_id)-1;
       thread_out = __popc(warp_flag & lane_mask);
     }
 
     static __device__ __tbdinline__ void Warp_LogicScan(int thread_in, T &thread_out, T &sum){
       unsigned int warp_flag = __ballot(thread_in);
-      int lane_id = threadIdx.x & WARP_THREADS_MASK;
+      int lane_id = hipThreadIdx_x & WARP_THREADS_MASK;
       unsigned int lane_mask = (1 << lane_id)-1;
       thread_out = __popc(warp_flag & lane_mask);
       sum = __popc(warp_flag);
@@ -138,19 +138,19 @@ struct Block_Scan{
     static __device__ __tbdinline__ 
     void Scan(T thread_in, T &thread_out, Temp_Space &temp_space){
       T warp_sum;
-      int warp_id = threadIdx.x >> LOG_WARP_THREADS;
+      int warp_id = hipThreadIdx_x >> LOG_WARP_THREADS;
       Warp_Scan(thread_in, thread_out, warp_sum);
-      if ((threadIdx.x & WARP_THREADS_MASK) == 0){
+      if ((hipThreadIdx_x & WARP_THREADS_MASK) == 0){
         temp_space. warp_counter_offset[warp_id] = warp_sum;
       }
       __syncthreads();
 
       if ((warp_id) == 0){
-        warp_sum = threadIdx.x < BLOCK_WARPS ?
-            temp_space.warp_counter_offset[threadIdx.x] : 0;
+        warp_sum = hipThreadIdx_x < BLOCK_WARPS ?
+            temp_space.warp_counter_offset[hipThreadIdx_x] : 0;
         Warp_Scan(warp_sum, warp_sum);
-        if (threadIdx.x < BLOCK_WARPS)
-            temp_space.warp_counter_offset[threadIdx.x] = warp_sum;
+        if (hipThreadIdx_x < BLOCK_WARPS)
+            temp_space.warp_counter_offset[hipThreadIdx_x] = warp_sum;
       }
       __syncthreads();
 
@@ -161,19 +161,19 @@ struct Block_Scan{
     void Scan(T thread_in, T &thread_out, Temp_Space &temp_space, T &block_sum){
       T warp_sum;
       T warp_sum_tmp;
-      int warp_id = threadIdx.x >> LOG_WARP_THREADS;
+      int warp_id = hipThreadIdx_x >> LOG_WARP_THREADS;
       Warp_Scan(thread_in, thread_out, warp_sum);
-      if ((threadIdx.x & WARP_THREADS_MASK) == 0){
+      if ((hipThreadIdx_x & WARP_THREADS_MASK) == 0){
         temp_space. warp_counter_offset[warp_id] = warp_sum;
       }
       __syncthreads();
       if ((warp_id) == 0){
-        warp_sum_tmp = threadIdx.x < BLOCK_WARPS ?
-            temp_space. warp_counter_offset[threadIdx.x] : 0;
+        warp_sum_tmp = hipThreadIdx_x < BLOCK_WARPS ?
+            temp_space. warp_counter_offset[hipThreadIdx_x] : 0;
         Warp_Scan(warp_sum_tmp, warp_sum, block_sum);
-        if (threadIdx.x < BLOCK_WARPS)
-          temp_space. warp_counter_offset[threadIdx.x] = warp_sum;
-        if (threadIdx.x == 0)
+        if (hipThreadIdx_x < BLOCK_WARPS)
+          temp_space. warp_counter_offset[hipThreadIdx_x] = warp_sum;
+        if (hipThreadIdx_x == 0)
           temp_space.block_sum = block_sum;
       }
       __syncthreads();
@@ -184,17 +184,17 @@ struct Block_Scan{
     static __device__ __tbdinline__ 
     void LogicScan(int thread_in, T &thread_out, Temp_Space &temp_space){
       T warp_sum;
-      int warp_id = threadIdx.x >> LOG_WARP_THREADS;
+      int warp_id = hipThreadIdx_x >> LOG_WARP_THREADS;
       Warp_LogicScan(thread_in, thread_out, warp_sum);
-      if ((threadIdx.x & WARP_THREADS_MASK) == 0)
+      if ((hipThreadIdx_x & WARP_THREADS_MASK) == 0)
         temp_space.warp_counter_offset[warp_id] = warp_sum;
       __syncthreads();
       if ((warp_id) == 0){
-        warp_sum = threadIdx.x < BLOCK_WARPS ?
-            temp_space. warp_counter_offset[threadIdx.x] : 0;
+        warp_sum = hipThreadIdx_x < BLOCK_WARPS ?
+            temp_space. warp_counter_offset[hipThreadIdx_x] : 0;
         Warp_Scan(warp_sum, warp_sum);
-        if (threadIdx.x < BLOCK_WARPS)
-          temp_space. warp_counter_offset[threadIdx.x] = warp_sum;
+        if (hipThreadIdx_x < BLOCK_WARPS)
+          temp_space. warp_counter_offset[hipThreadIdx_x] = warp_sum;
       }
       __syncthreads();
       thread_out += temp_space. warp_counter_offset[warp_id];
@@ -203,19 +203,19 @@ struct Block_Scan{
     static __device__ __tbdinline__ 
     void LogicScan(int thread_in, T &thread_out, Temp_Space &temp_space, T &block_sum){
       T warp_sum;
-      int warp_id = threadIdx.x >> LOG_WARP_THREADS;
+      int warp_id = hipThreadIdx_x >> LOG_WARP_THREADS;
       Warp_LogicScan(thread_in, thread_out, warp_sum);
-      if ((threadIdx.x & WARP_THREADS_MASK) == 0)
+      if ((hipThreadIdx_x & WARP_THREADS_MASK) == 0)
         temp_space.warp_counter_offset[warp_id] = warp_sum;
       __syncthreads();
 
       if ((warp_id) == 0){
-        warp_sum = threadIdx.x < BLOCK_WARPS ?
-            temp_space. warp_counter_offset[threadIdx.x] : 0;
+        warp_sum = hipThreadIdx_x < BLOCK_WARPS ?
+            temp_space. warp_counter_offset[hipThreadIdx_x] : 0;
         Warp_Scan(warp_sum, warp_sum, block_sum);
-        if (threadIdx.x < BLOCK_WARPS)
-          temp_space. warp_counter_offset[threadIdx.x] = warp_sum;
-        if (threadIdx.x == 0)
+        if (hipThreadIdx_x < BLOCK_WARPS)
+          temp_space. warp_counter_offset[hipThreadIdx_x] = warp_sum;
+        if (hipThreadIdx_x == 0)
           temp_space. block_sum = block_sum;
       }
       __syncthreads();
@@ -229,7 +229,7 @@ struct Block_Scan{
 __device__ int block_scan(int* tmp, int phase){
   int total_block=0;
   int offset=1;
-  for(int d=blockDim.x>>1; d>0; d>>=1){
+  for(int d=hipBlockDim_x>>1; d>0; d>>=1){
     __syncthreads();
     if(phase<d){
       int ai = offset*(2*phase+1)-1;
@@ -240,12 +240,13 @@ __device__ int block_scan(int* tmp, int phase){
   }
 
   __syncthreads();
-  total_block = tmp[blockDim.x-1];
+  total_block = tmp[hipBlockDim_x-1];
   __syncthreads();
-  if(!phase) tmp[blockDim.x-1]=0;
+  if(!phase) tmp[hipBlockDim_x-1]=0;
   __syncthreads();
 
-  for(int d=1; d<blockDim.x; d<<=1){
+
+  for(int d=1; d<hipBlockDim_x; d<<=1){
     __syncthreads();
     offset >>=1;
     if(phase<d){
