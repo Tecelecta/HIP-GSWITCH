@@ -1,0 +1,62 @@
+In file included from /tmp/expand_VC_TWOD.cuh-438316.hip:5:
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+void throw_fatal_error(){*(int*)0=0;}
+                         ^~~~~~~~
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+In file included from /tmp/expand_VC_TWOD.cuh-438316.hip:6:
+In file included from /home/lmy/GSWITCH/src/kernel_libs/kernel_fusion.cuh:7:
+In file included from /home/lmy/GSWITCH/src/data_structures/active_set.cuh:9:
+/home/lmy/GSWITCH/src/data_structures/notification.cuh:22:12: warning: & has lower precedence than ==; == will be evaluated first [-Wparentheses]
+    if(tag & s_tmp==0) s_tmp = 1; // there exist work to do
+           ^~~~~~~~~~
+/home/lmy/GSWITCH/src/data_structures/notification.cuh:22:12: note: place parentheses around the '==' expression to silence this warning
+    if(tag & s_tmp==0) s_tmp = 1; // there exist work to do
+           ^
+             (       )
+/home/lmy/GSWITCH/src/data_structures/notification.cuh:22:12: note: place parentheses around the & expression to evaluate it first
+    if(tag & s_tmp==0) s_tmp = 1; // there exist work to do
+           ^
+       (          )
+hipify-clang: /home/lmy/llvm-project/dist/include/clang/AST/Expr.h:2283: const clang::Expr *clang::CallExpr::getArg(unsigned int) const: Assertion `Arg < NumArgs && "Arg access out of range!"' failed.
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x11b33ca]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x11b155e]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x11b16ac]
+/lib/x86_64-linux-gnu/libpthread.so.0(+0x11390)[0x7f2815abf390]
+/lib/x86_64-linux-gnu/libc.so.6(gsignal+0x38)[0x7f2814629428]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0x16a)[0x7f281462b02a]
+/lib/x86_64-linux-gnu/libc.so.6(+0x2dbd7)[0x7f2814621bd7]
+/lib/x86_64-linux-gnu/libc.so.6(+0x2dc82)[0x7f2814621c82]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x593b20]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x590000]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x59176f]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5bd7b9]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5d19e3]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5bf218]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c4561]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x40876c]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c522e]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c8e7f]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c3439]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c3d23]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c2a97]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c3d23]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c44ba]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c32b8]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c3d23]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c44ba]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c2531]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c3d23]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5c3fe4]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x67f7f8]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5915f4]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5d398e]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5f4f66]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x67a2c4]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x67719f]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x678b95]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x6796bd]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x675fec]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5b569c]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf0)[0x7f2814614830]
+/home/lmy/HIP-master/hipify-clang/build/hipify-clang[0x5857a9]
+Aborted (core dumped)

@@ -1,0 +1,14 @@
+In file included from /tmp/test.cu-26115e.hip:2:
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+void throw_fatal_error(){*(int*)0=0;}
+                         ^~~~~~~~
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+In file included from /tmp/test.cu-26115e.hip:11:
+/home/lmy/GSWITCH/src/utils/sorted_search.cuh:117:3: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'? [-Wmismatched-new-delete]
+  delete h_arr;
+  ^
+        []
+/home/lmy/GSWITCH/src/utils/sorted_search.cuh:113:19: note: allocated with 'new[]' here
+  data_t *h_arr = new data_t[len];
+                  ^
+2 warnings generated when compiling for host.

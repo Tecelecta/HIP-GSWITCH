@@ -1,0 +1,6 @@
+In file included from /tmp/features.cuh-0bac2c.hip:7:
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+void throw_fatal_error(){*(int*)0=0;}
+                         ^~~~~~~~
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+1 warning generated when compiling for host.

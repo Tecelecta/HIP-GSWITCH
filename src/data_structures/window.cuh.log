@@ -1,0 +1,77 @@
+In file included from /tmp/window.cuh-e46e01.hip:5:
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+void throw_fatal_error(){*(int*)0=0;}
+                         ^~~~~~~~
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+/tmp/window.cuh-e46e01.hip:13:1: warning: variable templates are a C++14 extension [-Wc++14-extensions]
+__probe(device_graph_t<COO,E> g, F f){}
+^
+/tmp/window.cuh-e46e01.hip:12:1: warning: 'global' attribute only applies to functions [-Wignored-attributes]
+__global__ void
+^
+/usr/local/cuda/include/host_defines.h:191:22: note: expanded from macro '__global__'
+        __location__(global)
+                     ^
+/tmp/window.cuh-e46e01.hip:13:1: error: variable has incomplete type 'void'
+__probe(device_graph_t<COO,E> g, F f){}
+^
+/tmp/window.cuh-e46e01.hip:13:9: error: use of undeclared identifier 'device_graph_t'
+__probe(device_graph_t<COO,E> g, F f){}
+        ^
+/tmp/window.cuh-e46e01.hip:13:28: error: 'E' does not refer to a value
+__probe(device_graph_t<COO,E> g, F f){}
+                           ^
+/tmp/window.cuh-e46e01.hip:11:20: note: declared here
+template <typename E, typename F>
+                   ^
+/tmp/window.cuh-e46e01.hip:13:31: error: use of undeclared identifier 'g'
+__probe(device_graph_t<COO,E> g, F f){}
+                              ^
+/tmp/window.cuh-e46e01.hip:13:34: error: 'F' does not refer to a value
+__probe(device_graph_t<COO,E> g, F f){}
+                                 ^
+/tmp/window.cuh-e46e01.hip:11:32: note: declared here
+template <typename E, typename F>
+                               ^
+/tmp/window.cuh-e46e01.hip:13:38: error: expected ';' at end of declaration
+__probe(device_graph_t<COO,E> g, F f){}
+                                     ^
+                                     ;
+/tmp/window.cuh-e46e01.hip:13:38: error: expected unqualified-id
+/tmp/window.cuh-e46e01.hip:18:1: warning: variable templates are a C++14 extension [-Wc++14-extensions]
+__probe(device_graph_t<CSR,E> g, F f){
+^
+/tmp/window.cuh-e46e01.hip:17:1: warning: 'global' attribute only applies to functions [-Wignored-attributes]
+__global__ void // only for VC
+^
+/usr/local/cuda/include/host_defines.h:191:22: note: expanded from macro '__global__'
+        __location__(global)
+                     ^
+/tmp/window.cuh-e46e01.hip:18:1: error: variable has incomplete type 'void'
+__probe(device_graph_t<CSR,E> g, F f){
+^
+/tmp/window.cuh-e46e01.hip:18:9: error: use of undeclared identifier 'device_graph_t'
+__probe(device_graph_t<CSR,E> g, F f){
+        ^
+/tmp/window.cuh-e46e01.hip:18:28: error: 'E' does not refer to a value
+__probe(device_graph_t<CSR,E> g, F f){
+                           ^
+/tmp/window.cuh-e46e01.hip:16:20: note: declared here
+template <typename E, typename F>
+                   ^
+/tmp/window.cuh-e46e01.hip:18:31: error: use of undeclared identifier 'g'
+__probe(device_graph_t<CSR,E> g, F f){
+                              ^
+/tmp/window.cuh-e46e01.hip:18:34: error: 'F' does not refer to a value
+__probe(device_graph_t<CSR,E> g, F f){
+                                 ^
+/tmp/window.cuh-e46e01.hip:16:32: note: declared here
+template <typename E, typename F>
+                               ^
+/tmp/window.cuh-e46e01.hip:18:38: error: expected ';' at end of declaration
+__probe(device_graph_t<CSR,E> g, F f){
+                                     ^
+                                     ;
+/tmp/window.cuh-e46e01.hip:18:38: error: expected unqualified-id
+5 warnings and 14 errors generated when compiling for host.
+Error while processing /tmp/window.cuh-e46e01.hip.

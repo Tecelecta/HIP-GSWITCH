@@ -1,0 +1,31 @@
+In file included from /tmp/inspector.cuh-39ab3c.hip:5:
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+void throw_fatal_error(){*(int*)0=0;}
+                         ^~~~~~~~
+/home/lmy/GSWITCH/src/utils/intrinsics.cuh:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+/tmp/inspector.cuh-39ab3c.hip:12:14: error: unknown type name 'active_set_t'
+__inspect_EC(active_set_t as, G g, F f, stat_t stat, config_t conf){
+             ^
+/tmp/inspector.cuh-39ab3c.hip:38:14: error: unknown type name 'active_set_t'
+__inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
+             ^
+/tmp/inspector.cuh-39ab3c.hip:106:16: error: unknown type name 'active_set_t'
+  void inspect(active_set_t &as, device_graph_t<CSR,E> g, F& f, stat_t& stat, feature_t &fets, config_t& conf){TRACE();
+               ^
+/tmp/inspector.cuh-39ab3c.hip:106:34: error: no template named 'device_graph_t'
+  void inspect(active_set_t &as, device_graph_t<CSR,E> g, F& f, stat_t& stat, feature_t &fets, config_t& conf){TRACE();
+                                 ^
+/tmp/inspector.cuh-39ab3c.hip:132:16: error: unknown type name 'active_set_t'
+  void inspect(active_set_t &as, device_graph_t<COO,E> g, F& f, stat_t& stat, feature_t &fets, config_t& conf){TRACE();
+               ^
+/tmp/inspector.cuh-39ab3c.hip:132:34: error: no template named 'device_graph_t'
+  void inspect(active_set_t &as, device_graph_t<COO,E> g, F& f, stat_t& stat, feature_t &fets, config_t& conf){TRACE();
+                                 ^
+/tmp/inspector.cuh-39ab3c.hip:166:23: error: unknown type name 'active_set_t'
+  void set_first_fets(active_set_t& as, G g, F &f, stat_t &stat, feature_t& fets, config_t conf, int nvertexs, int nedges){
+                      ^
+/tmp/inspector.cuh-39ab3c.hip:189:17: error: unknown type name 'active_set_t'
+  void set_fets(active_set_t& as, G g, F &f, stat_t &stat, feature_t& fets, config_t conf, int nvertexs, int nedges){
+                ^
+1 warning and 8 errors generated when compiling for host.
+Error while processing /tmp/inspector.cuh-39ab3c.hip.

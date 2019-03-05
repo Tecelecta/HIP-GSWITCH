@@ -1,0 +1,53 @@
+/tmp/cmdline.cuh-c54245.hip:49:10: error: no member named 'vector' in namespace 'std'
+    std::vector<std::string> cfgs;
+    ~~~~~^
+/tmp/cmdline.cuh-c54245.hip:49:28: error: expected '(' for function-style cast or type construction
+    std::vector<std::string> cfgs;
+                ~~~~~~~~~~~^
+/tmp/cmdline.cuh-c54245.hip:49:30: error: use of undeclared identifier 'cfgs'
+    std::vector<std::string> cfgs;
+                             ^
+/tmp/cmdline.cuh-c54245.hip:53:7: error: use of undeclared identifier 'cfgs'
+      cfgs.push_back(tmp);
+      ^
+/tmp/cmdline.cuh-c54245.hip:55:11: error: use of undeclared identifier 'cfgs'
+    while(cfgs.size()<4) cfgs.push_back("x");
+          ^
+/tmp/cmdline.cuh-c54245.hip:55:26: error: use of undeclared identifier 'cfgs'
+    while(cfgs.size()<4) cfgs.push_back("x");
+                         ^
+/tmp/cmdline.cuh-c54245.hip:57:8: error: use of undeclared identifier 'cfgs'
+    if(cfgs[0] == "Push") ins.d=Push;
+       ^
+/tmp/cmdline.cuh-c54245.hip:58:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[0] == "Pull") ins.d=Pull;
+            ^
+/tmp/cmdline.cuh-c54245.hip:61:8: error: use of undeclared identifier 'cfgs'
+    if(cfgs[1] == "Queue") ins.asf=Queue;
+       ^
+/tmp/cmdline.cuh-c54245.hip:62:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[1] == "Bitmap") ins.asf=Bitmap;
+            ^
+/tmp/cmdline.cuh-c54245.hip:65:8: error: use of undeclared identifier 'cfgs'
+    if(cfgs[2]=="TM") ins.lb=TM;
+       ^
+/tmp/cmdline.cuh-c54245.hip:66:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[2]=="WM") ins.lb=WM;
+            ^
+/tmp/cmdline.cuh-c54245.hip:67:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[2]=="CM") ins.lb=CM;
+            ^
+/tmp/cmdline.cuh-c54245.hip:68:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[2]=="STRICT") ins.lb=STRICT;
+            ^
+/tmp/cmdline.cuh-c54245.hip:69:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[2]=="TWOD") ins.lb=TWOD;
+            ^
+/tmp/cmdline.cuh-c54245.hip:72:8: error: use of undeclared identifier 'cfgs'
+    if(cfgs[3]=="Fused") ins.fusion=Fused;
+       ^
+/tmp/cmdline.cuh-c54245.hip:73:13: error: use of undeclared identifier 'cfgs'
+    else if(cfgs[3]=="Standalone") ins.fusion=Standalone;
+            ^
+17 errors generated when compiling for host.
+Error while processing /tmp/cmdline.cuh-c54245.hip.
