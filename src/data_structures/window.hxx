@@ -8,7 +8,7 @@
 
 #include "model/select_stepping.h"
 
-/* this probing part throws error for no reason and we don't seem to need this
+// this probing part throws error for no reason and we don't seem to need this
 
 template <typename E, typename F>
 __global__ void
@@ -17,7 +17,7 @@ __probe(device_graph_t<COO,E> g, F f){}
 //TODO: dangerous 
 template <typename E, typename F>
 __global__ void // only for VC
-__probe(device_graph_t<CSR,E> g, F f){
+probe00(device_graph_t<CSR,E> g, F f){
   const int STRIDE = hipBlockDim_x*hipGridDim_x;
   const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
 
@@ -38,11 +38,10 @@ int probe(G g, F& f){
   hipMemset(f.data.window.dg_cnt, 0, sizeof(int));
   f.data.window.h_cnt[0] = 0;
   //cudaThreadSynchronize();
-  __probe<<<CTANUM, THDNUM>>>(g, f);
+  probe00<<<dim3(CTANUM), dim3(THDNUM), 0, 0>>> (g, f);
   hipMemcpy(f.data.window.h_cnt, f.data.window.dg_cnt, sizeof(int), D2H);
   return f.data.window.h_cnt[0];
 }
-*/
 
 struct window_t{
   double th, wsz_lim, wsz;
