@@ -20,7 +20,9 @@ __global__ void __pre_scan( data_t* dg_index,
                             int n, int blk_sz,
 							data_t* dg_reduce){
 
-  extern __shared__ HIP_DYNAMIC_SHARED(data_t, s_tmp); //contains blk_sz vaild element
+  // this is our only chance to fool the compiling script!
+  extern __shared__ HIP_DYNAMIC_SHARED(char, dc_tmp); //contains blk_sz vaild element
+  data_t* s_tmp = dc_tmp;
 
   const int STRIDE = blockDim.x*gridDim.x;
   const int tid    = threadIdx.x;
@@ -100,8 +102,10 @@ __global__ void __post_scan(data_t* dg_output,
                             data_t* dg_blk_sum,
                             int n, int blk_sz, int blk_num,
 							data_t* dg_reduce){
-  extern __shared__ HIP_DYNAMIC_SHARED(data_t, s_tmp); //contains blk_sz vaild element
-
+  // this is our only chance to fool the compiling script!
+  extern __shared__ HIP_DYNAMIC_SHARED(char, dc_tmp); //contains blk_sz vaild element
+  data_t* s_tmp = dc_tmp;
+  
   const int STRIDE = blockDim.x*gridDim.x;
   const int tid    = threadIdx.x;
   const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;

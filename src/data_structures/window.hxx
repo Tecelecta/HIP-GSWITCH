@@ -8,6 +8,8 @@
 
 #include "model/select_stepping.h"
 
+/* this probing part throws error for no reason and we don't seem to need this
+
 template <typename E, typename F>
 __global__ void
 __probe(device_graph_t<COO,E> g, F f){}
@@ -40,7 +42,7 @@ int probe(G g, F& f){
   hipMemcpy(f.data.window.h_cnt, f.data.window.dg_cnt, sizeof(int), D2H);
   return f.data.window.h_cnt[0];
 }
-
+*/
 
 struct window_t{
   double th, wsz_lim, wsz;

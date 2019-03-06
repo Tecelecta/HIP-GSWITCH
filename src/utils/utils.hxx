@@ -134,7 +134,8 @@ void query_device_prop(){
     printf("Device Number: %d\n", i);
     printf(" Device name: %s\n", prop.name);
     printf(" Device Capability: %d.%d\n", prop.major, prop.minor);
-    printf(" Device Overlap: %s\n", (prop.deviceOverlap ? "yes":"no"));
+    //this attrib is not supported by rocm
+    //printf(" Device Overlap: %s\n", (prop.deviceOverlap ? "yes":"no"));
     printf(" Device canMapHostMemory: %s\n", (prop.canMapHostMemory ? "yes":"no"));
     printf(" Memory Detils\n");
     printf("  - registers per Block (KB): %d\n", (prop.regsPerBlock));
