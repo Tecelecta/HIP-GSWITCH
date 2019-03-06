@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <getopt.h>
 #include <sys/stat.h>
-#include <hip.h>
+#include <hip/hip_runtime.h>
 #include <sstream>
 
 #include "utils/common.cuh"
