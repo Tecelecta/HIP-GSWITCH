@@ -1,7 +1,7 @@
 #ifndef __BLOCK_SCAN_CUH
 #define __BLOCK_SCAN_CUH
 
-#include <hip.h>
+#include <hip/hip_runtime.h>
 
 
 // this struct is modifiled from gunrock
