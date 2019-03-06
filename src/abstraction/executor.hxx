@@ -13,10 +13,10 @@
 #include "kernel_libs/expand_VC_CM.hxx"
 #include "kernel_libs/expand_VC_STRICT.hxx"
 #include "kernel_libs/expand_VC_TM.hxx"
-#include "kernel_libs/expand_VC_TWC.hxx"
-#include "kernel_libs/expand_VC_TWOD.hxx"
+//#include "kernel_libs/expand_VC_TWC.hxx"
+//#include "kernel_libs/expand_VC_TWOD.hxx"
 #include "kernel_libs/expand_VC_WM.hxx"
-#include "kernel_libs/expand_VC_ELB.hxx"
+//#include "kernel_libs/expand_VC_ELB.hxx"
 #include "kernel_libs/kernel_fusion.hxx"
 
 

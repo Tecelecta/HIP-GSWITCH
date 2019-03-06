@@ -58,7 +58,7 @@ struct window_t{
   int* h_cnt, *dg_cnt;
 
   void build(){
-    hipMallocHost((void**)&h_cnt, sizeof(int));
+    hipHostMalloc((void**)&h_cnt, sizeof(int));
     hipMalloc((void**)&dg_cnt, sizeof(int));
     h_cnt[0]=0;
   }
