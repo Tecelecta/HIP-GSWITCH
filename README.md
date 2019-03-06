@@ -1,4 +1,3 @@
-#Hipified GSWITCH
+# Hipified GSWITCH
 
-This is a modifed ver of work done by CAS-ICT-NCIC
- - current status: mechanically hipified
+This page is for personal release which is not yet finished, the developing version will not be published.
