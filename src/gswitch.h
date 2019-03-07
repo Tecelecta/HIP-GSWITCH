@@ -49,3 +49,4 @@ void init_conf(stat_t& stats, feature_t& fets, config_t& conf, G& g, F& f){
   }
 }
 
+#endif
