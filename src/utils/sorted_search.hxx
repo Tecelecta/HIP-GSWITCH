@@ -3,7 +3,7 @@
 
 
 #include <hip/hip_runtime.h>
-#include "utils/utils.cuh"
+#include "utils/utils.hxx"
 
 template<typename data_t>
 __device__ __tbdinline__ int
