@@ -3,10 +3,11 @@
 
 
 #include <hip/hip_runtime.h>
-#include "utils/utils.hxx"
+#include "utils/utils.cuh"
 
+template<typename data_t>
 __device__ __tbdinline__ int
-__upper_eq_bound(int* array, int len, int key){
+__upper_eq_bound(data_t* array, int len, data_t key){
   int s = 0;
   while(len>0){
     int half = len>>1;
@@ -22,34 +23,30 @@ __upper_eq_bound(int* array, int len, int key){
 }
 
 
-template<typename data_t, int TILE_SZ>
-__global__ void partition1(data_t *dg_a, int a_count,
-		                  data_t *dg_b, int b_count,
-						  int tile_count,
-						  int *dg_aout, int *dg_bout){
+template<typename data_t>
+__global__ void global_upper(data_t *dg_a, int a_count,
+                      data_t *dg_b, int b_count,
+              int* dg_idx){
 
   const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
-  const int sploc = b_count % tile_count;
- 
-  int b_spidx; 
-  if(gtid < sploc) b_spidx = gtid*(TILE_SZ+1);
-  else if(gtid <= tile_count) b_spidx = sploc*(TILE_SZ+1) + TILE_SZ * (gtid - sploc);
-  else return;
 
-  data_t b_item = dg_b[b_spidx];
-  int a_spidx = __upper_eq_bound(dg_a, a_count, b_item);
-  
-  dg_aout[gtid] = a_spidx;
-  dg_bout[gtid] = b_spidx;
+  data_t a_item;
+  int a_res;
+  if(gtid < a_count) a_item = dg_a[gtid];
+  else return;
+  a_res = __upper_eq_bound(dg_b, b_count, a_item);
+  __syncthreads();
+  dg_idx[gtid] = a_res;
 }
+
 /**
  * gladly copied from mgpu!
  */
 template<typename data_t, int TILE_SZ>
 __global__ void partition(data_t* dg_a, int a_count, 
-		                  data_t* dg_b, int b_count, 
-						  int tile_count,
-						  int* dg_aout, int* dg_bout){
+                      data_t* dg_b, int b_count, 
+              int tile_count,
+              int* dg_aout, int* dg_bout){
 
   const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
   int diag  = MIN(gtid * TILE_SZ, a_count + b_count);
@@ -62,7 +59,7 @@ __global__ void partition(data_t* dg_a, int a_count,
     data_t a_key = dg_a[mid];
     data_t b_key = dg_b[diag - 1 - mid];
     
-	if(a_key <= b_key) begin = mid + 1;
+  if(a_key <= b_key) begin = mid + 1;
     else end = mid;
   }
   
@@ -106,7 +103,7 @@ __global__ void block_upper(data_t* dg_a, int a_count, data_t* dg_b, int b_count
   
   //#3 put shared into mem
   for(int i=tid; i<local_asize; i+=Loc_STRIDE){
-	dg_idx[i+local_aoffset] = s_idx[i] + local_boffset;
+  dg_idx[i+local_aoffset] = s_idx[i] + local_boffset;
   }
 }
 
@@ -116,7 +113,7 @@ static void dump_arr(data_t *dg_arr, int len){
   TOHOST(dg_arr, h_arr, len);
   for(int i=0; i<len; i++) std::cout << h_arr[i] << "\t";
   std::cout << std::endl;
-  delete h_arr;
+  delete [] h_arr;
 }
 
 /**
@@ -125,7 +122,7 @@ static void dump_arr(data_t *dg_arr, int len){
 template<typename data_t, int THD_NUM = 256>
 void sorted_search(data_t* dg_a, int a_count, 
                      data_t* dg_b, int b_count,
-					 int* dg_idx){
+           int* dg_idx){
 
 #define TILE_SZ (THD_NUM<<1)
   int tile_count = CEIL(a_count + b_count, TILE_SZ) + 1;
@@ -141,22 +138,14 @@ void sorted_search(data_t* dg_a, int a_count,
 #undef TILE_SZ
 }
 
+
 template<typename data_t, int THD_NUM = 256>
 void sorted_search1(data_t* dg_a, int a_count, 
                    data_t* dg_b, int b_count,
                     int* dg_idx){
 
-#define TILE_SZ (THD_NUM<<1)
-  //int tile_count = CEIL(a_count + b_count, TILE_SZ) + 1;
-  int tile_count = CEIL( b_count, TILE_SZ) + 1;
-  data_t *dg_atile, *dg_btile;
-  H_ERR(hipMalloc((void**)&dg_atile, sizeof(data_t)*tile_count));
-  H_ERR(hipMalloc((void**)&dg_btile, sizeof(data_t)*tile_count));
-  //partition<data_t, TILE_SZ><<<1 + CEIL(tile_count, THD_NUM) ,THD_NUM>>>(dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
-  hipLaunchKernelGGL(partition1<data_t, TILE_SZ>, dim3(1 + CEIL), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
-  //  dump_arr(dg_atile, tile_count);
-  //  dump_arr(dg_btile, tile_count);
-  hipLaunchKernelGGL(block_upper<data_t, TILE_SZ>, dim3(tile_count-1), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, dg_atile, dg_btile, dg_idx);
-#undef TILE_SZ
+  int tile_count = CEIL(a_count, THD_NUM);
+  hipLaunchKernelGGL(global_upper, dim3(tile_count), dim3(THD_NUM), THD_NUM, 0, dg_a, a_count, dg_b, b_count, dg_idx);
 }
+
 #endif //__SORTED_SEARCH_CUH_

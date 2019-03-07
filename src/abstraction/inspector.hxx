@@ -120,7 +120,8 @@ struct inspector_t{
     }
 
     if(need_inspect){ 
-      __inspect_VC<<<CTANUM,THDNUM>>>(as, g, f, stat, conf); // to bitmap
+      hipLaunchKernel(__inspect_VC<device_graph_t<CSR,E>,F>, dim3(CTANUM) , dim3(THDNUM), 
+        as, g, f, stat, conf); // to bitmap
       //LOG("%d ", as.queue.get_current_queue().debug());
       set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges); 
     }
@@ -139,7 +140,8 @@ struct inspector_t{
       fets.active_vertex_ratio = 1;
       return;
     }
-    __inspect_EC<<<CTANUM, THDNUM>>>(as, g, f, stat, conf);
+    hipLaunchKernel(__inspect_EC<device_graph_t<COO,E>, F>, dim3(CTANUM), dim3(THDNUM),
+      as, g, f, stat, conf);
     set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges);
     fets.flatten();
   }

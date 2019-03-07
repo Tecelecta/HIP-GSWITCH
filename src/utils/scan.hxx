@@ -232,16 +232,19 @@ __host__ void scan( data_t* dg_index,
   const int padding  = CONFLICT_FREE_OFFSET(blk_sz-1);
   
   if(n <= blk_sz){
-    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(1), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream, dg_index, dg_input, dg_output, NULL, n, blk_sz);
+    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(1), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream,
+      dg_index, dg_input, dg_output, NULL, n, blk_sz);
   }else if(n <= blk_sz*blk_sz){
     //TODO: Messag Pool
     H_ERR(hipMalloc((void **)&dg_blk_sum, sizeof(data_t)*blk_num));
     
-    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream, dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz);  
+    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream,
+      dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz);  
     
     //cudaThreadSynchronize();
     
-    hipLaunchKernelGGL(__post_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream, dg_output, dg_blk_sum, n, blk_sz, blk_num);
+    hipLaunchKernelGGL(__post_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream,
+      dg_output, dg_blk_sum, n, blk_sz, blk_num);
   
     //TODO: Message Pool
     H_ERR(hipFree(dg_blk_sum));
@@ -249,7 +252,8 @@ __host__ void scan( data_t* dg_index,
     //TODO: Messag Pool
     H_ERR(hipMalloc((void **)&dg_blk_sum, sizeof(data_t)*blk_num));
     
-    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream, dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz);  
+    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), stream,
+      dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz);
     
     //cudaThreadSynchronize();
     
@@ -257,7 +261,8 @@ __host__ void scan( data_t* dg_index,
 
     //cudaThreadSynchronize();
 
-    hipLaunchKernelGGL(__final_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), 0, stream, dg_output, dg_blk_sum, n, blk_sz);
+    hipLaunchKernelGGL(__final_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), 0, stream,
+      dg_output, dg_blk_sum, n, blk_sz);
 
     H_ERR(hipFree(dg_blk_sum));
   }
@@ -298,14 +303,17 @@ __host__ void __recursive_scan(data_t* dg_input, int n, data_t* dg_reduce){
   //TODO: Messag Pool
   H_ERR(hipMalloc((void **)&dg_blk_sum, sizeof(data_t)*blk_num));
 
-  hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, NULL, dg_input, dg_input, dg_blk_sum, n, blk_sz, dg_reduce);  
+  hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, 
+    NULL, dg_input, dg_input, dg_blk_sum, n, blk_sz, dg_reduce);  
 
   //cudaThreadSynchronize();
   if(blk_num <= blk_sz){
-    hipLaunchKernelGGL(__post_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, dg_input, dg_blk_sum, n, blk_sz, blk_num, dg_reduce);
+    hipLaunchKernelGGL(__post_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, 
+      dg_input, dg_blk_sum, n, blk_sz, blk_num, dg_reduce);
   }else{
     __recursive_scan<CTA_NUM, THD_NUM, data_t>(dg_blk_sum, blk_num, dg_reduce);
-    hipLaunchKernelGGL(__final_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), 0, 0, dg_input, dg_blk_sum, n, blk_sz);
+    hipLaunchKernelGGL(__final_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), 0, 0, 
+      dg_input, dg_blk_sum, n, blk_sz);
   }
   H_ERR(hipFree(dg_blk_sum));
 }
@@ -332,16 +340,19 @@ __host__ void scan( data_t* dg_index,
   data_t *dg_blk_sum = global_dg_blk_sum;
   
   if(n <= blk_sz){
-    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(1), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, dg_index, dg_input, dg_output, NULL, n, blk_sz, dg_reduce);
+    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(1), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0,
+      dg_index, dg_input, dg_output, NULL, n, blk_sz, dg_reduce);
   }else if(n <= blk_sz*blk_sz){
     //TODO: Preallocate
     //H_ERR(cudaMalloc((void **)&dg_blk_sum, sizeof(data_t)*blk_num));
     
-    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz, dg_reduce);  
+    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0,
+      dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz, dg_reduce);  
     
     //cudaThreadSynchronize();
     
-    hipLaunchKernelGGL(__post_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, dg_output, dg_blk_sum, n, blk_sz, blk_num, dg_reduce);
+    hipLaunchKernelGGL(__post_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0,
+      dg_output, dg_blk_sum, n, blk_sz, blk_num, dg_reduce);
   
     //TODO: Message Pool
     //H_ERR(cudaFree(dg_blk_sum));
@@ -349,7 +360,8 @@ __host__ void scan( data_t* dg_index,
 	//TODO: Messag Pool
     //H_ERR(cudaMalloc((void **)&dg_blk_sum, sizeof(data_t)*blk_num));
     
-    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0, dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz, dg_reduce);  
+    hipLaunchKernelGGL(__pre_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), (padding+blk_sz)*sizeof(data_t), 0,
+      dg_index, dg_input, dg_output, dg_blk_sum, n, blk_sz, dg_reduce);  
     
     //cudaThreadSynchronize();
     
@@ -357,7 +369,8 @@ __host__ void scan( data_t* dg_index,
 
     //cudaThreadSynchronize();
 
-    hipLaunchKernelGGL(__final_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), 0, 0, dg_output, dg_blk_sum, n, blk_sz);
+    hipLaunchKernelGGL(__final_scan<data_t>, dim3(CTA_NUM), dim3(THD_NUM), 0, 0,
+      dg_output, dg_blk_sum, n, blk_sz);
 
     //H_ERR(cudaFree(dg_blk_sum));
   }

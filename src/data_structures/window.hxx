@@ -1,14 +1,15 @@
 #ifndef __WINDOW_CUH
 #define __WINDOW_CUH
 
-#include "utils/utils.hxx"
-#include "utils/intrinsics.hxx"
-#include "abstraction/config.hxx"
-#include "abstraction/features.hxx"
+
+#include <hip/hip_runtime.h>
+#include "utils/utils.cuh"
+#include "utils/intrinsics.cuh"
+#include "abstraction/config.cuh"
+#include "abstraction/features.cuh"
 
 #include "model/select_stepping.h"
-
-// this probing part throws error for no reason and we don't seem to need this
+#include "data_structures/graph.cuh"
 
 template <typename E, typename F>
 __global__ void
@@ -17,9 +18,9 @@ __probe(device_graph_t<COO,E> g, F f){}
 //TODO: dangerous 
 template <typename E, typename F>
 __global__ void // only for VC
-probe00(device_graph_t<CSR,E> g, F f){
-  const int STRIDE = hipBlockDim_x*hipGridDim_x;
-  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+__probe(device_graph_t<CSR,E> g, F f){
+  const int STRIDE = blockDim.x*gridDim.x;
+  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
 
   int num = 0;
   for(int idx=gtid; idx<g.nvertexs; idx+=STRIDE){
@@ -30,7 +31,7 @@ probe00(device_graph_t<CSR,E> g, F f){
 
   __syncthreads();
   num = blockReduceSum(num);
-  if(!hipThreadIdx_x) atomicAdd(&f.data.window.dg_cnt[0], num);
+  if(!threadIdx.x) atomicAdd(&f.data.window.dg_cnt[0], num);
 }
 
 template<typename G, typename F>
@@ -38,10 +39,12 @@ int probe(G g, F& f){
   hipMemset(f.data.window.dg_cnt, 0, sizeof(int));
   f.data.window.h_cnt[0] = 0;
   //cudaThreadSynchronize();
-  probe00<<<dim3(CTANUM), dim3(THDNUM), 0, 0>>> (g, f);
+  hipLaunchKernelGGL(__probe, dim3(CTANUM), dim3(THDNUM), 0, 0,
+    g, f);
   hipMemcpy(f.data.window.h_cnt, f.data.window.dg_cnt, sizeof(int), D2H);
   return f.data.window.h_cnt[0];
 }
+
 
 struct window_t{
   double th, wsz_lim, wsz;

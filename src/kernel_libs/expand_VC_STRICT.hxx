@@ -500,9 +500,9 @@ struct ExpandProxy<VC,STRICT,Push>{
                                   as.workset.dg_udegree, nactives,
                                   as.workset.dg_idx, mgpu::less_t<int>(), *as.context);
       */
-	  sorted_search1(as.workset.dg_seid_per_blk, blksz+1,
-			        as.workset.dg_udegree, nactives,
-					as.workset.dg_idx);
+	  sorted_search1( as.workset.dg_seid_per_blk, blksz+1,
+			              as.workset.dg_udegree, nactives,
+					          as.workset.dg_idx);
 	}
     if(conf.conf_fuse_inspect){
       Launch_Expand_VC(STRICT_fused, as, g, f, conf);
@@ -548,9 +548,9 @@ struct ExpandProxy<VC,STRICT,Pull>{
 	  //get size --lmy
       hipLaunchKernelGGL(__memsetIdx, dim3(1), dim3(conf.ctanum), 0, 0, as.workset.dg_seid_per_blk, blksz, 
           1+active_edges/blksz, active_edges%blksz, active_edges);
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                  as.workset.dg_udegree, nactives,
-                                  as.workset.dg_idx, mgpu::less_t<int>(), *as.context);
+      sorted_search1( as.workset.dg_seid_per_blk, blksz+1,
+                      as.workset.dg_udegree, nactives,
+                      as.workset.dg_idx);
       //as.context->synchronize();
     }
     Launch_RExpand_VC(STRICT, as, g, f, conf);

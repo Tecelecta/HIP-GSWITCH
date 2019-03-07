@@ -93,7 +93,8 @@ struct executor_t{
       ENABLE(WM)
       ENABLE(CM)
       ENABLE(STRICT)
-      if(ENABLE_2D_PARTITION) ENABLE(TWOD)
+      //no usage no compile --lmy
+      //if(ENABLE_2D_PARTITION) ENABLE(TWOD)
       //ENABLE(ELB)
       //ENABLE(TWC)
     }

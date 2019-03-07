@@ -145,22 +145,22 @@ struct ASProxy<Bitmap,M>{
 #define Launch_Expand_VC(lb, as, g, f, conf)                                      \
 if(as.fmt == Queue) {                                                             \
   if(as.queue.mode==Normal)                                                  \
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
+    hipLaunchKernel(__expand_VC_##lb<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
   else                                                                            \
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
+    hipLaunchKernel(__expand_VC_##lb<Queue,Cached>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
 }else{                                                                            \
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
+  hipLaunchKernel(__expand_VC_##lb<Bitmap,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);  \
 }                                                                                 \
 
 
 #define Launch_RExpand_VC(lb, as, g, f, conf)                                     \
 if(as.fmt == Queue) {                                                             \
   if(as.queue.mode==Normal)                                                  \
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
+    hipLaunchKernel(__rexpand_VC_##lb<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);\
   else                                                                            \
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
+    hipLaunchKernel(__rexpand_VC_##lb<Queue,Cached>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);\
 }else{                                                                            \
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
+  hipLaunchKernel(__rexpand_VC_##lb<Bitmap,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
 }                                                                                 \
 
 
