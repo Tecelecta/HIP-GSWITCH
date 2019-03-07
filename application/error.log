@@ -1,10 +1,10 @@
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:7:
 ../src/utils/intrinsics.hxx:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
 void throw_fatal_error(){*(int*)0=0;}
                          ^~~~~~~~
 ../src/utils/intrinsics.hxx:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -14,7 +14,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -24,7 +24,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -34,7 +34,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -44,7 +44,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -54,7 +54,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -64,7 +64,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -74,7 +74,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -84,7 +84,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 ../src/data_structures/notification.hxx:24:12: warning: & has lower precedence than ==; == will be evaluated first [-Wparentheses]
@@ -98,960 +98,88 @@ In file included from ../src/data_structures/active_set.hxx:11:
     if(tag & s_tmp==0) s_tmp = 1; // there exist work to do
            ^
        (          )
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:14:
-../src/abstraction/inspector.hxx:123:21: error: expected expression
-      __inspect_VC<<<CTANUM,THDNUM>>>(as, g, f, stat, conf); // to bitmap
-                    ^
-../src/abstraction/inspector.hxx:123:37: error: expected expression
-      __inspect_VC<<<CTANUM,THDNUM>>>(as, g, f, stat, conf); // to bitmap
-                                    ^
-../src/abstraction/inspector.hxx:142:19: error: expected expression
-    __inspect_EC<<<CTANUM, THDNUM>>>(as, g, f, stat, conf);
-                  ^
-../src/abstraction/inspector.hxx:142:36: error: expected expression
-    __inspect_EC<<<CTANUM, THDNUM>>>(as, g, f, stat, conf);
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-    if(conf.conf_fuse_inspect) Launch_Expand_VC(CM_fused, as, g, f, conf)
-                               ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-    else Launch_Expand_VC(CM, as, g, f, conf);
-         ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-    Launch_RExpand_VC(CM, as, g, f, conf);
-    ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-In file included from ../src/kernel_libs/expand_VC_STRICT.hxx:16:
-../src/utils/sorted_search.hxx:119:3: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'? [-Wmismatched-new-delete]
-  delete h_arr;
-  ^
-        []
-../src/utils/sorted_search.hxx:115:19: note: allocated with 'new[]' here
-  data_t *h_arr = new data_t[len];
-                  ^
-../src/utils/sorted_search.hxx:136:59: error: use of undeclared identifier 'CEIL'
-  hipLaunchKernelGGL(partition<data_t, TILE_SZ>, dim3(1 + CEIL), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
-                                                          ^
-../src/utils/sorted_search.hxx:156:60: error: use of undeclared identifier 'CEIL'
-  hipLaunchKernelGGL(partition1<data_t, TILE_SZ>, dim3(1 + CEIL), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
-                                                           ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-      Launch_Expand_VC(STRICT_fused, as, g, f, conf);
-      ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-        Launch_Expand_VC(STRICT, as, g, f, conf);
-        ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:551:7: error: use of undeclared identifier 'mgpu'
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-      ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:27: error: use of undeclared identifier 'mgpu'
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                          ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:49: error: expected ')'
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                                ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:46: note: to match this '('
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                             ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:47: error: C++ requires a type specifier for all declarations
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                              ^
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-    Launch_RExpand_VC(STRICT, as, g, f, conf);
-    ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-    if(conf.conf_fuse_inspect) {Launch_Expand_VC(TM_fused, as, g, f, conf);}
-                                ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-    else Launch_Expand_VC(TM, as, g, f, conf);
-         ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-      Launch_RExpand_VC(TM, as, g, f, conf);
-      ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-        Launch_Expand_VC(WM_fused, as, g, f, conf);
-        ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-      Launch_Expand_VC(WM, as, g, f, conf);
-      ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-    Launch_RExpand_VC(WM, as, g, f, conf);
-    ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-../src/abstraction/executor.hxx:96:31: error: no member named 'expand' in 'ExpandProxy<VC, TWOD, Push>'
-      if(ENABLE_2D_PARTITION) ENABLE(TWOD)
-                              ^~~~~~~~~~~~
-../src/abstraction/executor.hxx:86:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Push>::expand(as,g,f,conf); \
-      ~~~~~~~~~~~~~~~~~~~~~~~~~^
-../src/abstraction/executor.hxx:96:31: error: no member named 'expand' in 'ExpandProxy<VC, TWOD, Pull>'
-      if(ENABLE_2D_PARTITION) ENABLE(TWOD)
-                              ^~~~~~~~~~~~
-../src/abstraction/executor.hxx:88:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Pull>::expand(as,g,f,conf); \
-      ~~~~~~~~~~~~~~~~~~~~~~~~~^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 ../src/gswitch.h:1:2: error: unterminated conditional directive
 #ifndef __GSWITCH_H
  ^
-bc.cpp:33:3: error: virtual member function is not supported
+sssp.cpp:22:3: error: virtual member function is not supported
   __device__ Status filter(int vid, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:39:3: error: virtual member function is not supported
-  __device__ fwdata_t emit(int vid, Empty* em, G g){
+sssp.cpp:32:3: error: virtual member function is not supported
+  __device__ int emit(int vid, int* w, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:44:3: error: virtual member function is not supported
-  __device__ bool cond(int v, fwdata_t u, G g){
+sssp.cpp:36:3: error: virtual member function is not supported
+  __device__ bool comp(int* disu, int newv, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:47:3: error: virtual member function is not supported
-  __device__ bool comp(fwdata_t* v, fwdata_t u, G g){
+sssp.cpp:40:3: error: virtual member function is not supported
+  __device__ bool compAtomic(int* v, int newv, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:52:3: error: virtual member function is not supported
-  __device__ bool compAtomic(fwdata_t* v, fwdata_t u, G g){
+sssp.cpp:46:3: error: virtual member function is not supported
+  __device__ bool cond(int vid, int msg, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:66:3: error: virtual member function is not supported
-  __device__ Status filter(int vid, G g){
+sssp.cpp:51:3: error: virtual member function is not supported
+  __device__ bool exit(int v, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:74:3: error: virtual member function is not supported
-  __device__ bwdata_t emit(int vid, Empty* em, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:79:3: error: virtual member function is not supported
-  __device__ bool cond(int v, bwdata_t newv, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:82:3: error: virtual member function is not supported
-  __device__ bool comp(bwdata_t* v, bwdata_t newv, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:86:3: error: virtual member function is not supported
-  __device__ bool compAtomic(bwdata_t* v, bwdata_t newv, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:263:20: error: no matching constructor for initialization of 'fwdata_t'
-    return i==root?fwdata_t{0,1}:fwdata_t{-100,0};
-                   ^       ~~~~~
-bc.cpp:27:8: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-struct fwdata_t{
-       ^
-bc.cpp:27:8: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-bc.cpp:27:8: note: candidate constructor (the implicit default constructor) not viable: requires 0 arguments, but 2 were provided
-bc.cpp:263:34: error: no matching constructor for initialization of 'fwdata_t'
-    return i==root?fwdata_t{0,1}:fwdata_t{-100,0};
-                                 ^       ~~~~~~~~
-bc.cpp:27:8: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-struct fwdata_t{
-       ^
-bc.cpp:27:8: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-bc.cpp:27:8: note: candidate constructor (the implicit default constructor) not viable: requires 0 arguments, but 2 were provided
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:10:
-In file included from ../src/data_structures/active_set.hxx:11:
-In file included from ../src/data_structures/notification.hxx:8:
-../src/data_structures/functor.hxx:38:37: error: no viable overloaded '='
-    for(int i=0;i<size;++i){h_wa[i] = init(i);}
-                            ~~~~~~~ ^ ~~~~~~~
-bc.cpp:262:10: note: in instantiation of function template specialization 'vdata_t<fwdata_t, Empty>::init_wa<(lambda at bc.cpp:262:18)>' requested here
-  f.data.init_wa([root](int i){
-         ^
-bc.cpp:27:8: note: candidate function (the implicit copy assignment operator) not viable: cannot convert argument of incomplete type 'void' to 'const fwdata_t' for 1st argument
-struct fwdata_t{
-       ^
-bc.cpp:27:8: note: candidate function (the implicit move assignment operator) not viable: cannot convert argument of incomplete type 'void' to 'fwdata_t' for 1st argument
-In file included from bc.cpp:2:
-In file included from /opt/rocm/include/hip/hip_runtime.h:56:
-In file included from /opt/rocm/include/hip/hcc_detail/hip_runtime.h:96:
-In file included from /opt/rocm/include/hip/hcc_detail/grid_launch_GGL.hpp:26:
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, int, device_graph_t<CSR, Empty>, Forward, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, int, device_graph_t<CSR, Empty>, Forward, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, int, device_graph_t<CSR, Empty>, Forward, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<int, device_graph_t<CSR, Empty>, Forward, int, device_graph_t<CSR, Empty>, Forward>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/active_set.hxx:186:3: note: in instantiation of function template specialization 'hipLaunchKernelGGL<int, device_graph_t<CSR, Empty>, Forward, void (*)(int, device_graph_t<CSR, Empty>, Forward)>' requested here
-  hipLaunchKernelGGL(__window_delay_update, dim3(CTANUM), dim3(THDNUM), 0, 0, size, g, f);
-  ^
-../src/data_structures/active_set.hxx:43:7: note: in instantiation of function template specialization 'window_delay_update<Empty, Forward>' requested here
-      window_delay_update(size, g, f);
-      ^
-bc.cpp:105:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Forward>' requested here
-      if(as.finish(g,f,conf)){break;}
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, device_graph_t<CSR, Empty>, Forward, config_t, int *, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, device_graph_t<CSR, Empty>, Forward, config_t, int *, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<device_graph_t<CSR, Empty>, Forward, config_t, int *, device_graph_t<CSR, Empty>, Forward, config_t, int *>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/notification.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<device_graph_t<CSR, Empty>, Forward, config_t, int *, void (*)(device_graph_t<CSR, Empty>, Forward, config_t, int *)>' requested here
-    hipLaunchKernelGGL(__exit, dim3(CTANUM), dim3(THDNUM), 0, 0, g, f, conf, dg_cnt);
-    ^
-../src/data_structures/active_set.hxx:45:28: note: in instantiation of function template specialization 'notification_t::exit<Empty, Forward>' requested here
-    return converged && nt.exit(g, f, conf);
-                           ^
-bc.cpp:105:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Forward>' requested here
-      if(as.finish(g,f,conf)){break;}
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, queue_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, queue_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, queue_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<queue_t, device_graph_t<CSR, Empty>, Forward, config_t, queue_t, device_graph_t<CSR, Empty>, Forward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/kernel_fusion.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<queue_t, device_graph_t<CSR, Empty>, Forward, config_t, void (*)(queue_t, device_graph_t<CSR, Empty>, Forward, config_t)>' requested here
-    hipLaunchKernelGGL(__compensation_for_queue<M>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as.queue, g, f, conf); 
-    ^
-../src/kernel_libs/kernel_fusion.hxx:85:35: note: in instantiation of function template specialization '__compensation<Normal, device_graph_t<CSR, Empty>, Forward>' requested here
-      if(conf.conf_qmode==Normal) __compensation<Normal>(as, g, f, conf);
-                                  ^
-../src/abstraction/executor.hxx:53:30: note: in instantiation of function template specialization 'CompensationProxy<VC>::compensation<Empty, Forward>' requested here
-      CompensationProxy<VC>::compensation(as, g, f, conf);
-                             ^
-bc.cpp:107:16: note: in instantiation of function template specialization 'executor_t::filter<device_graph_t<CSR, Empty>, Forward>' requested here
-      executor.filter(as, g, f, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/expand_VC_WM.hxx:461:9: note: in instantiation of function template specialization 'hipLaunchKernelGGL<active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, void (*)(active_set_t, device_graph_t<CSR, Empty>, Forward, config_t)>' requested here
-        hipLaunchKernelGGL(__expand_VC_WM_fused_wtf<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
-        ^
-../src/abstraction/executor.hxx:93:7: note: in instantiation of function template specialization 'ExpandProxy<VC, WM, Push>::expand<Empty, Forward>' requested here
-      ENABLE(WM)
-      ^
-../src/abstraction/executor.hxx:86:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Push>::expand(as,g,f,conf); \
-                               ^
-bc.cpp:109:16: note: in instantiation of function template specialization 'executor_t::expand<device_graph_t<CSR, Empty>, Forward>' requested here
-      executor.expand(as, g, f, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-bc.cpp:232:37: error: no matching constructor for initialization of 'bwdata_t'
-  h.data.init_wa([fd](int i){return bwdata_t{fd[i].nsp,0.0};});
-                                    ^       ~~~~~~~~~~~~~~~
-bc.cpp:120:3: note: in instantiation of function template specialization 'set_functor<Forward, Backward>' requested here
-  set_functor(f, h);
-  ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-bc.cpp:59:8: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-struct bwdata_t{
-       ^
-bc.cpp:59:8: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-bc.cpp:59:8: note: candidate constructor (the implicit default constructor) not viable: requires 0 arguments, but 2 were provided
-In file included from bc.cpp:2:
-In file included from /opt/rocm/include/hip/hip_runtime.h:56:
-In file included from /opt/rocm/include/hip/hcc_detail/hip_runtime.h:96:
-In file included from /opt/rocm/include/hip/hcc_detail/grid_launch_GGL.hpp:26:
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, int, device_graph_t<CSR, Empty>, Backward, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, int, device_graph_t<CSR, Empty>, Backward, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, int, device_graph_t<CSR, Empty>, Backward, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<int, device_graph_t<CSR, Empty>, Backward, int, device_graph_t<CSR, Empty>, Backward>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/active_set.hxx:186:3: note: in instantiation of function template specialization 'hipLaunchKernelGGL<int, device_graph_t<CSR, Empty>, Backward, void (*)(int, device_graph_t<CSR, Empty>, Backward)>' requested here
-  hipLaunchKernelGGL(__window_delay_update, dim3(CTANUM), dim3(THDNUM), 0, 0, size, g, f);
-  ^
-../src/data_structures/active_set.hxx:43:7: note: in instantiation of function template specialization 'window_delay_update<Empty, Backward>' requested here
-      window_delay_update(size, g, f);
-      ^
-bc.cpp:134:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Backward>' requested here
-      if(as.finish(g,h,conf)) break;
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, device_graph_t<CSR, Empty>, Backward, config_t, int *, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, device_graph_t<CSR, Empty>, Backward, config_t, int *, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<device_graph_t<CSR, Empty>, Backward, config_t, int *, device_graph_t<CSR, Empty>, Backward, config_t, int *>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/notification.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<device_graph_t<CSR, Empty>, Backward, config_t, int *, void (*)(device_graph_t<CSR, Empty>, Backward, config_t, int *)>' requested here
-    hipLaunchKernelGGL(__exit, dim3(CTANUM), dim3(THDNUM), 0, 0, g, f, conf, dg_cnt);
-    ^
-../src/data_structures/active_set.hxx:45:28: note: in instantiation of function template specialization 'notification_t::exit<Empty, Backward>' requested here
-    return converged && nt.exit(g, f, conf);
-                           ^
-bc.cpp:134:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Backward>' requested here
-      if(as.finish(g,h,conf)) break;
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, queue_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, queue_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, queue_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<queue_t, device_graph_t<CSR, Empty>, Backward, config_t, queue_t, device_graph_t<CSR, Empty>, Backward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/kernel_fusion.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<queue_t, device_graph_t<CSR, Empty>, Backward, config_t, void (*)(queue_t, device_graph_t<CSR, Empty>, Backward, config_t)>' requested here
-    hipLaunchKernelGGL(__compensation_for_queue<M>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as.queue, g, f, conf); 
-    ^
-../src/kernel_libs/kernel_fusion.hxx:85:35: note: in instantiation of function template specialization '__compensation<Normal, device_graph_t<CSR, Empty>, Backward>' requested here
-      if(conf.conf_qmode==Normal) __compensation<Normal>(as, g, f, conf);
-                                  ^
-../src/abstraction/executor.hxx:53:30: note: in instantiation of function template specialization 'CompensationProxy<VC>::compensation<Empty, Backward>' requested here
-      CompensationProxy<VC>::compensation(as, g, f, conf);
-                             ^
-bc.cpp:136:16: note: in instantiation of function template specialization 'executor_t::filter<device_graph_t<CSR, Empty>, Backward>' requested here
-      executor.filter(as, g, h, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/expand_VC_WM.hxx:461:9: note: in instantiation of function template specialization 'hipLaunchKernelGGL<active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, void (*)(active_set_t, device_graph_t<CSR, Empty>, Backward, config_t)>' requested here
-        hipLaunchKernelGGL(__expand_VC_WM_fused_wtf<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
-        ^
-../src/abstraction/executor.hxx:93:7: note: in instantiation of function template specialization 'ExpandProxy<VC, WM, Push>::expand<Empty, Backward>' requested here
-      ENABLE(WM)
-      ^
-../src/abstraction/executor.hxx:86:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Push>::expand(as,g,f,conf); \
-                               ^
-bc.cpp:138:16: note: in instantiation of function template specialization 'executor_t::expand<device_graph_t<CSR, Empty>, Backward>' requested here
-      executor.expand(as, g, h, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-11 warnings and 107 errors generated.
-In file included from bc.cpp:6:
+Stack dump:
+0.	Program arguments: /opt/rocm/hcc/bin/clang-8 -cc1 -D__KALMAR_HC__=1 -D__HCC_HC__=1 -triple x86_64-unknown-linux-gnu -emit-obj -mrelax-all -disable-free -disable-llvm-verifier -main-file-name sssp.cpp -mrelocation-model static -mthread-model posix -mdisable-fp-elim -fmath-errno -masm-verbose -mconstructor-aliases -munwind-tables -fuse-init-array -target-cpu x86-64 -dwarf-column-info -debugger-tuning=gdb -resource-dir /opt/rocm/hcc/lib/clang/8.0.0 -I/opt/rocm/hcc/bin/../include -I/opt/rocm/hcc/bin/../hcc/include -D __HIPCC__ -I /opt/rocm/hcc/include -I /opt/rocm/include/hip/hcc_detail/cuda -I /opt/rocm/hsa/include -I /opt/rocm/profiler/CXLActivityLogger/include -I /opt/rocm/include -D HIP_VERSION_MAJOR=1 -D HIP_VERSION_MINOR=5 -D HIP_VERSION_PATCH=19025 -D __HIP_ARCH_GFX900__=1 -I ../src -c-isystem /opt/rocm/rocblas/include -c-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7/x86_64-redhat-linux -c-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7 -c-isystem . -cxx-isystem /opt/rocm/rocblas/include -cxx-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7/x86_64-redhat-linux -cxx-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7 -cxx-isystem . -internal-isystem /opt/rh/devtoolset-7/root/usr/lib/gcc/x86_64-redhat-linux/7/../../../../include/c++/7 -internal-isystem /opt/rh/devtoolset-7/root/usr/lib/gcc/x86_64-redhat-linux/7/../../../../include/c++/7/x86_64-redhat-linux -internal-isystem /opt/rh/devtoolset-7/root/usr/lib/gcc/x86_64-redhat-linux/7/../../../../include/c++/7/backward -internal-isystem /usr/local/include -internal-isystem /opt/rocm/hcc/lib/clang/8.0.0/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -Wno-deprecated-register -std=c++amp -fdeprecated-macro -fdebug-compilation-dir /home/lmy/HIP-GSWITCH/application -ferror-limit 200 -fmessage-length 0 -fobjc-runtime=gcc -fcxx-exceptions -fexceptions -fdiagnostics-show-option -famp -fhsa-ext -o /tmp/sssp-e37aab.o -x hc-host sssp.cpp -fgpu-rdc -faddrsig 
+1.	<eof> parser at end of file
+2.	sssp.cpp:107:8: instantiating function definition 'run_sssp<device_graph_t<CSR, int>, SSSP>'
+3.	../src/abstraction/inspector.hxx:106:8: instantiating function definition 'inspector_t::inspect<int, SSSP>'
+/opt/rocm/hcc/bin/clang-8(_ZN4llvm3sys15PrintStackTraceERNS_11raw_ostreamE+0x1a)[0x18b3afa]
+/opt/rocm/hcc/bin/clang-8(_ZN4llvm3sys17RunSignalHandlersEv+0x34)[0x18b1c14]
+/opt/rocm/hcc/bin/clang-8[0x18b1d42]
+/lib64/libpthread.so.0(+0xf5e0)[0x7f254857e5e0]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema22buildOverloadedCallSetEPNS_5ScopeEPNS_4ExprEPNS_20UnresolvedLookupExprEN4llvm15MutableArrayRefIS4_EENS_14SourceLocationEPNS_20OverloadCandidateSetEPNS_12ActionResultIS4_Lb1EEE+0x23c)[0x32bb40c]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema23BuildOverloadedCallExprEPNS_5ScopeEPNS_4ExprEPNS_20UnresolvedLookupExprENS_14SourceLocationEN4llvm15MutableArrayRefIS4_EES7_S4_bb+0x154)[0x32bf164]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema13ActOnCallExprEPNS_5ScopeEPNS_4ExprENS_14SourceLocationEN4llvm15MutableArrayRefIS4_EES5_S4_b+0x9d8)[0x3120468]
+/opt/rocm/hcc/bin/clang-8[0x33d591b]
+/opt/rocm/hcc/bin/clang-8[0x33d0b37]
+/opt/rocm/hcc/bin/clang-8[0x33ecf0a]
+/opt/rocm/hcc/bin/clang-8[0x33f0ee8]
+/opt/rocm/hcc/bin/clang-8[0x33ee5d2]
+/opt/rocm/hcc/bin/clang-8[0x33f0ee8]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema9SubstStmtEPNS_4StmtERKNS_30MultiLevelTemplateArgumentListE+0x4a)[0x33f0e3a]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema29InstantiateFunctionDefinitionENS_14SourceLocationEPNS_12FunctionDeclEbbb+0xa94)[0x3404b94]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema28PerformPendingInstantiationsEb+0x328)[0x3403c38]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema29InstantiateFunctionDefinitionENS_14SourceLocationEPNS_12FunctionDeclEbbb+0x8c3)[0x34049c3]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema28PerformPendingInstantiationsEb+0x328)[0x3403c38]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema25ActOnEndOfTranslationUnitEv+0x179)[0x2eae839]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang6Parser17ParseTopLevelDeclERNS_9OpaquePtrINS_12DeclGroupRefEEE+0x38b)[0x2d873fb]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang8ParseASTERNS_4SemaEbb+0x1c7)[0x2d7c387]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang13CodeGenAction13ExecuteActionEv+0x21)[0x23a7381]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang14FrontendAction7ExecuteEv+0x86)[0x1f22966]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang16CompilerInstance13ExecuteActionERNS_14FrontendActionE+0x17c)[0x1ee6a6c]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang25ExecuteCompilerInvocationEPNS_16CompilerInstanceE+0x633)[0x1fd6393]
+/opt/rocm/hcc/bin/clang-8(_Z8cc1_mainN4llvm8ArrayRefIPKcEES2_Pv+0xa40)[0x8a1190]
+/opt/rocm/hcc/bin/clang-8(main+0x23cd)[0x82c83d]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x7f254738bc05]
+/opt/rocm/hcc/bin/clang-8[0x89dd45]
+clang-8: error: unable to execute command: Segmentation fault (core dumped)
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:7:
 ../src/utils/intrinsics.hxx:10:26: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
 void throw_fatal_error(){*(int*)0=0;}
                          ^~~~~~~~
 ../src/utils/intrinsics.hxx:10:26: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1061,7 +189,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1071,7 +199,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1081,7 +209,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1091,7 +219,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1101,7 +229,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1111,7 +239,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1121,7 +249,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 In file included from ../src/data_structures/notification.hxx:8:
@@ -1131,7 +259,7 @@ In file included from ../src/data_structures/notification.hxx:8:
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 In file included from ../src/gswitch.h:10:
 In file included from ../src/data_structures/active_set.hxx:11:
 ../src/data_structures/notification.hxx:24:12: warning: & has lower precedence than ==; == will be evaluated first [-Wparentheses]
@@ -1145,950 +273,86 @@ In file included from ../src/data_structures/active_set.hxx:11:
     if(tag & s_tmp==0) s_tmp = 1; // there exist work to do
            ^
        (          )
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:14:
-../src/abstraction/inspector.hxx:123:21: error: expected expression
-      __inspect_VC<<<CTANUM,THDNUM>>>(as, g, f, stat, conf); // to bitmap
-                    ^
-../src/abstraction/inspector.hxx:123:37: error: expected expression
-      __inspect_VC<<<CTANUM,THDNUM>>>(as, g, f, stat, conf); // to bitmap
-                                    ^
-../src/abstraction/inspector.hxx:142:19: error: expected expression
-    __inspect_EC<<<CTANUM, THDNUM>>>(as, g, f, stat, conf);
-                  ^
-../src/abstraction/inspector.hxx:142:36: error: expected expression
-    __inspect_EC<<<CTANUM, THDNUM>>>(as, g, f, stat, conf);
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-    if(conf.conf_fuse_inspect) Launch_Expand_VC(CM_fused, as, g, f, conf)
-                               ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:320:32: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-    else Launch_Expand_VC(CM, as, g, f, conf);
-         ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:321:10: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-    Launch_RExpand_VC(CM, as, g, f, conf);
-    ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:13:
-../src/kernel_libs/expand_VC_CM.hxx:333:5: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-In file included from ../src/kernel_libs/expand_VC_STRICT.hxx:16:
-../src/utils/sorted_search.hxx:119:3: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'? [-Wmismatched-new-delete]
-  delete h_arr;
-  ^
-        []
-../src/utils/sorted_search.hxx:115:19: note: allocated with 'new[]' here
-  data_t *h_arr = new data_t[len];
-                  ^
-../src/utils/sorted_search.hxx:136:59: error: use of undeclared identifier 'CEIL'
-  hipLaunchKernelGGL(partition<data_t, TILE_SZ>, dim3(1 + CEIL), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
-                                                          ^
-../src/utils/sorted_search.hxx:156:60: error: use of undeclared identifier 'CEIL'
-  hipLaunchKernelGGL(partition1<data_t, TILE_SZ>, dim3(1 + CEIL), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
-                                                           ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-      Launch_Expand_VC(STRICT_fused, as, g, f, conf);
-      ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:508:7: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-        Launch_Expand_VC(STRICT, as, g, f, conf);
-        ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:514:9: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:551:7: error: use of undeclared identifier 'mgpu'
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-      ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:27: error: use of undeclared identifier 'mgpu'
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                          ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:49: error: expected ')'
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                                ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:46: note: to match this '('
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                             ^
-../src/kernel_libs/expand_VC_STRICT.hxx:551:47: error: C++ requires a type specifier for all declarations
-      mgpu::sorted_search<mgpu::bounds_lower>(as.workset.dg_seid_per_blk, blksz+1,
-                                              ^
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-    Launch_RExpand_VC(STRICT, as, g, f, conf);
-    ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:14:
-../src/kernel_libs/expand_VC_STRICT.hxx:556:5: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-    if(conf.conf_fuse_inspect) {Launch_Expand_VC(TM_fused, as, g, f, conf);}
-                                ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:189:33: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-    else Launch_Expand_VC(TM, as, g, f, conf);
-         ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:190:10: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-      Launch_RExpand_VC(TM, as, g, f, conf);
-      ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:15:
-../src/kernel_libs/expand_VC_TM.hxx:205:7: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-        Launch_Expand_VC(WM_fused, as, g, f, conf);
-        ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:463:9: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-      Launch_Expand_VC(WM, as, g, f, conf);
-      ^
-../src/data_structures/active_set.hxx:148:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:148:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:150:37: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:150:64: note: expanded from macro 'Launch_Expand_VC'
-    __expand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf); \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:152:36: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                   ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:465:7: error: expected expression
-../src/data_structures/active_set.hxx:152:63: note: expanded from macro 'Launch_Expand_VC'
-  __expand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);         \
-                                                              ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-    Launch_RExpand_VC(WM, as, g, f, conf);
-    ^
-../src/data_structures/active_set.hxx:159:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:159:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:161:38: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                     ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:161:65: note: expanded from macro 'Launch_RExpand_VC'
-    __rexpand_VC_##lb<Queue,Cached><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);\
-                                                                ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:163:37: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                    ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-In file included from ../src/abstraction/executor.hxx:18:
-../src/kernel_libs/expand_VC_WM.hxx:481:5: error: expected expression
-../src/data_structures/active_set.hxx:163:64: note: expanded from macro 'Launch_RExpand_VC'
-  __rexpand_VC_##lb<Bitmap,Normal><<<conf.ctanum, conf.thdnum>>>(as, g, f, conf);        \
-                                                               ^
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:16:
-../src/abstraction/executor.hxx:96:31: error: no member named 'expand' in 'ExpandProxy<VC, TWOD, Push>'
-      if(ENABLE_2D_PARTITION) ENABLE(TWOD)
-                              ^~~~~~~~~~~~
-../src/abstraction/executor.hxx:86:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Push>::expand(as,g,f,conf); \
-      ~~~~~~~~~~~~~~~~~~~~~~~~~^
-../src/abstraction/executor.hxx:96:31: error: no member named 'expand' in 'ExpandProxy<VC, TWOD, Pull>'
-      if(ENABLE_2D_PARTITION) ENABLE(TWOD)
-                              ^~~~~~~~~~~~
-../src/abstraction/executor.hxx:88:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Pull>::expand(as,g,f,conf); \
-      ~~~~~~~~~~~~~~~~~~~~~~~~~^
-In file included from bc.cpp:6:
+In file included from sssp.cpp:6:
 ../src/gswitch.h:1:2: error: unterminated conditional directive
 #ifndef __GSWITCH_H
  ^
-bc.cpp:33:3: error: virtual member function is not supported
+sssp.cpp:22:3: error: virtual member function is not supported
   __device__ Status filter(int vid, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:39:3: error: virtual member function is not supported
-  __device__ fwdata_t emit(int vid, Empty* em, G g){
+sssp.cpp:32:3: error: virtual member function is not supported
+  __device__ int emit(int vid, int* w, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:44:3: error: virtual member function is not supported
-  __device__ bool cond(int v, fwdata_t u, G g){
+sssp.cpp:36:3: error: virtual member function is not supported
+  __device__ bool comp(int* disu, int newv, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:47:3: error: virtual member function is not supported
-  __device__ bool comp(fwdata_t* v, fwdata_t u, G g){
+sssp.cpp:40:3: error: virtual member function is not supported
+  __device__ bool compAtomic(int* v, int newv, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:52:3: error: virtual member function is not supported
-  __device__ bool compAtomic(fwdata_t* v, fwdata_t u, G g){
+sssp.cpp:46:3: error: virtual member function is not supported
+  __device__ bool cond(int vid, int msg, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:66:3: error: virtual member function is not supported
-  __device__ Status filter(int vid, G g){
+sssp.cpp:51:3: error: virtual member function is not supported
+  __device__ bool exit(int v, G g){
   ^
 /opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
 #define __device__ __attribute__((hc))
                    ^
-bc.cpp:74:3: error: virtual member function is not supported
-  __device__ bwdata_t emit(int vid, Empty* em, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:79:3: error: virtual member function is not supported
-  __device__ bool cond(int v, bwdata_t newv, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:82:3: error: virtual member function is not supported
-  __device__ bool comp(bwdata_t* v, bwdata_t newv, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:86:3: error: virtual member function is not supported
-  __device__ bool compAtomic(bwdata_t* v, bwdata_t newv, G g){
-  ^
-/opt/rocm/include/hip/hcc_detail/host_defines.h:42:20: note: expanded from macro '__device__'
-#define __device__ __attribute__((hc))
-                   ^
-bc.cpp:263:20: error: no matching constructor for initialization of 'fwdata_t'
-    return i==root?fwdata_t{0,1}:fwdata_t{-100,0};
-                   ^       ~~~~~
-bc.cpp:27:8: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-struct fwdata_t{
-       ^
-bc.cpp:27:8: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-bc.cpp:27:8: note: candidate constructor (the implicit default constructor) not viable: requires 0 arguments, but 2 were provided
-bc.cpp:263:34: error: no matching constructor for initialization of 'fwdata_t'
-    return i==root?fwdata_t{0,1}:fwdata_t{-100,0};
-                                 ^       ~~~~~~~~
-bc.cpp:27:8: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-struct fwdata_t{
-       ^
-bc.cpp:27:8: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-bc.cpp:27:8: note: candidate constructor (the implicit default constructor) not viable: requires 0 arguments, but 2 were provided
-In file included from bc.cpp:6:
-In file included from ../src/gswitch.h:10:
-In file included from ../src/data_structures/active_set.hxx:11:
-In file included from ../src/data_structures/notification.hxx:8:
-../src/data_structures/functor.hxx:38:37: error: no viable overloaded '='
-    for(int i=0;i<size;++i){h_wa[i] = init(i);}
-                            ~~~~~~~ ^ ~~~~~~~
-bc.cpp:262:10: note: in instantiation of function template specialization 'vdata_t<fwdata_t, Empty>::init_wa<(lambda at bc.cpp:262:18)>' requested here
-  f.data.init_wa([root](int i){
-         ^
-bc.cpp:27:8: note: candidate function (the implicit copy assignment operator) not viable: cannot convert argument of incomplete type 'void' to 'const fwdata_t' for 1st argument
-struct fwdata_t{
-       ^
-bc.cpp:27:8: note: candidate function (the implicit move assignment operator) not viable: cannot convert argument of incomplete type 'void' to 'fwdata_t' for 1st argument
-In file included from bc.cpp:2:
-In file included from /opt/rocm/include/hip/hip_runtime.h:56:
-In file included from /opt/rocm/include/hip/hcc_detail/hip_runtime.h:96:
-In file included from /opt/rocm/include/hip/hcc_detail/grid_launch_GGL.hpp:26:
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, int, device_graph_t<CSR, Empty>, Forward, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, int, device_graph_t<CSR, Empty>, Forward, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, int, device_graph_t<CSR, Empty>, Forward, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<int, device_graph_t<CSR, Empty>, Forward, int, device_graph_t<CSR, Empty>, Forward>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/active_set.hxx:186:3: note: in instantiation of function template specialization 'hipLaunchKernelGGL<int, device_graph_t<CSR, Empty>, Forward, void (*)(int, device_graph_t<CSR, Empty>, Forward)>' requested here
-  hipLaunchKernelGGL(__window_delay_update, dim3(CTANUM), dim3(THDNUM), 0, 0, size, g, f);
-  ^
-../src/data_structures/active_set.hxx:43:7: note: in instantiation of function template specialization 'window_delay_update<Empty, Forward>' requested here
-      window_delay_update(size, g, f);
-      ^
-bc.cpp:105:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Forward>' requested here
-      if(as.finish(g,f,conf)){break;}
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, device_graph_t<CSR, Empty>, Forward, config_t, int *, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, device_graph_t<CSR, Empty>, Forward, config_t, int *, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<device_graph_t<CSR, Empty>, Forward, config_t, int *, device_graph_t<CSR, Empty>, Forward, config_t, int *>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/notification.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<device_graph_t<CSR, Empty>, Forward, config_t, int *, void (*)(device_graph_t<CSR, Empty>, Forward, config_t, int *)>' requested here
-    hipLaunchKernelGGL(__exit, dim3(CTANUM), dim3(THDNUM), 0, 0, g, f, conf, dg_cnt);
-    ^
-../src/data_structures/active_set.hxx:45:28: note: in instantiation of function template specialization 'notification_t::exit<Empty, Forward>' requested here
-    return converged && nt.exit(g, f, conf);
-                           ^
-bc.cpp:105:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Forward>' requested here
-      if(as.finish(g,f,conf)){break;}
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, queue_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, queue_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, queue_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<queue_t, device_graph_t<CSR, Empty>, Forward, config_t, queue_t, device_graph_t<CSR, Empty>, Forward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/kernel_fusion.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<queue_t, device_graph_t<CSR, Empty>, Forward, config_t, void (*)(queue_t, device_graph_t<CSR, Empty>, Forward, config_t)>' requested here
-    hipLaunchKernelGGL(__compensation_for_queue<M>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as.queue, g, f, conf); 
-    ^
-../src/kernel_libs/kernel_fusion.hxx:85:35: note: in instantiation of function template specialization '__compensation<Normal, device_graph_t<CSR, Empty>, Forward>' requested here
-      if(conf.conf_qmode==Normal) __compensation<Normal>(as, g, f, conf);
-                                  ^
-../src/abstraction/executor.hxx:53:30: note: in instantiation of function template specialization 'CompensationProxy<VC>::compensation<Empty, Forward>' requested here
-      CompensationProxy<VC>::compensation(as, g, f, conf);
-                             ^
-bc.cpp:107:16: note: in instantiation of function template specialization 'executor_t::filter<device_graph_t<CSR, Empty>, Forward>' requested here
-      executor.filter(as, g, f, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Forward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, active_set_t, device_graph_t<CSR, Empty>, Forward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/expand_VC_WM.hxx:461:9: note: in instantiation of function template specialization 'hipLaunchKernelGGL<active_set_t, device_graph_t<CSR, Empty>, Forward, config_t, void (*)(active_set_t, device_graph_t<CSR, Empty>, Forward, config_t)>' requested here
-        hipLaunchKernelGGL(__expand_VC_WM_fused_wtf<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
-        ^
-../src/abstraction/executor.hxx:93:7: note: in instantiation of function template specialization 'ExpandProxy<VC, WM, Push>::expand<Empty, Forward>' requested here
-      ENABLE(WM)
-      ^
-../src/abstraction/executor.hxx:86:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Push>::expand(as,g,f,conf); \
-                               ^
-bc.cpp:109:16: note: in instantiation of function template specialization 'executor_t::expand<device_graph_t<CSR, Empty>, Forward>' requested here
-      executor.expand(as, g, f, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-bc.cpp:232:37: error: no matching constructor for initialization of 'bwdata_t'
-  h.data.init_wa([fd](int i){return bwdata_t{fd[i].nsp,0.0};});
-                                    ^       ~~~~~~~~~~~~~~~
-bc.cpp:120:3: note: in instantiation of function template specialization 'set_functor<Forward, Backward>' requested here
-  set_functor(f, h);
-  ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-bc.cpp:59:8: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-struct bwdata_t{
-       ^
-bc.cpp:59:8: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-bc.cpp:59:8: note: candidate constructor (the implicit default constructor) not viable: requires 0 arguments, but 2 were provided
-In file included from bc.cpp:2:
-In file included from /opt/rocm/include/hip/hip_runtime.h:56:
-In file included from /opt/rocm/include/hip/hcc_detail/hip_runtime.h:96:
-In file included from /opt/rocm/include/hip/hcc_detail/grid_launch_GGL.hpp:26:
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, int, device_graph_t<CSR, Empty>, Backward, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, int, device_graph_t<CSR, Empty>, Backward, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, int, device_graph_t<CSR, Empty>, Backward, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<int, device_graph_t<CSR, Empty>, Backward, int, device_graph_t<CSR, Empty>, Backward>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/active_set.hxx:186:3: note: in instantiation of function template specialization 'hipLaunchKernelGGL<int, device_graph_t<CSR, Empty>, Backward, void (*)(int, device_graph_t<CSR, Empty>, Backward)>' requested here
-  hipLaunchKernelGGL(__window_delay_update, dim3(CTANUM), dim3(THDNUM), 0, 0, size, g, f);
-  ^
-../src/data_structures/active_set.hxx:43:7: note: in instantiation of function template specialization 'window_delay_update<Empty, Backward>' requested here
-      window_delay_update(size, g, f);
-      ^
-bc.cpp:134:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Backward>' requested here
-      if(as.finish(g,h,conf)) break;
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, device_graph_t<CSR, Empty>, Backward, config_t, int *, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, device_graph_t<CSR, Empty>, Backward, config_t, int *, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<device_graph_t<CSR, Empty>, Backward, config_t, int *, device_graph_t<CSR, Empty>, Backward, config_t, int *>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/data_structures/notification.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<device_graph_t<CSR, Empty>, Backward, config_t, int *, void (*)(device_graph_t<CSR, Empty>, Backward, config_t, int *)>' requested here
-    hipLaunchKernelGGL(__exit, dim3(CTANUM), dim3(THDNUM), 0, 0, g, f, conf, dg_cnt);
-    ^
-../src/data_structures/active_set.hxx:45:28: note: in instantiation of function template specialization 'notification_t::exit<Empty, Backward>' requested here
-    return converged && nt.exit(g, f, conf);
-                           ^
-bc.cpp:134:13: note: in instantiation of function template specialization 'active_set_t::finish<device_graph_t<CSR, Empty>, Backward>' requested here
-      if(as.finish(g,h,conf)) break;
-            ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, queue_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, queue_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, queue_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<queue_t, device_graph_t<CSR, Empty>, Backward, config_t, queue_t, device_graph_t<CSR, Empty>, Backward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/kernel_fusion.hxx:70:5: note: in instantiation of function template specialization 'hipLaunchKernelGGL<queue_t, device_graph_t<CSR, Empty>, Backward, config_t, void (*)(queue_t, device_graph_t<CSR, Empty>, Backward, config_t)>' requested here
-    hipLaunchKernelGGL(__compensation_for_queue<M>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as.queue, g, f, conf); 
-    ^
-../src/kernel_libs/kernel_fusion.hxx:85:35: note: in instantiation of function template specialization '__compensation<Normal, device_graph_t<CSR, Empty>, Backward>' requested here
-      if(conf.conf_qmode==Normal) __compensation<Normal>(as, g, f, conf);
-                                  ^
-../src/abstraction/executor.hxx:53:30: note: in instantiation of function template specialization 'CompensationProxy<VC>::compensation<Empty, Backward>' requested here
-      CompensationProxy<VC>::compensation(as, g, f, conf);
-                             ^
-bc.cpp:136:16: note: in instantiation of function template specialization 'executor_t::filter<device_graph_t<CSR, Empty>, Backward>' requested here
-      executor.filter(as, g, h, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: warning: source of this 'memcpy' call is a pointer to dynamic class 'Backward'; vtable pointer will be copied [-Wdynamic-class-memaccess]
-        &std::get<n>(formals),
-        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<2, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<n + 1>(formals, size_align, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:95:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<1, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:129:12: note: in instantiation of function template specialization 'hip_impl::make_kernarg<0, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, nullptr>' requested here
-    return make_kernarg<0>(to_formals, it1->second, std::move(kernarg));
-           ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:140:30: note: in instantiation of function template specialization 'hip_impl::make_kernarg<active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, active_set_t, device_graph_t<CSR, Empty>, Backward, config_t>' requested here
-    auto kernarg = hip_impl::make_kernarg(
-                             ^
-../src/kernel_libs/expand_VC_WM.hxx:461:9: note: in instantiation of function template specialization 'hipLaunchKernelGGL<active_set_t, device_graph_t<CSR, Empty>, Backward, config_t, void (*)(active_set_t, device_graph_t<CSR, Empty>, Backward, config_t)>' requested here
-        hipLaunchKernelGGL(__expand_VC_WM_fused_wtf<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
-        ^
-../src/abstraction/executor.hxx:93:7: note: in instantiation of function template specialization 'ExpandProxy<VC, WM, Push>::expand<Empty, Backward>' requested here
-      ENABLE(WM)
-      ^
-../src/abstraction/executor.hxx:86:32: note: expanded from macro 'ENABLE'
-      ExpandProxy<VC,lb,Push>::expand(as,g,f,conf); \
-                               ^
-bc.cpp:138:16: note: in instantiation of function template specialization 'executor_t::expand<device_graph_t<CSR, Empty>, Backward>' requested here
-      executor.expand(as, g, h, stats, fets, conf);
-               ^
-bc.cpp:269:25: note: in instantiation of function template specialization 'run_bc<device_graph_t<CSR, Empty>, Forward, Backward>' requested here
-  double elapsed_time = run_bc(g.dg,f,h,root);
-                        ^
-/opt/rocm/include/hip/hcc_detail/functional_grid_launch.hpp:92:9: note: explicitly cast the pointer to silence this warning
-        &std::get<n>(formals),
-        ^
-        (void*)
-11 warnings and 107 errors generated.
+Stack dump:
+0.	Program arguments: /opt/rocm/hcc/bin/clang-8 -cc1 -D__KALMAR_HC__=1 -D__HCC_HC__=1 -famp-is-device -fno-builtin -fno-common -O2 -triple amdgcn--amdhsa-hcc -aux-triple x86_64-unknown-linux-gnu -S -disable-free -disable-llvm-verifier -main-file-name sssp.cpp -mrelocation-model pic -pic-level 1 -mthread-model posix -mdisable-fp-elim -fmath-errno -no-integrated-as -mconstructor-aliases -fuse-init-array -resource-dir /opt/rocm/hcc/lib/clang/8.0.0 -I/opt/rocm/hcc/bin/../include -I/opt/rocm/hcc/bin/../hcc/include -D __HIPCC__ -I /opt/rocm/hcc/include -I /opt/rocm/include/hip/hcc_detail/cuda -I /opt/rocm/hsa/include -I /opt/rocm/profiler/CXLActivityLogger/include -I /opt/rocm/include -D HIP_VERSION_MAJOR=1 -D HIP_VERSION_MINOR=5 -D HIP_VERSION_PATCH=19025 -D __HIP_ARCH_GFX900__=1 -I ../src -c-isystem /opt/rocm/rocblas/include -c-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7/x86_64-redhat-linux -c-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7 -c-isystem . -cxx-isystem /opt/rocm/rocblas/include -cxx-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7/x86_64-redhat-linux -cxx-isystem /opt/rh/devtoolset-7/root/usr/include/c++/7 -cxx-isystem . -internal-isystem /opt/rh/devtoolset-7/root/usr/lib/gcc/x86_64-redhat-linux/7/../../../../include/c++/7 -internal-isystem /opt/rh/devtoolset-7/root/usr/lib/gcc/x86_64-redhat-linux/7/../../../../include/c++/7/x86_64-redhat-linux -internal-isystem /opt/rh/devtoolset-7/root/usr/lib/gcc/x86_64-redhat-linux/7/../../../../include/c++/7/backward -internal-isystem /usr/local/include -internal-isystem /opt/rocm/hcc/lib/clang/8.0.0/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -Wno-deprecated-register -std=c++amp -fdeprecated-macro -fno-dwarf-directory-asm -fdebug-compilation-dir /home/lmy/HIP-GSWITCH/application -ferror-limit 200 -fmessage-length 0 -fobjc-runtime=gcc -fcxx-exceptions -fexceptions -fdiagnostics-show-option -famp -fhsa-ext -o /tmp/sssp-ba164d.s -x hc-kernel sssp.cpp -fgpu-rdc -emit-llvm-bc 
+1.	<eof> parser at end of file
+2.	sssp.cpp:107:8: instantiating function definition 'run_sssp<device_graph_t<CSR, int>, SSSP>'
+3.	../src/abstraction/inspector.hxx:106:8: instantiating function definition 'inspector_t::inspect<int, SSSP>'
+/opt/rocm/hcc/bin/clang-8(_ZN4llvm3sys15PrintStackTraceERNS_11raw_ostreamE+0x1a)[0x18b3afa]
+/opt/rocm/hcc/bin/clang-8(_ZN4llvm3sys17RunSignalHandlersEv+0x34)[0x18b1c14]
+/opt/rocm/hcc/bin/clang-8[0x18b1d42]
+/lib64/libpthread.so.0(+0xf5e0)[0x7fb8ce3c65e0]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema22buildOverloadedCallSetEPNS_5ScopeEPNS_4ExprEPNS_20UnresolvedLookupExprEN4llvm15MutableArrayRefIS4_EENS_14SourceLocationEPNS_20OverloadCandidateSetEPNS_12ActionResultIS4_Lb1EEE+0x23c)[0x32bb40c]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema23BuildOverloadedCallExprEPNS_5ScopeEPNS_4ExprEPNS_20UnresolvedLookupExprENS_14SourceLocationEN4llvm15MutableArrayRefIS4_EES7_S4_bb+0x154)[0x32bf164]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema13ActOnCallExprEPNS_5ScopeEPNS_4ExprENS_14SourceLocationEN4llvm15MutableArrayRefIS4_EES5_S4_b+0x9d8)[0x3120468]
+/opt/rocm/hcc/bin/clang-8[0x33d591b]
+/opt/rocm/hcc/bin/clang-8[0x33d0b37]
+/opt/rocm/hcc/bin/clang-8[0x33ecf0a]
+/opt/rocm/hcc/bin/clang-8[0x33f0ee8]
+/opt/rocm/hcc/bin/clang-8[0x33ee5d2]
+/opt/rocm/hcc/bin/clang-8[0x33f0ee8]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema9SubstStmtEPNS_4StmtERKNS_30MultiLevelTemplateArgumentListE+0x4a)[0x33f0e3a]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema29InstantiateFunctionDefinitionENS_14SourceLocationEPNS_12FunctionDeclEbbb+0xa94)[0x3404b94]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema28PerformPendingInstantiationsEb+0x328)[0x3403c38]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema29InstantiateFunctionDefinitionENS_14SourceLocationEPNS_12FunctionDeclEbbb+0x8c3)[0x34049c3]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema28PerformPendingInstantiationsEb+0x328)[0x3403c38]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang4Sema25ActOnEndOfTranslationUnitEv+0x179)[0x2eae839]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang6Parser17ParseTopLevelDeclERNS_9OpaquePtrINS_12DeclGroupRefEEE+0x38b)[0x2d873fb]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang8ParseASTERNS_4SemaEbb+0x1c7)[0x2d7c387]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang13CodeGenAction13ExecuteActionEv+0x21)[0x23a7381]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang14FrontendAction7ExecuteEv+0x86)[0x1f22966]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang16CompilerInstance13ExecuteActionERNS_14FrontendActionE+0x17c)[0x1ee6a6c]
+/opt/rocm/hcc/bin/clang-8(_ZN5clang25ExecuteCompilerInvocationEPNS_16CompilerInstanceE+0x633)[0x1fd6393]
+/opt/rocm/hcc/bin/clang-8(_Z8cc1_mainN4llvm8ArrayRefIPKcEES2_Pv+0xa40)[0x8a1190]
+/opt/rocm/hcc/bin/clang-8(main+0x23cd)[0x82c83d]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x7fb8cd1d3c05]
+/opt/rocm/hcc/bin/clang-8[0x89dd45]
+clang-8: error: unable to execute command: Segmentation fault (core dumped)
+clang-8: error: clang frontend command failed due to signal (use -v to see invocation)
+clang-8: error: clang frontend command failed due to signal (use -v to see invocation)
+HCC clang version 8.0.0 (ssh://gerritgit/compute/ec/hcc-tot/clang 683c680a6bff215baa3bd9d3099ba1a43e24cf2e) (ssh://gerritgit/lightning/ec/llvm 6e349ce344586b4254654aea8f34444a13aedb67) (based on HCC 1.3.19045-fea3e2b4-683c680a6b-6e349ce3445 )
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /opt/rocm/hcc/bin
+clang-8: note: diagnostic msg: PLEASE submit a bug report to https://bugs.llvm.org/ and include the crash backtrace, preprocessed source, and associated run script.
+clang-8: note: diagnostic msg: Error generating preprocessed source(s).
