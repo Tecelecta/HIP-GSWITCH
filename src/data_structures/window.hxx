@@ -3,13 +3,13 @@
 
 
 #include <hip/hip_runtime.h>
-#include "utils/utils.cuh"
-#include "utils/intrinsics.cuh"
-#include "abstraction/config.cuh"
-#include "abstraction/features.cuh"
+#include "utils/utils.hxx"
+#include "utils/intrinsics.hxx"
+#include "abstraction/config.hxx"
+#include "abstraction/features.hxx"
 
 #include "model/select_stepping.h"
-#include "data_structures/graph.cuh"
+#include "data_structures/graph.hxx"
 
 template <typename E, typename F>
 __global__ void
