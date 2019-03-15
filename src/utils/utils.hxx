@@ -112,8 +112,15 @@ void build_tex(hipTextureObject_t &tex_obj, data_t* buf, int N){
   memset(&resDesc, 0, sizeof(resDesc));
   resDesc.resType = hipResourceTypeLinear;
   resDesc.res.linear.devPtr = buf;
+#ifdef __HIP_PLATFORM_NVCC__
+  if(std::is_same<int,data_t>::value) resDesc.res.linear.desc.f = 
+    hipChannelFormatKindToCudaChannelFormatKind(hipChannelFormatKindSigned);
+  else if(std::is_same<float, data_t>::value) resDesc.res.linear.desc.f = 
+    hipChannelFormatKindToCudaChannelFormatKind(hipChannelFormatKindFloat);
+#else
   if(std::is_same<int,data_t>::value) resDesc.res.linear.desc.f = hipChannelFormatKindSigned;
   else if(std::is_same<float, data_t>::value) resDesc.res.linear.desc.f = hipChannelFormatKindFloat;
+#endif
   else ASSERT(false, "build texture w/ bad data type");
   resDesc.res.linear.desc.x = 32;
   resDesc.res.linear.sizeInBytes = N*sizeof(data_t);

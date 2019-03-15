@@ -10,6 +10,7 @@
 #include "data_structures/active_set.hxx"
 #include "data_structures/functor.hxx"
 
+#include "tempkernel.h"
 
 template<typename G, typename F>
 __global__ void

@@ -7,6 +7,8 @@
 #include "abstraction/features.hxx"
 #include "abstraction/config.hxx"
 
+#include "tempkernel.h"
+
 template<typename G, typename F>
 __global__ void 
 __inspect_EC(active_set_t as, G g, F f, stat_t stat, config_t conf){

@@ -11,6 +11,8 @@
 #include "data_structures/functor.hxx"
 #include "abstraction/config.hxx"
 
+#include "tempkernel.h"
+
 template<ASFmt fmt, QueueMode M, typename G, typename F>
 __global__ void 
 __expand_VC_WM_fused_wtf(active_set_t as, G g, F f, config_t conf){

@@ -15,6 +15,7 @@
 //#include <moderngpu/kernel_scan.hxx>
 #include "utils/sorted_search.hxx"
 #include "utils/scan.hxx"
+#include "tempkernel.h"
 
 const int SCRATH=256; // process SCRATH vertexs in each epoch at most
 struct smem_t{

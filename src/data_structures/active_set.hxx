@@ -10,6 +10,8 @@
 #include "data_structures/workset.hxx"
 #include "data_structures/notification.hxx"
 
+#include "tempkernel.h"
+
 //#include <moderngpu/kernel_sortedsearch.hxx>
 //#include <moderngpu/kernel_scan.hxx>
 
@@ -147,20 +149,20 @@ if(as.fmt == Queue) {                                                           
   if(as.queue.mode==Normal)                                                  \
     hipLaunchKernelGGL(__expand_VC_##lb<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
   else                                                                            \
-    hipLaunchKernelGGL(__expand_VC_##lb<Queue,Cached>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
+    hipLaunchKernelGGL(TEMPLATE_KERNEL(__expand_VC_##lb, Queue,Cached), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
 }else{                                                                            \
-  hipLaunchKernelGGL(__expand_VC_##lb<Bitmap,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);  \
+  hipLaunchKernelGGL(TEMPLATE_KERNEL(__expand_VC_##lb, Bitmap, Normal), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);  \
 }                                                                                 \
 
 
 #define Launch_RExpand_VC(lb, as, g, f, conf)                                     \
 if(as.fmt == Queue) {                                                             \
   if(as.queue.mode==Normal)                                                  \
-    hipLaunchKernelGGL(__rexpand_VC_##lb<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);\
+    hipLaunchKernelGGL(TEMPLATE_KERNEL(__rexpand_VC_##lb, Queue, Normal), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);\
   else                                                                            \
-    hipLaunchKernelGGL(__rexpand_VC_##lb<Queue,Cached>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);\
+    hipLaunchKernelGGL(TEMPLATE_KERNEL(__rexpand_VC_##lb, Queue, Cached), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);\
 }else{                                                                            \
-  hipLaunchKernelGGL(__rexpand_VC_##lb<Bitmap,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
+  hipLaunchKernelGGL(TEMPLATE_KERNEL(__rexpand_VC_##lb, Bitmap, Normal), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf); \
 }                                                                                 \
 
 
