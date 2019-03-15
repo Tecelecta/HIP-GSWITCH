@@ -1,26 +1,26 @@
-cuda_add_executable(BFS bfs.cu)
+HIP_ADD_EXECUTABLE(BFS bfs.cu)
 target_link_libraries(BFS gswitch)
 
-cuda_add_executable(CC cc.cu)
+HIP_ADD_EXECUTABLE(CC cc.cu)
 target_link_libraries(CC gswitch)
 
-cuda_add_executable(PageRank pagerank.cu)
+HIP_ADD_EXECUTABLE(PageRank pagerank.cu)
 target_link_libraries(PageRank gswitch)
 
-cuda_add_executable(BC bc.cu)
+HIP_ADD_EXECUTABLE(BC bc.cu)
 target_link_libraries(BC gswitch)
 
-cuda_add_executable(SSSP sssp.cu)
+HIP_ADD_EXECUTABLE(SSSP sssp.cu)
 target_link_libraries(SSSP gswitch)
 
-cuda_add_executable(GC gc.cu)
+HIP_ADD_EXECUTABLE(GC gc.cu)
 target_link_libraries(GC gswitch)
 
-#cuda_add_executable(BF bf.cu)
+#HIP_ADD_EXECUTABLE(BF bf.cu)
 #target_link_libraries(BF gswitch)
 
-#cuda_add_executable(Delta-PageRank delta-pagerank.cu)
+#HIP_ADD_EXECUTABLE(Delta-PageRank delta-pagerank.cu)
 #target_link_libraries(Delta-PageRank gswitch)
 #
-cuda_add_executable(Test test.cu)
+HIP_ADD_EXECUTABLE(Test test.cu)
 target_link_libraries(Test gswitch)

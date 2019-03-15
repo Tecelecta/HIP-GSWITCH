@@ -36,5 +36,5 @@ set(SROUCE
   gswitch.h)
 
 
-#cuda_add_executable(gswitch ${SROUCE})
-cuda_add_library(gswitch ${SROUCE} STATIC)
+#HIP_ADD_EXECUTABLE(gswitch ${SROUCE})
+HIP_ADD_LIBRARY(gswitch ${SROUCE} STATIC)

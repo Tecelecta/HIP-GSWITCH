@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-include(${CMAKE_SOURCE_DIR}/cmake/FindModernGPU.cmake)
+#include(${CMAKE_SOURCE_DIR}/cmake/FindModernGPU.cmake)
 
 # gswitch
 project(gswitch)
@@ -23,14 +23,14 @@ endif()
 #find mgpu
 if(mgpu_INCLUDE_DIRS)
   include_directories(${mgpu_INCLUDE_DIRS})
-  set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -I ${mgpu_INCLUDE_DIRS})
+  set(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}; -I ${mgpu_INCLUDE_DIRS})
 else()
   message(SEND_ERROR "ModernGPU not found")
 endif()
 
 #find openMP
-find_package(OpenMP)
-find_package(CUDA QUIET REQUIRED)
+#find_package(OpenMP)
+find_package(HIP QUIET REQUIRED)
 
 if(OPENMP_FOUND)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -41,18 +41,18 @@ endif()
 # confiuge CUDA flags
 if(GDB)
   message("-- enable GDB.")
-  set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -std=c++11 -arch=sm_35 -g -G -O0
+  set(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}; -std=c++11 -arch=sm_35 -g -G -O0
     --compiler-options -Wall -Xptxas -v -Xcompiler -fopenmp -Xcompiler
     -rdynamic -lineinfo -ftz=true --expt-extended-lambda)
 else() 
-  set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -std=c++11 -arch=sm_35 -O3 -maxrregcount=64
+  set(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}; -std=c++11 -arch=sm_35 -O3 -maxrregcount=64
     --compiler-options -Wall --compiler-options -fmax-errors=5 --expt-extended-lambda)
 #-Xcompiler -fopenmp -Xptxas -v
 #-maxrregcount=64
 endif()
 
 
-message("-- CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
+message("-- HIP_NVCC_FLAGS: ${HIP_NVCC_FLAGS}")
 
 
 #############################################################################
