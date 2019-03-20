@@ -134,8 +134,8 @@ struct Functor<VC,WA,RA,E>{
   __device__ __tbdinline__ WA* wa_of(int v){return data.fetch_wa(v);} \
   __device__ __tbdinline__ RA* ra_of(int v){return data.fetch_ra(v);} 
 
-#define GSWITCH_INTERFACE(name, centric, ...) template<> Functor<centric,__VA_ARGS__>{__FUNCTOR_ESSENCE_##centric(__VA_ARGS__)
-#define GSWITCH_INTERFACE_END(name, centric, ...) }; typedef Functor<centric, __VA_ARGS__> name;
+#define GSWITCH_INTERFACE(name, centric, ...) template<> struct Functor<centric,__VA_ARGS__>{__FUNCTOR_ESSENCE_##centric(__VA_ARGS__)
+#define GSWITCH_INTERFACE_END(name, centric, ...) }; typedef struct Functor<centric, __VA_ARGS__> name;
 
 #endif 
 
