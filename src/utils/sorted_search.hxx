@@ -125,16 +125,17 @@ void sorted_search(data_t* dg_a, int a_count,
            int* dg_idx){
 
 #define TILE_SZ (THD_NUM<<1)
+
   int tile_count = CEIL(a_count + b_count, TILE_SZ) + 1;
   //int tile_count = CEIL( b_count, TILE_SZ) + 1;
   data_t *dg_atile, *dg_btile;
   H_ERR(hipMalloc((void**)&dg_atile, sizeof(data_t)*tile_count));
   H_ERR(hipMalloc((void**)&dg_btile, sizeof(data_t)*tile_count));
-  hipLaunchKernelGGL(partition<data_t, TILE_SZ>, dim3(1 + CEIL(tile_count, THD_NUM)), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
+  hipLaunchKernelGGL(TEMPLATE_TSZ(partition), dim3(1 + CEIL(tile_count, THD_NUM)), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
   //partition1<data_t, TILE_SZ><<<1 + CEIL(tile_count, THD_NUM) ,THD_NUM>>>(dg_a, a_count, dg_b, b_count, tile_count, dg_atile, dg_btile);
 //  dump_arr(dg_atile, tile_count);
 //  dump_arr(dg_btile, tile_count);
-  hipLaunchKernelGGL(block_upper<data_t, TILE_SZ>, dim3(tile_count-1), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, dg_atile, dg_btile, dg_idx);
+  hipLaunchKernelGGL(TEMPLATE_TSZ(block_upper), dim3(tile_count-1), dim3(THD_NUM), 0, 0, dg_a, a_count, dg_b, b_count, dg_atile, dg_btile, dg_idx);
 #undef TILE_SZ
 }
 

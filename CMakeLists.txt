@@ -25,7 +25,7 @@ if(mgpu_INCLUDE_DIRS)
   include_directories(${mgpu_INCLUDE_DIRS})
   set(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}; -I ${mgpu_INCLUDE_DIRS})
 else()
-  message(SEND_ERROR "ModernGPU not found")
+#  message(SEND_ERROR "ModernGPU not found")
 endif()
 
 #find openMP

@@ -122,7 +122,7 @@ struct inspector_t{
     }
 
     if(need_inspect){ 
-      hipLaunchKernelGGL(__inspect_VC<device_graph_t<CSR,E>,F>, dim3(CTANUM) , dim3(THDNUM), 
+      hipLaunchKernelGGL(TEMPLATE_G_F_CSR(__inspect_VC), dim3(CTANUM) , dim3(THDNUM), 0, 0,
         as, g, f, stat, conf); // to bitmap
       //LOG("%d ", as.queue.get_current_queue().debug());
       set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges); 
@@ -142,7 +142,7 @@ struct inspector_t{
       fets.active_vertex_ratio = 1;
       return;
     }
-    hipLaunchKernelGGL(__inspect_EC<device_graph_t<COO,E>, F>, dim3(CTANUM), dim3(THDNUM),
+    hipLaunchKernelGGL(TEMPLATE_G_F_COO(__inspect_EC), dim3(CTANUM), dim3(THDNUM), 0, 0,
       as, g, f, stat, conf);
     set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges);
     fets.flatten();

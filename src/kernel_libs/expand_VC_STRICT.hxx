@@ -485,9 +485,9 @@ struct ExpandProxy<VC,STRICT,Push>{
 
       //step 2: prepare the degrees and the scaned degrees
       if(as.fmt==Queue){
-        if(as.queue.mode == Normal) hipLaunchKernelGGL(__prepare<Queue,Normal>, dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
-        else hipLaunchKernelGGL(__prepare<Queue,Cached>, dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
-      }else hipLaunchKernelGGL(__prepare<Bitmap,Normal>, dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
+        if(as.queue.mode == Normal) hipLaunchKernelGGL(TEMPLATE_QUEUE_NORMAL(__prepare), dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
+        else hipLaunchKernelGGL(TEMPLATE_QUEUE_CACHED(__prepare), dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
+      }else hipLaunchKernelGGL(TEMPLATE_BITMAP_NORMAL(__prepare), dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
 
       //mgpu::scan<mgpu::scan_type_exc>(as.workset.dg_degree, nactives, as.workset.dg_udegree, mgpu::plus_t<int>(), as.workset.dg_size, *as.context);
 	  scan(as.workset.dg_degree, as.workset.dg_udegree, nactives, as.workset.dg_size);
@@ -510,7 +510,7 @@ struct ExpandProxy<VC,STRICT,Push>{
     }else {
       if(conf.conf_pruning && conf.conf_asfmt==Queue && as.queue.mode==Normal) {
         // this is just to avoid warp degradation, f**k the nvcc
-        hipLaunchKernelGGL(__expand_VC_STRICT_wtf<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
+        hipLaunchKernelGGL(TEMPLATE_QUEUE_NORMAL(__expand_VC_STRICT_wtf), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
       } else {
         Launch_Expand_VC(STRICT, as, g, f, conf);
       }
@@ -535,9 +535,9 @@ struct ExpandProxy<VC,STRICT,Pull>{
 
       // step 2: prepare the degree and the scaned degree
       if(as.fmt == Queue){
-        if(as.queue.mode == Normal) hipLaunchKernelGGL(__prepare<Queue,Normal>, dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
-        else hipLaunchKernelGGL(__prepare<Queue,Cached>, dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
-      }else hipLaunchKernelGGL(__prepare<Bitmap,Normal>, dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as,g,conf);
+        if(as.queue.mode == Normal) hipLaunchKernelGGL(TEMPLATE_QUEUE_NORMAL(__prepare), dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
+        else hipLaunchKernelGGL(TEMPLATE_QUEUE_CACHED(__prepare), dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as, g, conf);
+      }else hipLaunchKernelGGL(TEMPLATE_BITMAP_NORMAL(__prepare), dim3(1+conf.ctanum/10), dim3(conf.thdnum), 0, 0, as,g,conf);
 
       //mgpu::scan<mgpu::scan_type_exc>(as.workset.dg_degree, nactives, as.workset.dg_udegree, *as.context);
       //mgpu::scan<mgpu::scan_type_exc>(as.workset.dg_degree, nactives, as.workset.dg_udegree, mgpu::plus_t<int>(), as.workset.dg_size, *as.context);

@@ -164,7 +164,7 @@ __super_fusion(active_set_t as, G g, F f, config_t conf){
 
 template<typename E ,typename F>
 void super_fusion(active_set_t as, device_graph_t<CSR,E> g, F f, config_t conf){
-   hipLaunchKernelGGL(__super_fusion<Queue,Normal>, dim3(1), dim3(1024), 0, 0, as,g,f,conf);
+   hipLaunchKernelGGL(TEMPLATE_QUEUE_NORMAL(__super_fusion), dim3(1), dim3(1024), 0, 0, as,g,f,conf);
 }
 
 template<typename E ,typename F>

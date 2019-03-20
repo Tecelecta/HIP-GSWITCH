@@ -460,7 +460,7 @@ struct ExpandProxy<VC,WM,Push>{
   static void expand(active_set_t as, device_graph_t<CSR,E> g, F f, config_t conf){
     if(conf.conf_fuse_inspect) {
       if(conf.conf_pruning && conf.conf_asfmt==Queue && as.queue.mode==Normal && conf.conf_toall==false)
-        hipLaunchKernelGGL(__expand_VC_WM_fused_wtf<Queue,Normal>, dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
+        hipLaunchKernelGGL(TEMPLATE_QUEUE_NORMAL(__expand_VC_WM_fused_wtf), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf);
       else 
         Launch_Expand_VC(WM_fused, as, g, f, conf);
     }else{
