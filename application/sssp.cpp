@@ -16,9 +16,9 @@ feature_t fets;
 config_t conf;
 stat_t stats;
 
-struct SSSP:Functor<VC,int,int,int>{
+//struct SSSP:Functor<VC,int,int,int>{
+GSWITCH_INTERFACE(SSSP,VC,int,int,int)
 
- 
   __device__ Status filter(int vid, G g){
     int* newd = wa_of(vid);
     int* oldd = ra_of(vid);
@@ -51,7 +51,8 @@ struct SSSP:Functor<VC,int,int,int>{
   __device__ bool exit(int v, G g){
     return *wa_of(v) != *ra_of(v);
   }
-};
+//};
+GSWITCH_INTERFACE_END(SSSP,VC,int,int,int)
 
 int* spfa(host_graph_t<CSR,int> hg, int root){
   std::cout << "generate CPU SSSP reference" << std::endl;
