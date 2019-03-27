@@ -106,6 +106,7 @@ struct rand_device<int>{
   }
 };
 
+
 template<typename data_t>
 void build_tex(hipTextureObject_t &tex_obj, data_t* buf, int N){
   hipResourceDesc resDesc;
@@ -128,8 +129,9 @@ void build_tex(hipTextureObject_t &tex_obj, data_t* buf, int N){
   hipTextureDesc texDesc;
   memset(&texDesc, 0, sizeof(texDesc));
   texDesc.readMode = hipReadModeElementType;
-
+  printf("ぽい！\n");
   H_ERR(hipCreateTextureObject(&tex_obj, &resDesc, &texDesc, NULL));
+  printf("無事に終わった！\n");
 }
 
 void query_device_prop(){

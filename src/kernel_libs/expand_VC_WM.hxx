@@ -47,8 +47,8 @@ __expand_VC_WM_fused_wtf(active_set_t as, G g, F f, config_t conf){
     else v = -1;
     if(v >= 0){
       tmp[OFFSET_warp+phase] = v;
-      tmp[OFFSET_start_pos+phase] = tex1Dfetch<int>(g.dt_start_pos, v);
-      tmp[OFFSET_odegree+phase] = tex1Dfetch<int>(g.dt_odegree, v);
+      tmp[OFFSET_start_pos+phase] = g.get_out_start_pos(v);///tex1Dfetch<int>(g.dt_start_pos, v);
+      tmp[OFFSET_odegree+phase] = g.get_out_degree(v);///tex1Dfetch<int>(g.dt_odegree, v);
     }else{
       tmp[OFFSET_warp+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;
@@ -167,8 +167,8 @@ __expand_VC_WM_fused(active_set_t as, G g, F f, config_t conf){
     else v = -1;
     if(v >= 0){
       tmp[OFFSET_warp+phase] = v;
-      tmp[OFFSET_start_pos+phase] = tex1Dfetch<int>(g.dt_start_pos, v);
-      tmp[OFFSET_odegree+phase] = tex1Dfetch<int>(g.dt_odegree, v);
+      tmp[OFFSET_start_pos+phase] = g.get_out_start_pos(v);///tex1Dfetch<int>(g.dt_start_pos, v);
+      tmp[OFFSET_odegree+phase] = g.get_out_degree(v);///tex1Dfetch<int>(g.dt_odegree, v);
     }else{
       tmp[OFFSET_warp+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;
@@ -277,8 +277,8 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
     else v = -1;
     if(v >= 0){
       tmp[OFFSET_warp+phase] = v;
-      tmp[OFFSET_start_pos+phase] = tex1Dfetch<int>(g.dt_start_pos, v);
-      tmp[OFFSET_odegree+phase] = tex1Dfetch<int>(g.dt_odegree, v);
+      tmp[OFFSET_start_pos+phase] = g.get_out_start_pos(v);///tex1Dfetch<int>(g.dt_start_pos, v);
+      tmp[OFFSET_odegree+phase] = g.get_out_degree(v);///tex1Dfetch<int>(g.dt_odegree, v);
     }else{
       tmp[OFFSET_warp+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;

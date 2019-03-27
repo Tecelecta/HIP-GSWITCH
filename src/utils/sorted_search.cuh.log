@@ -1,8 +1,0 @@
-/tmp/sorted_search.cuh-e1d119.hip:117:3: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'? [-Wmismatched-new-delete]
-  delete h_arr;
-  ^
-        []
-/tmp/sorted_search.cuh-e1d119.hip:113:19: note: allocated with 'new[]' here
-  data_t *h_arr = new data_t[len];
-                  ^
-1 warning generated when compiling for host.

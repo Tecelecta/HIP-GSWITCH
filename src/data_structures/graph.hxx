@@ -91,6 +91,7 @@ struct device_graph_t<CSR, E>{
       //else if(std::is_same<int,E>::value) build_tex<int>(dt_edgedata, (int*)dg_edgedata, nedges);
     }
 
+#ifdef __HIP_PLATFORM_NVCC__
     build_tex<int>(dt_odegree,   dg_odegree,   nvertexs);
     build_tex<int>(dt_start_pos, dg_start_pos, nvertexs);
 
@@ -98,7 +99,7 @@ struct device_graph_t<CSR, E>{
       build_tex<int>(dtr_odegree,   dgr_odegree,   nvertexs);
       build_tex<int>(dtr_start_pos, dgr_start_pos, nvertexs);
     }
-
+#endif
     gpu_bytes += sizeof(int)*nvertexs*3;
     gpu_bytes += sizeof(int)*nedges;
 
@@ -115,6 +116,7 @@ struct device_graph_t<CSR, E>{
   __device__ __tbdinline__
   E* fetch_edata_r(const int eid){return dgr_edgedata+eid;}
 
+#ifdef __HIP_PLATFORM_NVCC__
   __device__ __tbdinline__
   int get_out_degree(const int vid){
     return tex1Dfetch<int>(dt_odegree, vid); 
@@ -127,10 +129,38 @@ struct device_graph_t<CSR, E>{
   }
 
   __device__ __tbdinline__
+  int get_out_start_pos(const int vid){
+    return tex1Dfetch<int>(dt_start_pos, vid);
+  }
+
+  __device__ __tbdinline__
   int get_in_start_pos(const int vid){
     if(directed) return tex1Dfetch<int>(dtr_start_pos, vid);
     return tex1Dfetch<int>(dt_start_pos, vid);
   }
+#else
+  __device__ __tbdinline__
+  int get_out_degree(const int vid){
+    return dg_odegree[vid];
+  }
+
+  __device__ __tbdinline__
+  int get_in_degree(const int vid){
+    if(directed) return dgr_odegree[vid];
+    return dg_odegree[vid];
+  }
+
+  __device__ __tbdinline__
+  int get_out_start_pos(const int vid){
+    return dg_start_pos[vid];
+  }
+
+  __device__ __tbdinline__
+  int get_in_start_pos(const int vid){
+    if(directed) return dgr_start_pos[vid];
+    return dg_start_pos[vid];
+  }
+#endif
 
   __device__ __tbdinline__
   int get_level(){

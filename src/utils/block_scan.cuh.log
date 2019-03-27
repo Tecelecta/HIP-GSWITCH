@@ -1,8 +1,0 @@
-/tmp/block_scan.cuh-9d764f.hip:26:23: error: unknown type name '__tbdinline__'
-    static __device__ __tbdinline__ 
-                      ^
-/tmp/block_scan.cuh-9d764f.hip:27:5: error: expected member name or ';' after declaration specifiers
-    void Warp_Scan(T thread_in, T &thread_out, T &sum){
-    ^
-2 errors generated when compiling for host.
-Error while processing /tmp/block_scan.cuh-9d764f.hip.
