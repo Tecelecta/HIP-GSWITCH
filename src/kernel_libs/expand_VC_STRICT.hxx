@@ -36,8 +36,8 @@ struct smem_t{
 template<ASFmt fmt, QueueMode M, typename G>
 __global__ void
 __prepare(active_set_t as, G g, config_t conf){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   //const int assize = ASProxy<fmt,M>::get_size_hard(as);
   const int assize = ASProxy<fmt,M>::get_size(as);
 
@@ -56,7 +56,7 @@ __prepare(active_set_t as, G g, config_t conf){
 
   // block reduce
   //tmp = blockReduceSum(tmp);
-  //if(!threadIdx.x) atomicAdd(as.workset.dg_size, tmp);
+  //if(!hipThreadIdx_x) atomicAdd(as.workset.dg_size, tmp);
 }
 
 template<ASFmt fmt, QueueMode M, typename G, typename F>
@@ -64,18 +64,18 @@ __global__ void
 __expand_VC_STRICT_fused(active_set_t as, G g, F f, config_t conf){
   const int* __restrict__ strict_adj_list = g.dg_adj_list;
 
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   const int assize = ASProxy<fmt,M>::get_size(as);
   if(assize==0){if(gtid==0) as.halt_device();return;}
-  const int tid = threadIdx.x;
+  const int tid = hipThreadIdx_x;
   Status want = conf.want();
 
   __shared__ smem_t smem;
-  if(threadIdx.x==0){
-    smem.vidx_start = __ldg(as.workset.dg_idx+blockIdx.x);
-    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+blockIdx.x) - smem.vidx_start;
-    int vidx_end = __ldg(as.workset.dg_idx+blockIdx.x+1);
-    int eid_end = __ldg(as.workset.dg_seid_per_blk+blockIdx.x+1) - vidx_end;
+  if(hipThreadIdx_x==0){
+    smem.vidx_start = __ldg(as.workset.dg_idx+hipBlockIdx_x);
+    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x) - smem.vidx_start;
+    int vidx_end = __ldg(as.workset.dg_idx+hipBlockIdx_x+1);
+    int eid_end = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x+1) - vidx_end;
     smem.vidx_start -= smem.vidx_start>0?1:0;
     smem.vidx_size = vidx_end - smem.vidx_start;
     smem.eid_size = eid_end - smem.eid_start;
@@ -88,7 +88,7 @@ __expand_VC_STRICT_fused(active_set_t as, G g, F f, config_t conf){
   while(smem.processed < smem.vidx_size){
     // compute workload for this round
     __syncthreads();
-    if(threadIdx.x==0){
+    if(hipThreadIdx_x==0){
       smem.vidx_cur_start = smem.vidx_start + smem.processed;
       int rest = smem.vidx_size - smem.processed;
       smem.vidx_cur_size = rest > SCRATH ? SCRATH : rest; // limits
@@ -100,7 +100,7 @@ __expand_VC_STRICT_fused(active_set_t as, G g, F f, config_t conf){
     __syncthreads();
 
     // load the values for this round, smem should have enough space
-    for(int i = tid; i < smem.vidx_cur_size; i += blockDim.x){
+    for(int i = tid; i < smem.vidx_cur_size; i += hipBlockDim_x){
       int idx = smem.vidx_cur_start + i;
       int v = ASProxy<fmt,M>::fetch(as, idx, want);
       smem.v[i] = v;
@@ -120,7 +120,7 @@ __expand_VC_STRICT_fused(active_set_t as, G g, F f, config_t conf){
 
     // process the vertices in interleave mode
     int vidx,v,v_start_pos,v_degree_scan,ei;
-    for(int idx=tid; idx < block_size; idx+= blockDim.x){
+    for(int idx=tid; idx < block_size; idx+= hipBlockDim_x){
       int eid = block_start + idx;
       vidx = __upper_bound(smem.v_degree_scan, smem.vidx_cur_size, eid)-1; 
       v = smem.v[vidx];
@@ -165,15 +165,15 @@ __expand_VC_STRICT_wtf(active_set_t as, G g, F f, config_t conf){
   const int* __restrict__ strict_adj_list = g.dg_adj_list;
 
   const int assize = ASProxy<fmt,M>::get_size(as);
-  const int tid = threadIdx.x;
+  const int tid = hipThreadIdx_x;
   Status want = conf.want();
 
   __shared__ smem_t smem;
-  if(threadIdx.x==0){
-    smem.vidx_start = __ldg(as.workset.dg_idx+blockIdx.x);
-    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+blockIdx.x) - smem.vidx_start;
-    int vidx_end = __ldg(as.workset.dg_idx+blockIdx.x+1);
-    int eid_end = __ldg(as.workset.dg_seid_per_blk+blockIdx.x+1) - vidx_end;
+  if(hipThreadIdx_x==0){
+    smem.vidx_start = __ldg(as.workset.dg_idx+hipBlockIdx_x);
+    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x) - smem.vidx_start;
+    int vidx_end = __ldg(as.workset.dg_idx+hipBlockIdx_x+1);
+    int eid_end = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x+1) - vidx_end;
     smem.vidx_start -= smem.vidx_start>0?1:0;
     smem.vidx_size = vidx_end - smem.vidx_start;
     smem.eid_size = eid_end - smem.eid_start;
@@ -186,7 +186,7 @@ __expand_VC_STRICT_wtf(active_set_t as, G g, F f, config_t conf){
   while(smem.processed < smem.vidx_size){
   //  // compute workload for this round
     __syncthreads();
-    if(threadIdx.x==0){
+    if(hipThreadIdx_x==0){
       smem.vidx_cur_start = smem.vidx_start + smem.processed;
       int rest = smem.vidx_size - smem.processed;
       smem.vidx_cur_size = rest > SCRATH ? SCRATH : rest; // limits
@@ -198,7 +198,7 @@ __expand_VC_STRICT_wtf(active_set_t as, G g, F f, config_t conf){
     __syncthreads();
 
     // load the values for this round, smem should have enough space
-    for(int i = tid; i < smem.vidx_cur_size; i += blockDim.x){
+    for(int i = tid; i < smem.vidx_cur_size; i += hipBlockDim_x){
       int idx = smem.vidx_cur_start + i;
       int v = ASProxy<fmt,M>::fetch(as, idx, want);
       smem.v[i] = v;
@@ -216,7 +216,7 @@ __expand_VC_STRICT_wtf(active_set_t as, G g, F f, config_t conf){
 
     // process the vertices in interleave mode
     // int vidx,v,v_start_pos,v_degree_scan,ei;
-    for(int idx=tid; idx < block_size; idx+= blockDim.x){
+    for(int idx=tid; idx < block_size; idx+= hipBlockDim_x){
       int eid = block_start + idx;
       int vidx = __upper_bound(smem.v_degree_scan, smem.vidx_cur_size, eid)-1; 
       int v = smem.v[vidx];
@@ -251,15 +251,15 @@ __expand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
   const int* __restrict__ strict_adj_list = g.dg_adj_list;
 
   const int assize = ASProxy<fmt,M>::get_size(as);
-  const int tid = threadIdx.x;
+  const int tid = hipThreadIdx_x;
   Status want = conf.want();
 
   __shared__ smem_t smem;
-  if(threadIdx.x==0){
-    smem.vidx_start = __ldg(as.workset.dg_idx+blockIdx.x);
-    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+blockIdx.x) - smem.vidx_start;
-    int vidx_end = __ldg(as.workset.dg_idx+blockIdx.x+1);
-    int eid_end = __ldg(as.workset.dg_seid_per_blk+blockIdx.x+1) - vidx_end;
+  if(hipThreadIdx_x==0){
+    smem.vidx_start = __ldg(as.workset.dg_idx+hipBlockIdx_x);
+    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x) - smem.vidx_start;
+    int vidx_end = __ldg(as.workset.dg_idx+hipBlockIdx_x+1);
+    int eid_end = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x+1) - vidx_end;
     smem.vidx_start -= smem.vidx_start>0?1:0;
     smem.vidx_size = vidx_end - smem.vidx_start;
     smem.eid_size = eid_end - smem.eid_start;
@@ -272,7 +272,7 @@ __expand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
   while(smem.processed < smem.vidx_size){
   //  // compute workload for this round
     __syncthreads();
-    if(threadIdx.x==0){
+    if(hipThreadIdx_x==0){
       smem.vidx_cur_start = smem.vidx_start + smem.processed;
       int rest = smem.vidx_size - smem.processed;
       smem.vidx_cur_size = rest > SCRATH ? SCRATH : rest; // limits
@@ -284,7 +284,7 @@ __expand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
     __syncthreads();
 
     // load the values for this round, smem should have enough space
-    for(int i = tid; i < smem.vidx_cur_size; i += blockDim.x){
+    for(int i = tid; i < smem.vidx_cur_size; i += hipBlockDim_x){
       int idx = smem.vidx_cur_start + i;
       int v = ASProxy<fmt,M>::fetch(as, idx, want);
       smem.v[i] = v;
@@ -303,7 +303,7 @@ __expand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
 
     // process the vertices in interleave mode
     // int vidx,v,v_start_pos,v_degree_scan,ei;
-    for(int idx=tid; idx < block_size; idx+= blockDim.x){
+    for(int idx=tid; idx < block_size; idx+= hipBlockDim_x){
       int eid = block_start + idx;
       int vidx = __upper_bound(smem.v_degree_scan, smem.vidx_cur_size, eid)-1; 
       int v = smem.v[vidx];
@@ -341,17 +341,17 @@ __rexpand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
   edata_t* strict_edgedata = g.directed? g.dgr_edgedata : g.dg_edgedata;
 
   const int assize = ASProxy<fmt,M>::get_size(as);
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0){if(gtid==0) as.halt_device();return;}
-  const int tid = threadIdx.x;
+  const int tid = hipThreadIdx_x;
   Status want = conf.want();
 
   __shared__ smem_t smem;
-  if(threadIdx.x==0){
-    smem.vidx_start = __ldg(as.workset.dg_idx+blockIdx.x);
-    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+blockIdx.x) - smem.vidx_start;
-    int vidx_end = __ldg(as.workset.dg_idx+blockIdx.x+1);
-    int eid_end = __ldg(as.workset.dg_seid_per_blk+blockIdx.x+1) - vidx_end;
+  if(hipThreadIdx_x==0){
+    smem.vidx_start = __ldg(as.workset.dg_idx+hipBlockIdx_x);
+    smem.eid_start = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x) - smem.vidx_start;
+    int vidx_end = __ldg(as.workset.dg_idx+hipBlockIdx_x+1);
+    int eid_end = __ldg(as.workset.dg_seid_per_blk+hipBlockIdx_x+1) - vidx_end;
     smem.vidx_start -= smem.vidx_start>0?1:0;
     smem.vidx_size = vidx_end - smem.vidx_start;
     smem.eid_size = eid_end - smem.eid_start;
@@ -364,7 +364,7 @@ __rexpand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
   while(smem.processed < smem.vidx_size){
     // compute workload for this round
     __syncthreads();
-    if(threadIdx.x==0){
+    if(hipThreadIdx_x==0){
       smem.vidx_cur_start = smem.vidx_start + smem.processed;
       int rest = smem.vidx_size - smem.processed;
       smem.vidx_cur_size = rest > SCRATH ? SCRATH : rest; // limits
@@ -376,7 +376,7 @@ __rexpand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
     __syncthreads();
 
     // load the values for this round, smem should have enough space
-    for(int i = tid; i < smem.vidx_cur_size; i += blockDim.x){
+    for(int i = tid; i < smem.vidx_cur_size; i += hipBlockDim_x){
       int idx = smem.vidx_cur_start + i;
       int v = ASProxy<fmt,M>::fetch(as, idx, want);
       smem.v[i] = v;
@@ -396,7 +396,7 @@ __rexpand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
 
     //{// process the vertices in interleave mode
     //  int vidx,v,v_start_pos,v_degree_scan,ei;
-    //  for(int idx=tid; idx < block_size; idx+= blockDim.x){
+    //  for(int idx=tid; idx < block_size; idx+= hipBlockDim_x){
     //    int eid = block_start + idx;
     //    vidx = __upper_bound(smem.v_degree_scan, smem.vidx_cur_size, eid)-1; 
     //    v = smem.v[vidx];
@@ -425,10 +425,10 @@ __rexpand_VC_STRICT(active_set_t as, G g, F f, config_t conf){
       bool change = true;
       vdata_t reduction;
       int vidx,v,v_start_pos,v_degree_scan,limit;
-      int base = block_size / blockDim.x;
-      int rest = block_size % blockDim.x;
-      int thread_workloads = base + ((threadIdx.x < rest) ? 1:0);
-      int thread_start     = (base*threadIdx.x) + ((threadIdx.x < rest) ? threadIdx.x : rest);
+      int base = block_size / hipBlockDim_x;
+      int rest = block_size % hipBlockDim_x;
+      int thread_workloads = base + ((hipThreadIdx_x < rest) ? 1:0);
+      int thread_start     = (base*hipThreadIdx_x) + ((hipThreadIdx_x < rest) ? hipThreadIdx_x : rest);
       for(int idx=thread_start; idx < thread_start+thread_workloads; idx++){
         int eid = block_start + idx;
         if(change){

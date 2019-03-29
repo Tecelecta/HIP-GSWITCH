@@ -6,6 +6,8 @@
 #include "utils/scan.hxx"
 #include "utils/block_scan.hxx"
 
+#include "utils/platform.hxx"
+
 __device__ __tbdinline__
 void throw_fatal_error(){*(int*)0=0;}
 
@@ -54,7 +56,7 @@ __device__ int alignment(int arbitrary, int base){
 }
 
 __device__ int lanemask_lt(){
-  return (1<<(threadIdx.x&31))-1;
+  return (1<<(hipThreadIdx_x&LANE_MASK))-1;
 }
 
 __device__ int atomicAggInc(int *ctr){
@@ -73,7 +75,7 @@ __device__ int atomicAggInc(int *ctr){
 template<typename T>
 __device__ __tbdinline__ 
 void warpScan(T thread_in, T &thread_out, T &sum){
-  int lane_id = threadIdx.x & 31;
+  int lane_id = hipThreadIdx_x & LANE_MASK;
   T &lane_local = thread_out;
   T lane_recv;
   lane_local = thread_in;
@@ -94,6 +96,11 @@ void warpScan(T thread_in, T &thread_out, T &sum){
     lane_local += lane_recv;
     lane_recv = __shfl_xor(lane_local, 0x10);
   }
+  // this is added to adapt 64-sized warp, seems has no effect on 32-sized warp --lmy
+  if ((lane_id & 0x1F) == 0){
+    lane_local += lane_recv;
+    lane_recv = __shfl_xor(lane_local, 0x20);
+  }
   if (lane_id == 0){
     lane_local += lane_recv;
   }
@@ -102,7 +109,11 @@ void warpScan(T thread_in, T &thread_out, T &sum){
     lane_recv =0;
   }
   lane_local = lane_recv;
-  lane_recv = __shfl_up(lane_local, 8);
+  // add the symitry one
+  if (WARP_SIZE == 64)
+    lane_recv = __shfl_up(lane_local, 16);
+  if (WARP_SIZE == 32 || (lane_id & 31) == 16)
+    lane_recv = __shfl_up(lane_local, 8);
   if ((lane_id & 15) == 8)
     lane_local += lane_recv;
   lane_recv = __shfl_up(lane_local, 4);
@@ -118,7 +129,7 @@ void warpScan(T thread_in, T &thread_out, T &sum){
 
 __device__ __tbdinline__
 int warpReduceMin(int val){
-  for(int offset = 32>>1; offset>0; offset>>=1){
+  for(int offset = WARP_SIZE>>1; offset>0; offset>>=1){
     int tmp = __shfl_down(val, offset);
     val = MIN(tmp, val);
   }
@@ -127,22 +138,22 @@ int warpReduceMin(int val){
 
 __device__ __tbdinline__
 int blockReduceMin(int val){
-  static __shared__ int shared[32];
-  int lane = threadIdx.x & 31;
-  int wid = threadIdx.x >> 5;
+  static __shared__ int shared[WARP_SIZE];
+  int lane = hipThreadIdx_x & LANE_MASK;
+  int wid = hipThreadIdx_x >> LANE_SHFT;
 
   val = warpReduceMin(val);
   if(lane==0) shared[wid]=val;
   __syncthreads();
 
-  val = (threadIdx.x < blockDim.x/32) ? shared[lane]:MAX_32S;
+  val = (hipThreadIdx_x < hipBlockDim_x/WARP_SIZE) ? shared[lane]:MAX_32S;
   if(wid==0) val=warpReduceMin(val);
   return val;
 }
 
 __device__ __tbdinline__
 int warpReduceMax(int val){
-  for(int offset = 32>>1; offset>0; offset>>=1){
+  for(int offset = WARP_SIZE>>1; offset>0; offset>>=1){
     int tmp = __shfl_down(val, offset);
     val = MAX(tmp, val);
   }
@@ -151,15 +162,15 @@ int warpReduceMax(int val){
 
 __device__ __tbdinline__
 int blockReduceMax(int val){
-  static __shared__ int shared[32];
-  int lane = threadIdx.x & 31;
-  int wid = threadIdx.x >> 5;
+  static __shared__ int shared[WARP_SIZE];
+  int lane = hipThreadIdx_x & LANE_MASK;
+  int wid = hipThreadIdx_x >> LANE_SHFT;
 
   val = warpReduceMax(val);
   if(lane==0) shared[wid]=val;
   __syncthreads();
 
-  val = (threadIdx.x < blockDim.x/32) ? shared[lane]:0;
+  val = (hipThreadIdx_x < hipBlockDim_x/WARP_SIZE) ? shared[lane]:0;
   if(wid==0) val=warpReduceMax(val);
   return val;
 }
@@ -167,41 +178,41 @@ int blockReduceMax(int val){
 
 __device__ __tbdinline__
 int warpReduceSum(int val){
-  for(int offset = 32>>1; offset>0; offset>>=1)
+  for(int offset = WARP_SIZE>>1; offset>0; offset>>=1)
     val += __shfl_down(val, offset);
   return val;
 }
 
 __device__ __tbdinline__
 int blockReduceSum(int val){
-  static __shared__ int shared[32];
-  int lane = threadIdx.x & 31;
-  int wid = threadIdx.x >> 5;
+  static __shared__ int shared[WARP_SIZE];
+  int lane = hipThreadIdx_x & LANE_MASK;
+  int wid = hipThreadIdx_x >> LANE_SHFT;
 
   val = warpReduceSum(val);
   if(lane==0) shared[wid]=val;
   __syncthreads();
 
-  val = (threadIdx.x < (blockDim.x>>5)) ? shared[lane]:0;
+  val = (hipThreadIdx_x < (hipBlockDim_x>>LANE_SHFT)) ? shared[lane]:0;
   if(wid==0) val=warpReduceSum(val);
   return val;
 }
 
 // N = blocksize = 256
 __global__ void reduce(int *dg_in, int* dg_ans, int N){
-  const int gtid = blockIdx.x*blockDim.x + threadIdx.x;
-  const int STRIDE = blockDim.x*gridDim.x;
+  const int gtid = hipBlockIdx_x*hipBlockDim_x + hipThreadIdx_x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
   int sum = 0;
   for(int idx=gtid; idx<N; idx+=STRIDE) sum += dg_in[idx];
   sum = blockReduceSum(sum);
-  if(threadIdx.x==0) *dg_ans = sum;
+  if(hipThreadIdx_x==0) *dg_ans = sum;
 }
 
 // memset index
 __global__ void
 __memsetIdx(int * array, int n, int spval, int sploc, int total){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid = threadIdx.x + blockDim.x*blockIdx.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid = hipThreadIdx_x + hipBlockDim_x*hipBlockIdx_x;
   const int OFFSET = spval * sploc;
   for(int idx=gtid; idx<n; idx+=STRIDE){
     if(idx < sploc) array[idx] = spval*idx;
@@ -216,7 +227,7 @@ __global__ void
 __compress (int* dg_src, int* dg_size,
             int* dg_offset, int* dg_dst, 
             int* dg_qsize) {
-  const int tid = threadIdx.x + blockIdx.x*blockDim.x;    
+  const int tid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;    
   const int n = dg_size[tid];
   const int dst_pos = dg_offset[tid];
   const int src_pos = BIN_SZ*tid;
@@ -224,14 +235,14 @@ __compress (int* dg_src, int* dg_size,
     dg_dst[dst_pos+i] = dg_src[src_pos+i];
   }
 
-  if(tid == blockDim.x*gridDim.x-1)
+  if(tid == hipBlockDim_x*hipGridDim_x-1)
     *dg_qsize = dst_pos+n;
 }
 
 template<typename data_t>
 __global__ void __excudaMemset(data_t* dg_in, data_t dft, size_t N){
-  const int gtid = blockIdx.x*blockDim.x + threadIdx.x;
-  const int STRIDE = blockDim.x*gridDim.x;
+  const int gtid = hipBlockIdx_x*hipBlockDim_x + hipThreadIdx_x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
   for(int idx=gtid; idx<N; idx+=STRIDE) dg_in[idx] = dft;
 }
 
@@ -281,12 +292,12 @@ __device__ float atomicMin(float* address, float val){
 
 
 __global__ void pointer_jumping(int* dg_data, int nvertexs, int* dg_flag){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid   = blockIdx.x*blockDim.x + threadIdx.x;		
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid   = hipBlockIdx_x*hipBlockDim_x + hipThreadIdx_x;		
 
   __shared__ int s_tmp;
 
-  if(!threadIdx.x) s_tmp = 0;
+  if(!hipThreadIdx_x) s_tmp = 0;
   __syncthreads();
 
   for(int idx=gtid; idx<nvertexs;idx+=STRIDE){
@@ -295,7 +306,7 @@ __global__ void pointer_jumping(int* dg_data, int nvertexs, int* dg_flag){
     if(x!=y) {dg_data[idx]=x;s_tmp=1;}
   }
   __syncthreads();
-  if(!threadIdx.x && s_tmp==1) *dg_flag=1;
+  if(!hipThreadIdx_x && s_tmp==1) *dg_flag=1;
 }
 
 template<typename F>

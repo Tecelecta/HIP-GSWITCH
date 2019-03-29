@@ -42,7 +42,7 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
   const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   const int lane = hipThreadIdx_x&31;
   const int* __restrict__ odegree = g.dg_odegree;
-  //const int* __restrict__ idegree = g.directed? g.dgr_odegree : g.dg_odegree;
+  const int* __restrict__ idegree = g.directed? g.dgr_odegree : g.dg_odegree;
   int active_num = 0;
   int inactive_num = 0;
   int push_workload = 0;
@@ -52,7 +52,7 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
 
   for(int idx=gtid; idx<as.size; idx+=STRIDE){
     int od = __ldg(odegree+idx);
-    int id = od;
+    int id = __ldg(indgree+idx);
 
     Status s = f.filter(idx, g);
     bool tag_active   = (s==Active);
@@ -124,7 +124,7 @@ struct inspector_t{
     if(need_inspect){ 
       hipLaunchKernelGGL(TEMPLATE_G_F_CSR(__inspect_VC), dim3(CTANUM) , dim3(THDNUM), 0, 0,
         as, g, f, stat, conf); // to bitmap
-      LOG("%d ", as.queue.get_qsize_host());
+      //LOG("%d ", as.queue.get_qsize_host());
       set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges); 
     }
     fets.flatten(); // this will contaminate the origin data

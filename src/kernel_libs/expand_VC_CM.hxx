@@ -19,11 +19,11 @@ __expand_VC_CM_fused(active_set_t as, G g, F f, config_t conf){
   __shared__ int tmp[3*THDNUM_EXPAND];
 
   const int assize = ASProxy<fmt,M>::get_size_hard(as);
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0){if(gtid==0) as.halt_device();return;}
-  const int cosize  = blockDim.x;
-  const int phase   = threadIdx.x;
+  const int cosize  = hipBlockDim_x;
+  const int phase   = hipThreadIdx_x;
   const int blk_id = 0;
   const int OFFSET_blk       = 3*cosize*blk_id;
   const int OFFSET_start_pos = OFFSET_blk + cosize;
@@ -129,11 +129,11 @@ __expand_VC_CM(active_set_t as, G g, F f, config_t conf){
   __shared__ int tmp[3*THDNUM_EXPAND];
 
   const int assize  = ASProxy<fmt,M>::get_size(as); // bitmap or queue?
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   //if(assize==0) { if(gtid==0) as.halt_device();return; }
-  const int cosize  = blockDim.x;
-  const int phase   = threadIdx.x;
+  const int cosize  = hipBlockDim_x;
+  const int phase   = hipThreadIdx_x;
   const int blk_id  = 0;
   const int OFFSET_blk       = 3*cosize*blk_id;
   const int OFFSET_start_pos = OFFSET_blk + cosize;
@@ -227,11 +227,11 @@ __rexpand_VC_CM(active_set_t as, G g, F f, config_t conf){
   __shared__ int tmp[3*THDNUM_EXPAND];
 
   const int assize  = ASProxy<fmt,M>::get_size(as); // bitmap or queue?
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0){if(gtid==0) as.halt_device();return;}
-  const int cosize  = blockDim.x;
-  const int phase   = threadIdx.x;
+  const int cosize  = hipBlockDim_x;
+  const int phase   = hipThreadIdx_x;
   const int blk_id  = 0;
   const int OFFSET_blk       = 3*cosize*blk_id;
   const int OFFSET_start_pos = OFFSET_blk + cosize;

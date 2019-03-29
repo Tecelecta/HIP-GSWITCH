@@ -24,16 +24,16 @@ __expand_VC_WM_fused_wtf(active_set_t as, G g, F f, config_t conf){
   // used for kernel fusion
   __shared__ Block_Scan<int,10>::Temp_Space scan_space;
   __shared__ int output_cache[THDNUM_EXPAND<<LOG_PER_OUT];
-  const int OFFSET_ouput = threadIdx.x << LOG_PER_OUT;
+  const int OFFSET_ouput = hipThreadIdx_x << LOG_PER_OUT;
   int thread_output = 0;
 
   const int assize = ASProxy<fmt,M>::get_size_hard(as);
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0) {if(gtid==0) as.halt_device();return;}
   const int cosize  = 32;
   const int phase   = gtid & (cosize-1);
-  const int warp_id = threadIdx.x >> 5;
+  const int warp_id = hipThreadIdx_x >> 5;
   const int OFFSET_warp      = 3*cosize*warp_id;
   const int OFFSET_start_pos = OFFSET_warp + cosize;
   const int OFFSET_odegree   = OFFSET_warp + 2*cosize;
@@ -144,16 +144,16 @@ __expand_VC_WM_fused(active_set_t as, G g, F f, config_t conf){
   // used for kernel fusion
   __shared__ Block_Scan<int,10>::Temp_Space scan_space;
   __shared__ int output_cache[THDNUM_EXPAND<<LOG_PER_OUT];
-  const int OFFSET_ouput = threadIdx.x << LOG_PER_OUT;
+  const int OFFSET_ouput = hipThreadIdx_x << LOG_PER_OUT;
   int thread_output = 0;
 
   const int assize = ASProxy<fmt,M>::get_size_hard(as);
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0) {if(gtid==0) as.halt_device();return;}
   const int cosize  = 32;
   const int phase   = gtid & (cosize-1);
-  const int warp_id = threadIdx.x >> 5;
+  const int warp_id = hipThreadIdx_x >> 5;
   const int OFFSET_warp      = 3*cosize*warp_id;
   const int OFFSET_start_pos = OFFSET_warp + cosize;
   const int OFFSET_odegree   = OFFSET_warp + 2*cosize;
@@ -258,11 +258,11 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
   __shared__ int tmp[3*THDNUM_EXPAND];
 
   const int assize  = ASProxy<fmt,M>::get_size(as);
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   const int cosize  = 32;
   const int phase   = gtid & (cosize-1);
-  const int warp_id = threadIdx.x >> 5;
+  const int warp_id = hipThreadIdx_x >> 5;
   const int OFFSET_warp      = 3*cosize*warp_id;
   const int OFFSET_start_pos = OFFSET_warp + cosize;
   const int OFFSET_odegree   = OFFSET_warp + 2*cosize;
@@ -351,11 +351,11 @@ __rexpand_VC_WM(active_set_t as, G g, F f, config_t conf){
   __shared__ int tmp[3*THDNUM_EXPAND];
 
   int assize  = ASProxy<fmt,M>::get_size(as);
-  int STRIDE  = blockDim.x*gridDim.x;
-  int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   int cosize  = 32;
   int phase   = gtid & (cosize - 1);
-  int warp_id = threadIdx.x >> 5;
+  int warp_id = hipThreadIdx_x >> 5;
   int OFFSET_warp      = 3*cosize*warp_id;
   int OFFSET_start_pos = OFFSET_warp + cosize;
   int OFFSET_odegree   = OFFSET_warp + 2*cosize;

@@ -19,8 +19,8 @@ __probe(device_graph_t<COO,E> g, F f){}
 template <typename E, typename F>
 __global__ void // only for VC
 __probe(device_graph_t<CSR,E> g, F f){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
 
   int num = 0;
   for(int idx=gtid; idx<g.nvertexs; idx+=STRIDE){
@@ -31,7 +31,7 @@ __probe(device_graph_t<CSR,E> g, F f){
 
   __syncthreads();
   num = blockReduceSum(num);
-  if(!threadIdx.x) atomicAdd(&f.data.window.dg_cnt[0], num);
+  if(!hipThreadIdx_x) atomicAdd(&f.data.window.dg_cnt[0], num);
 }
 
 template<typename G, typename F>

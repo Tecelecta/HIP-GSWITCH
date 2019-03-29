@@ -8,6 +8,8 @@
 #include "utils/utils.hxx"
 #include "utils/intrinsics.hxx"
 
+#include "utils/platform.hxx"
+
 #define DIV(a,b) ((b)==0? 0:((a+.0)/(b)))
 
 
@@ -102,7 +104,12 @@ struct feature_t{
     hipGetDeviceProperties(&prop, cmd_opt.device);
     cap = prop.minor; while(cap>1) cap/=10;
     cap += prop.major;
+    // TODO the 66a1 device has no register info thus fails to init arch fets!
+#ifdef __HIP_PLATFORM_HCC__
+    register_lim = DEFAULT_REG_LIM;
+#else
     register_lim = prop.regsPerBlock/512;
+#endif
     thread_lim = prop.maxThreadsPerBlock;
     sm_num = prop.multiProcessorCount;
     //printf("  - capbility is %.2f\n", cap);
@@ -110,6 +117,7 @@ struct feature_t{
     //printf("  - max register per Block: %d\n", register_lim);
     //printf("  - processor Count: %d\n", sm_num);
     //printf("\n");
+    store_warpsize(prop);
   }
   // Device (K40)
   //int max_threads_num = 1024;

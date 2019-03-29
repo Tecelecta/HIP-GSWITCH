@@ -10,7 +10,7 @@
 #include "abstraction/config.hxx"
 
 #include "tempkernel.h"
-
+#include "utils/common.hxx"
 
 template<ASFmt fmt, QueueMode M, typename G, typename F>
 __global__ void
@@ -18,8 +18,8 @@ __expand_VC_TM_fused(active_set_t as, G g, F f, config_t conf){
   const int* __restrict__ strict_adj_list = g.dg_adj_list;
 
   int assize  = ASProxy<fmt,M>::get_size_hard(as);
-  int STRIDE  = blockDim.x*gridDim.x;
-  int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0){if(gtid==0) as.halt_device();return;}
   Status want = conf.want();
 
@@ -67,8 +67,8 @@ __expand_VC_TM(active_set_t as, G g, F f, config_t conf){
   const int* __restrict__ strict_adj_list = g.dg_adj_list;
 
   int assize  = ASProxy<fmt,M>::get_size(as);
-  int STRIDE  = blockDim.x*gridDim.x;
-  int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0){if(gtid==0) as.halt_device();return;}
   Status want = conf.want();
 
@@ -106,22 +106,22 @@ __rexpand_VC_TM_BITMAP(active_set_t as, G g, F f, config_t conf){
   const int* __restrict__ strict_adj_list = g.directed? g.dgr_adj_list : g.dg_adj_list;
   edata_t* strict_edgedata = g.directed? g.dgr_edgedata : g.dg_edgedata;
 
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   const int n_bytes = as.bitmap.inactive.n_words;
   const int* bits   = (int*)(void*)as.bitmap.inactive.dg_bits;
-  const int lane    = threadIdx.x&31;
-  const int n_bytes_aligned = (n_bytes&31)?(((n_bytes>>5)+1)<<5):n_bytes;
+  const int lane    = hipThreadIdx_x&LANE_MASK;
+  const int n_bytes_aligned = (n_bytes&LANE_MASK)?(((n_bytes>>LANE_SHFT)+1)<<LANE_SHFT):n_bytes;
 
   for(int idx=gtid; idx<n_bytes_aligned; idx+=STRIDE){
     int inactive = 0;
     if(idx<n_bytes) inactive = ~bits[idx];
 
-    for(int l=0; l<32; ++l){
+    for(int l=0; l<WARP_SIZE; ++l){
       int w   = __shfl(inactive, l);
       int lid = idx-lane+l;
       if(w&(1<<lane)){
-        int v = (lid<<5) + lane;
+        int v = (lid<<LANE_SHFT) + lane;
         int start = g.get_in_start_pos(v);
         int end = start + g.get_in_degree(v);
         for(int i = start; i < end; ++i){
@@ -155,8 +155,8 @@ __rexpand_VC_TM(active_set_t as, G g, F f, config_t conf){
   edata_t* strict_edgedata = g.directed? g.dgr_edgedata : g.dg_edgedata;
 
   int assize  = ASProxy<fmt,M>::get_size(as);
-  int STRIDE  = blockDim.x*gridDim.x;
-  int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   Status want = conf.want();
 
   for(int idx=gtid; idx<assize; idx+=STRIDE){

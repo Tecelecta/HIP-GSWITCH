@@ -7,6 +7,8 @@
 #include "utils/utils.hxx"
 #include "abstraction/features.hxx"
 
+#include "utils/platform.hxx"
+
 // partial specialization
 template<GraphFmt fmt, typename E>
 struct device_graph_t{};
@@ -91,11 +93,18 @@ struct device_graph_t<CSR, E>{
       //else if(std::is_same<int,E>::value) build_tex<int>(dt_edgedata, (int*)dg_edgedata, nedges);
     }
 
-#ifdef __HIP_PLATFORM_NVCC__
+#ifdef __USE_TEXTURE__
+    H_ERR(store_texture_max_dim(cmd_opt.device));
+    int ntexobjs = CEIL(nvertexs, MAXTEX);
+
+    dt_odegree   = new hipTextureObject_t[ntexobjs];
+    dt_start_pos = new hipTextureObject_t[ntexobjs];
     build_tex<int>(dt_odegree,   dg_odegree,   nvertexs);
     build_tex<int>(dt_start_pos, dg_start_pos, nvertexs);
 
     if(directed){
+      dtr_odegree   = new hipTextureObject_t[ntexobjs];
+      dtr_start_pos = new hipTextureObject_t[ntexobjs];
       build_tex<int>(dtr_odegree,   dgr_odegree,   nvertexs);
       build_tex<int>(dtr_start_pos, dgr_start_pos, nvertexs);
     }
@@ -116,7 +125,7 @@ struct device_graph_t<CSR, E>{
   __device__ __tbdinline__
   E* fetch_edata_r(const int eid){return dgr_edgedata+eid;}
 
-#ifdef __HIP_PLATFORM_NVCC__
+#ifdef __USE_TEXTURE__
   __device__ __tbdinline__
   int get_out_degree(const int vid){
     return tex1Dfetch<int>(dt_odegree, vid); 
@@ -197,11 +206,13 @@ struct device_graph_t<CSR, E>{
   int level;
   bool directed;
   //cudaTextureObject_t dt_edgedata;
-  hipTextureObject_t dt_odegree;
-  hipTextureObject_t dt_start_pos;
+#ifdef __USE_TEXTURE__
+  hipTextureObject_t* dt_odegree;
+  hipTextureObject_t* dt_start_pos;
 
-  hipTextureObject_t dtr_odegree;
-  hipTextureObject_t dtr_start_pos;
+  hipTextureObject_t* dtr_odegree;
+  hipTextureObject_t* dtr_start_pos;
+#endif
 };
 
 template<GraphFmt Fmt, typename E>

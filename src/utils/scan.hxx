@@ -24,9 +24,9 @@ __global__ void __pre_scan( data_t* dg_index,
   HIP_DYNAMIC_SHARED(data_t, s_tmp); //contains blk_sz vaild element
   //data_t* s_tmp = dc_tmp;
 
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int tid    = threadIdx.x;
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int tid    = hipThreadIdx_x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   int offset = 1;
 
   int ai = tid;
@@ -106,9 +106,9 @@ __global__ void __post_scan(data_t* dg_output,
   HIP_DYNAMIC_SHARED(data_t, s_tmp); //contains blk_sz vaild element
   //data_t* s_tmp = dc_tmp;
   
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int tid    = threadIdx.x;
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int tid    = hipThreadIdx_x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   int offset = 1;
 
   int ai = tid<<1;
@@ -136,7 +136,7 @@ __global__ void __post_scan(data_t* dg_output,
   // step 3: write the block sum and clear the last element
   if(tid == 0) {
 	  *dg_reduce = s_tmp[blk_sz-1 + CONFLICT_FREE_OFFSET(blk_sz-1)];
-	  //printf("blk %d->reduction: %d\n", blockIdx.x, *dg_reduce);
+	  //printf("blk %d->reduction: %d\n", hipBlockIdx_x, *dg_reduce);
 	  s_tmp[blk_sz-1 + CONFLICT_FREE_OFFSET(blk_sz-1)] = 0;
   }
 
@@ -170,8 +170,8 @@ template<typename data_t>
 __global__ void __final_scan( data_t* dg_output,
                               data_t* dg_blk_sum,
                               int n, int blk_sz){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   for(int idx = gtid; idx < n; idx += STRIDE){
     int blk_id = idx/blk_sz;
     dg_output[idx] += dg_blk_sum[blk_id];

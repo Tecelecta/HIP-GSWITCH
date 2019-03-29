@@ -3,6 +3,7 @@
 
 #include <hip/hip_runtime.h>
 
+#include "utils/common.hxx"
 
 // this struct is modifiled from gunrock
 template <typename T, int _LOG_THREADS> //256 1<<8

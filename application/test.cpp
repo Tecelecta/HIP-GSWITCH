@@ -21,7 +21,7 @@ void Print(std::vector<int> &vec){
 
 __global__ void
 my_memsetIdx(int* dg_array, int size, int scale){
-  const int gtid=blockIdx.x*blockDim.x + threadIdx.x;
+  const int gtid=hipBlockIdx_x*hipBlockDim_x + hipThreadIdx_x;
   if(gtid < size){
     dg_array[gtid] = gtid*scale;
   }
@@ -160,8 +160,8 @@ struct GPU_device{
 
 __global__ void
 inspect(int* dg_data, int N, int* dg_output){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid = threadIdx.x+blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid = hipThreadIdx_x+hipBlockIdx_x*hipBlockDim_x;
 
   int min=MAX_32S, max=0;
   for(int idx=gtid; idx<N; idx+=STRIDE){
@@ -170,13 +170,13 @@ inspect(int* dg_data, int N, int* dg_output){
   }
   __syncthreads();
   max = blockReduceMax(max);
-  //if(!threadIdx.x) atomicMax(&dg_output[0], max);
-  if(!threadIdx.x) dg_output[0] = max;
+  //if(!hipThreadIdx_x) atomicMax(&dg_output[0], max);
+  if(!hipThreadIdx_x) dg_output[0] = max;
 
   __syncthreads();
   min = blockReduceMin(min);
-  //if(!threadIdx.x) atomicMin(&dg_output[1], min);
-  if(!threadIdx.x) dg_output[1] = min;
+  //if(!hipThreadIdx_x) atomicMin(&dg_output[1], min);
+  if(!hipThreadIdx_x) dg_output[1] = min;
 }
 
 void test_max_min(){

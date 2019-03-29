@@ -18,22 +18,22 @@
 //  
 //  int STRIDE,gtid,phase,cosize,qsize;
 //  if(mode==0){
-//    STRIDE = blockDim.x*gridDim.x;
-//    gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+//    STRIDE = hipBlockDim_x*hipGridDim_x;
+//    gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
 //    cosize = 1;
 //    phase  = 0;
 //    qsize  = as.small.get_qsize();
 //  }else if(mode==1){
-//    STRIDE = (blockDim.x*gridDim.x)>>5;
-//    gtid   = (threadIdx.x + blockIdx.x*blockDim.x)>>5;
+//    STRIDE = (hipBlockDim_x*hipGridDim_x)>>5;
+//    gtid   = (hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x)>>5;
 //    cosize = 32;
-//    phase  = (threadIdx.x + blockIdx.x*blockDim.x) & (cosize-1);
+//    phase  = (hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x) & (cosize-1);
 //    qsize  = as.medium.get_qsize();
 //  }else{
-//    STRIDE = gridDim.x;
-//    gtid   = blockIdx.x;
-//    cosize = blockDim.x;
-//    phase  = threadIdx.x;
+//    STRIDE = hipGridDim_x;
+//    gtid   = hipBlockIdx_x;
+//    cosize = hipBlockDim_x;
+//    phase  = hipThreadIdx_x;
 //    qsize  = as.large.get_qsize();
 //  }
 //

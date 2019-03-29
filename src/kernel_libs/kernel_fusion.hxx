@@ -28,11 +28,11 @@ template<QueueMode M>
 __device__ void __write_global_queue_warp(Block_Scan<int,10>::Temp_Space& sh_scan_space,
     int* sh_output_cache, int& thread_output, queue_t queue){
   if(queue.mode == Cached && queue.traceback) {thread_output=0; return;}
-  const int OFFSET = threadIdx.x << LOG_PER_OUT;
+  const int OFFSET = hipThreadIdx_x << LOG_PER_OUT;
   int output_loc = 0;
   Block_Scan<int,10>::Warp_Scan(thread_output, output_loc);
-  int lane = threadIdx.x & 31;
-  int warp_id = threadIdx.x >> 5;
+  int lane = hipThreadIdx_x & 31;
+  int warp_id = hipThreadIdx_x >> 5;
   int* base = Qproxy<M>::output_base(queue);
   if(lane == 31){
     if(output_loc + thread_output != 0)
@@ -50,8 +50,8 @@ __device__ void __write_global_queue_warp(Block_Scan<int,10>::Temp_Space& sh_sca
 
 template<QueueMode M, typename G, typename F>
 __global__ void __compensation_for_queue(queue_t queue, G g, F f, config_t conf){
-  const int STRIDE = blockDim.x*gridDim.x; 
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x; 
+  const int STRIDE = hipBlockDim_x*hipGridDim_x; 
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x; 
   int size = Qproxy<M>::get_qsize(queue); //must be queue !
   for(int idx=gtid; idx<size; idx+=STRIDE){
     int victim = Qproxy<M>::fetch(queue, idx);
@@ -106,10 +106,10 @@ __super_fusion(active_set_t as, G g, F f, config_t conf){
 
   __shared__ int aset[2048];
   __shared__ int asize[2];
-  int tid = threadIdx.x;
+  int tid = hipThreadIdx_x;
   int cosize = 32;
-  int lane = threadIdx.x&31;
-  int wid = threadIdx.x>>5;
+  int lane = hipThreadIdx_x&31;
+  int wid = hipThreadIdx_x>>5;
   int STRIDE = 32;
   int OFFSET = 1024;
   int c = 0;
@@ -121,7 +121,7 @@ __super_fusion(active_set_t as, G g, F f, config_t conf){
   __syncthreads();
 
   for(;;){
-    //if(threadIdx.x==0) printf("%d\n", asize[c]);
+    //if(hipThreadIdx_x==0) printf("%d\n", asize[c]);
     for(int idx=wid; idx<asize[c]; idx+=STRIDE){
       int v = aset[idx+c*OFFSET];
       int start = tex1Dfetch<int>(g.dt_start_pos, v);

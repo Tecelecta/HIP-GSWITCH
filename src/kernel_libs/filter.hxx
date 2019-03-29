@@ -15,8 +15,8 @@ __device__ __forceinline__ int popc(char a) {int c;for(c=0;a;++c) a&=(a-1);retur
 
 template<QueueMode M>
 __global__ void __copy_all(active_set_t as){
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   int* base = Qproxy<M>::output_base(as.queue);
   for(int idx=gtid; idx<as.size; idx+=STRIDE) {
     base[idx] = idx;
@@ -26,9 +26,9 @@ __global__ void __copy_all(active_set_t as){
 
 template<QueueMode M>
 __global__ void __filter_unfixed(active_set_t as){
-  const int STRIDE  = blockDim.x*gridDim.x; 
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
-  const int lane    = threadIdx.x&31;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x; 
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+  const int lane    = hipThreadIdx_x&31;
   const int n_bytes = as.bitmap.active.bytes_size(); 
   const char* bits1 = (char*)(void*)as.bitmap.active.to_bytes(); 
   const char* bits2 = (char*)(void*)as.bitmap.inactive.to_bytes(); 
@@ -45,7 +45,7 @@ __global__ void __filter_unfixed(active_set_t as){
     if(!lane) 
       warp_base = atomicAdd(Qproxy<M>::output_size(as.queue), sum);
     warp_base = __shfl(warp_base, 0); 
-    if(active){ 
+    if(unfixed){ // this should be the problem... -lmy
       for(int i=0,c=0;i<8;++i) if(unfixed&((char)1<<i)){
         base[warp_base+rank+(c++)] = (idx<<3)+i; 
       } 
@@ -58,9 +58,9 @@ __global__ void __filter_unfixed(active_set_t as){
 // aggregation.
 template<QueueMode M>
 __global__ void __filter_active(active_set_t as){ 
-  const int STRIDE  = blockDim.x*gridDim.x; 
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
-  const int lane    = threadIdx.x&31;
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x; 
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+  const int lane    = hipThreadIdx_x&31;
   const int n_bytes = as.bitmap.active.bytes_size(); 
   const char* bits  = (char*)(void*)as.bitmap.active.to_bytes(); 
   int* base = Qproxy<M>::output_base(as.queue);
@@ -86,9 +86,9 @@ __global__ void __filter_active(active_set_t as){
 // aggregation.
 template<QueueMode M>
 __global__ void __filter_inactive(active_set_t as){ 
-  const int STRIDE  = blockDim.x*gridDim.x;
-  const int gtid    = threadIdx.x + blockIdx.x*blockDim.x;
-  const int lane    = threadIdx.x&31; 
+  const int STRIDE  = hipBlockDim_x*hipGridDim_x;
+  const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+  const int lane    = hipThreadIdx_x&31; 
   const int n_bytes = as.bitmap.inactive.bytes_size(); 
   const char* bits  = (char*)(void*)as.bitmap.inactive.to_bytes(); 
   int* base = Qproxy<M>::output_base(as.queue);
@@ -113,11 +113,11 @@ __global__ void __filter_inactive(active_set_t as){
 
 // bitmap to local_bin, stride mode
 __global__ void __filter_local_stride(active_set_t as, config_t conf){ 
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   const int OFFSET = gtid*BIN_SZ; 
-  const int rest   = as.size & (gridDim.x*blockDim.x-1);
-  const int vpt    = (as.size / (gridDim.x*blockDim.x)) + (gtid < rest ? 1 :0); 
-  const int start  = gtid*(as.size / (gridDim.x*blockDim.x)) + (gtid < rest ? gtid : rest); 
+  const int rest   = as.size & (hipGridDim_x*hipBlockDim_x-1);
+  const int vpt    = (as.size / (hipGridDim_x*hipBlockDim_x)) + (gtid < rest ? 1 :0); 
+  const int start  = gtid*(as.size / (hipGridDim_x*hipBlockDim_x)) + (gtid < rest ? gtid : rest); 
   const int end    = start + vpt; 
   Status want = conf.want(); 
   int qsize = 0;
@@ -140,8 +140,8 @@ __global__ void __filter_local_stride(active_set_t as, config_t conf){
 // bitmap to local_bin, interleave mode
 __global__ void __filter_local_interleave(active_set_t as, config_t conf){
 
-  const int STRIDE = blockDim.x*gridDim.x; 
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x; 
+  const int STRIDE = hipBlockDim_x*hipGridDim_x; 
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x; 
   const int OFFSET = gtid*BIN_SZ; 
   Status want      = conf.want(); 
   int qsize = 0;

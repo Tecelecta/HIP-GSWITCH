@@ -176,8 +176,8 @@ active_set_t build_active_set(int size, config_t conf){
 
 template<typename E, typename F>
 __global__ void __window_delay_update(int size, device_graph_t<CSR,E> g, F f){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   for(int idx=gtid; idx<size; idx+=STRIDE){
     f.filter(idx, g); //for update
   }

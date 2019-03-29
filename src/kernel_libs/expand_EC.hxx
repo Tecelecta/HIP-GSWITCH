@@ -15,8 +15,8 @@
 template<typename G, typename F>
 __global__ void
 __expand_EC(active_set_t as, G g, F f){
-  int STRIDE = blockDim.x*gridDim.x;
-  int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  int STRIDE = hipBlockDim_x*hipGridDim_x;
+  int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   int assize = as.get_size();
 
   for(int idx=gtid; idx<assize; idx+=STRIDE){

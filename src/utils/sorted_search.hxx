@@ -28,7 +28,7 @@ __global__ void global_upper(data_t *dg_a, int a_count,
                       data_t *dg_b, int b_count,
               int* dg_idx){
 
-  const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
+  const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
 
   data_t a_item;
   int a_res;
@@ -48,7 +48,7 @@ __global__ void partition(data_t* dg_a, int a_count,
               int tile_count,
               int* dg_aout, int* dg_bout){
 
-  const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
+  const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   int diag  = MIN(gtid * TILE_SZ, a_count + b_count);
 
   int begin = MAX(0, diag - b_count);
@@ -73,10 +73,10 @@ template<typename data_t, int TILE_SZ>
 __global__ void block_upper(data_t* dg_a, int a_count, data_t* dg_b, int b_count,
                             int* a_offset, int* b_offset, int* dg_idx){
 
-  //const int gtid = threadIdx.x + blockIdx.x*blockDim.x;
-  const int tid  = threadIdx.x;
-  const int Loc_STRIDE = blockDim.x;
-  const int bid  = blockIdx.x;
+  //const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
+  const int tid  = hipThreadIdx_x;
+  const int Loc_STRIDE = hipBlockDim_x;
+  const int bid  = hipBlockIdx_x;
 
   __shared__ data_t s_b[TILE_SZ];
   __shared__ int s_idx[TILE_SZ];

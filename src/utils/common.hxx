@@ -4,6 +4,7 @@
 
 #include <hip/hip_runtime.h>
 #include <cstdio>
+#include <cmath>
 
 #define ALL_ACTIVE -1
 #define ALL_INACTIVE -2

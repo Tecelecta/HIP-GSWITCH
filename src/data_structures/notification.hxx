@@ -11,12 +11,12 @@
 template<typename G, typename F>
 __global__ void
 __exit(G g, F f, config_t conf, int* dg_cnt){
-  const int STRIDE = blockDim.x*gridDim.x;
-  const int gtid   = threadIdx.x + blockIdx.x*blockDim.x;
+  const int STRIDE = hipBlockDim_x*hipGridDim_x;
+  const int gtid   = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
 
   __shared__ int s_tmp;
 
-  if(!threadIdx.x) s_tmp = 0;
+  if(!hipThreadIdx_x) s_tmp = 0;
   __syncthreads();
 
   for(int idx=gtid; idx<g.nvertexs; idx+=STRIDE){
@@ -26,7 +26,7 @@ __exit(G g, F f, config_t conf, int* dg_cnt){
   }
 
   __syncthreads();
-  if(!threadIdx.x && s_tmp) dg_cnt[0] = s_tmp;
+  if(!hipThreadIdx_x && s_tmp) dg_cnt[0] = s_tmp;
 }
 
 
