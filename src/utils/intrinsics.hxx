@@ -55,12 +55,13 @@ __device__ int alignment(int arbitrary, int base){
   return ((arbitrary+base-1)/base)*base;
 }
 
-__device__ int lanemask_lt(){
+// NO OK and NO need --lmy
+__device__ ballot_t lanemask_lt(){
   return (1<<(hipThreadIdx_x&LANE_MASK))-1;
 }
 
 __device__ int atomicAggInc(int *ctr){
-  unsigned int active = __ballot(1);
+  ballot_t active = __ballot(1);
   int leader = __ffs(active) - 1;
   int change = __popc(active);
   unsigned int rank = __popc(active & lanemask_lt());
@@ -79,28 +80,8 @@ void warpScan(T thread_in, T &thread_out, T &sum){
   T &lane_local = thread_out;
   T lane_recv;
   lane_local = thread_in;
-  lane_recv = __shfl_xor(lane_local, 1);
-  if ((lane_id & 1) == 0){
-    lane_local += lane_recv;
-    lane_recv = __shfl_xor(lane_local, 2);
-  }
-  if ((lane_id & 3) == 0){
-    lane_local += lane_recv;
-    lane_recv = __shfl_xor(lane_local, 4);
-  }
-  if ((lane_id & 7) == 0){
-    lane_local += lane_recv;
-    lane_recv = __shfl_xor(lane_local, 8);
-  }
-  if ((lane_id & 0xF) == 0){
-    lane_local += lane_recv;
-    lane_recv = __shfl_xor(lane_local, 0x10);
-  }
-  // this is added to adapt 64-sized warp, seems has no effect on 32-sized warp --lmy
-  if ((lane_id & 0x1F) == 0){
-    lane_local += lane_recv;
-    lane_recv = __shfl_xor(lane_local, 0x20);
-  }
+  __warpScanUnfolder<T,(WARP_SIZE>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+
   if (lane_id == 0){
     lane_local += lane_recv;
   }
@@ -109,24 +90,48 @@ void warpScan(T thread_in, T &thread_out, T &sum){
     lane_recv =0;
   }
   lane_local = lane_recv;
-  // add the symitry one
-  if (WARP_SIZE == 64)
-    lane_recv = __shfl_up(lane_local, 16);
-  if (WARP_SIZE == 32 || (lane_id & 31) == 16)
-    lane_recv = __shfl_up(lane_local, 8);
-  if ((lane_id & 15) == 8)
-    lane_local += lane_recv;
-  lane_recv = __shfl_up(lane_local, 4);
-  if ((lane_id & 7) == 4)
-    lane_local += lane_recv;
-  lane_recv = __shfl_up(lane_local, 2);
-  if ((lane_id & 3) == 2)
-    lane_local += lane_recv;
-  lane_recv = __shfl_up(lane_local, 1);
-  if ((lane_id & 1) == 1)
-    lane_local += lane_recv;
+
+  __warpScanUnfolder<T,(WARP_SIZE>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
 }
 
+/* this function demostrate how to produce warp-size adaptable code --lmy
+template<typename T>
+__device__ __tbdinline__ 
+void warpScan_dynamic_adapt(T thread_in, T &thread_out, T &sum){
+  int lane_id = hipThreadIdx_x & LANE_MASK;
+  T &lane_local = thread_out;
+  T lane_recv;
+  lane_local = thread_in;
+
+  unsigned step = 2;
+  lane_recv = __shfl_xor(lane_local, 1);
+  while(step < WARP_SIZE){
+    if ((lane_id & (step-1)) == 0){
+      lane_local += lane_recv;
+      lane_recv = __shfl_xor(lane_local, step);
+    }
+    step <<= 1;
+  }
+  step = WARP_SIZE >> 1;
+
+  if (lane_id == 0){
+    lane_local += lane_recv;
+  }
+  sum = __shfl(lane_local, 0);
+  if (lane_id == 0){
+    lane_recv =0;
+  }
+  lane_local = lane_recv;
+
+  while(step > 1){
+    lane_recv = __shfl_up(lane_local, (step>>1));
+    if ((lane_id & step-1) == (step>>1))
+      lane_local += lane_recv;
+    step >>= 1;
+  }
+}
+*/
+// OK for var warpsize --lmy
 __device__ __tbdinline__
 int warpReduceMin(int val){
   for(int offset = WARP_SIZE>>1; offset>0; offset>>=1){
@@ -175,7 +180,7 @@ int blockReduceMax(int val){
   return val;
 }
 
-
+// OK for var warpsize --lmy
 __device__ __tbdinline__
 int warpReduceSum(int val){
   for(int offset = WARP_SIZE>>1; offset>0; offset>>=1)
@@ -255,11 +260,11 @@ __host__ void excudaMemset(data_t* dg_in, data_t dft, size_t N){
 // data_t is packed with 4bytes
 template<typename data_t>
 __device__ __tbdinline__
-data_t __exshfl_down(data_t data, int delta){
+data_t __exshfl_down(data_t data, int delta, int width=WARP_SIZE){
   int N = sizeof(data_t)/sizeof(int);
   int* x = (int*)&data;
   for(int i = 0; i < N; ++i){
-    x[i] = __shfl_down(x[i], delta);
+    x[i] = __shfl_down(x[i], delta, witdh);
   }
   return *((data_t*)x);
 }

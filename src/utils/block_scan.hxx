@@ -3,7 +3,7 @@
 
 #include <hip/hip_runtime.h>
 
-#include "utils/common.hxx"
+#include "utils/platform.hxx"
 
 // this struct is modifiled from gunrock
 template <typename T, int _LOG_THREADS> //256 1<<8
@@ -11,7 +11,7 @@ struct Block_Scan{
     enum {
       LOG_THREADS       = _LOG_THREADS,
       THREADS           = 1 << LOG_THREADS,
-      LOG_WARP_THREADS  = 5, //GR_LOG_WARP_THREADS(CUDA_ARCH),
+      LOG_WARP_THREADS  = WARP_SHIFT,//5, //GR_LOG_WARP_THREADS(CUDA_ARCH),
       WARP_THREADS      = 1 << LOG_WARP_THREADS,
       WARP_THREADS_MASK = WARP_THREADS - 1,
       LOG_BLOCK_WARPS   = _LOG_THREADS - LOG_WARP_THREADS,
@@ -31,26 +31,7 @@ struct Block_Scan{
       T lane_recv;
 
       lane_local = thread_in;
-      lane_recv = __shfl_xor(lane_local, 1);
-      if ((lane_id & 1) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 2);
-      }
-
-      if ((lane_id & 3) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 4);
-      }
-
-      if ((lane_id & 7) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 8);
-      }
-
-      if ((lane_id & 0xF) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 0x10);
-      }
+      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
 
       if (lane_id == 0){
         lane_local += lane_recv;
@@ -60,20 +41,8 @@ struct Block_Scan{
         lane_recv =0;
       }
       lane_local = lane_recv;
-      lane_recv = __shfl_up(lane_local, 8);
-      if ((lane_id & 15) == 8)
-        lane_local += lane_recv;
-      lane_recv = __shfl_up(lane_local, 4);
-      if ((lane_id & 7) == 4)
-        lane_local += lane_recv;
 
-      lane_recv = __shfl_up(lane_local, 2);
-      if ((lane_id & 3) == 2)
-        lane_local += lane_recv;
-
-      lane_recv = __shfl_up(lane_local, 1);
-      if ((lane_id & 1) == 1)
-        lane_local += lane_recv;
+      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
     }
 
     static __device__ __tbdinline__ 
@@ -82,54 +51,26 @@ struct Block_Scan{
       T &lane_local = thread_out;
       T lane_recv;
       lane_local = thread_in;
-      lane_recv = __shfl_xor(lane_local, 1);
-      if ((lane_id & 1) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 2);
-      }
-      if ((lane_id & 3) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 4);
-      }
-      if ((lane_id & 7) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 8);
-      }
-      if ((lane_id & 0xF) == 0){
-        lane_local += lane_recv;
-        lane_recv = __shfl_xor(lane_local, 0x10);
-      }
+      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+
       if (lane_id == 0){
         lane_local += lane_recv;
         lane_recv =0;
       }
       lane_local = lane_recv;
-      lane_recv = __shfl_up(lane_local, 8);
-      if ((lane_id & 15) == 8)
-        lane_local += lane_recv;
 
-      lane_recv = __shfl_up(lane_local, 4);
-      if ((lane_id & 7) == 4)
-        lane_local += lane_recv;
-
-      lane_recv = __shfl_up(lane_local, 2);
-      if ((lane_id & 3) == 2)
-        lane_local += lane_recv;
-
-      lane_recv = __shfl_up(lane_local, 1);
-      if ((lane_id & 1) == 1)
-        lane_local += lane_recv;
+      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
     }
 
     static __device__ __tbdinline__ void Warp_LogicScan(int thread_in, T &thread_out){
-      unsigned int warp_flag = __ballot(thread_in);
+      ballot_t warp_flag = __ballot(thread_in);
       int lane_id = hipThreadIdx_x & WARP_THREADS_MASK;
       unsigned int lane_mask = (1 << lane_id)-1;
       thread_out = __popc(warp_flag & lane_mask);
     }
 
     static __device__ __tbdinline__ void Warp_LogicScan(int thread_in, T &thread_out, T &sum){
-      unsigned int warp_flag = __ballot(thread_in);
+      ballot_t warp_flag = __ballot(thread_in);
       int lane_id = hipThreadIdx_x & WARP_THREADS_MASK;
       unsigned int lane_mask = (1 << lane_id)-1;
       thread_out = __popc(warp_flag & lane_mask);

@@ -9,6 +9,7 @@
 #include "data_structures/active_set.hxx"
 #include "data_structures/functor.hxx"
 
+#include "utils/platform.hxx"
 
 const int PER_OUT=8;
 const int LOG_PER_OUT=3;
@@ -31,10 +32,10 @@ __device__ void __write_global_queue_warp(Block_Scan<int,10>::Temp_Space& sh_sca
   const int OFFSET = hipThreadIdx_x << LOG_PER_OUT;
   int output_loc = 0;
   Block_Scan<int,10>::Warp_Scan(thread_output, output_loc);
-  int lane = hipThreadIdx_x & 31;
-  int warp_id = hipThreadIdx_x >> 5;
+  int lane = hipThreadIdx_x & LANE_MASK;
+  int warp_id = hipThreadIdx_x >> LANE_SHFT;
   int* base = Qproxy<M>::output_base(queue);
-  if(lane == 31){
+  if(lane == LANE_MASK){
     if(output_loc + thread_output != 0)
       sh_scan_space.warp_counter_offset[warp_id] = atomicAdd(Qproxy<M>::output_size(queue), output_loc+thread_output);
   }
@@ -98,7 +99,7 @@ struct CompensationProxy<EC>{
   static void compensation(active_set_t& as, device_graph_t<CSR,E> g, F f, config_t conf){}
 };
 
-
+/*
 template<ASFmt fmt, QueueMode M, typename G, typename F>
 __global__ void 
 __super_fusion(active_set_t as, G g, F f, config_t conf){
@@ -164,10 +165,10 @@ __super_fusion(active_set_t as, G g, F f, config_t conf){
 
 template<typename E ,typename F>
 void super_fusion(active_set_t as, device_graph_t<CSR,E> g, F f, config_t conf){
-   hipLaunchKernelGGL(TEMPLATE_QUEUE_NORMAL(__super_fusion), dim3(1), dim3(1024), 0, 0, as,g,f,conf);
+   hipLaunchKernelGGL(TSPEC_QUEUE_NORMAL(__super_fusion), dim3(1), dim3(1024), 0, 0, as,g,f,conf);
 }
 
 template<typename E ,typename F>
 void super_fusion(active_set_t as, device_graph_t<COO,E> g, F f, config_t conf){}
-
+*/
 #endif

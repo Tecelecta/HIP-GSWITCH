@@ -117,7 +117,7 @@ struct feature_t{
     //printf("  - max register per Block: %d\n", register_lim);
     //printf("  - processor Count: %d\n", sm_num);
     //printf("\n");
-    store_warpsize(prop);
+    check_warpsize(prop);
   }
   // Device (K40)
   //int max_threads_num = 1024;

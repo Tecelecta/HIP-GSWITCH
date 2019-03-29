@@ -1,30 +1,75 @@
 #ifndef _PLATFORM_H__
 #define _PLATFORM_H__
 #include <hip/hip_runtime.h>
+#include <assert.h>
 /**
  * this file specifies key variables differ from platforms
  */
 //adapt for variant warp size --lmy
-int __warp_sz;
-int __warp_shft;
-//makes this one a rvalue to prevent it from modifications
-#define WARP_SIZE ((const int)__warp_sz)
-#define LANE_MASK (__warp_sz-1)
-#define LANE_SHFT ((const int)__warp_shft)
+#ifndef LANE_SHFT
+#define LANE_SHFT 5
+#endif 
+#define WARP_SIZE (1<<LANE_SHFT)
+#define LANE_MASK (WARP_SIZE-1)
 
-void store_warpsize(hipDeviceProp_t &prop){
-  // this one deals the warp size problem --lmy
-  __warp_sz = prop.warpSize;
-  int tmp = __warp_sz-1;
-  for(__warp_shft = 0; tmp; ++__warp_shft) tmp&=(tmp-1);
+#if (LANE_SHFT == 5)
+typedef uint32_t ballot_t
+#elif (LANE_SHFT == 6)
+typedef uint64_t ballot_t
+#else
+#error no valid platform specified!
+#endif
+
+void check_warpsize(hipDeviceProp_t &prop){
+  // this one checks the platform info against compiler configs --lmy
+  int warp_sz = prop.warpSize;
+  int warp_shft = 0;
+  int tmp = warp_sz-1;
+  for(; tmp; ++__warp_shft) tmp&=(tmp-1);
+  assert(warp_sz == WARP_SIZE && warp_shft == LANE_SHFT && "Warp Size doesn't match current platform!");
 }
+
+// this unfolder struct generates different warp scans
+template<typename T, unsigned step>
+struct __warpScanUnfolder{
+  static __device__ __tbdinline__ 
+  void warp_upsweep(const int lane_id, T& lane_recv, T& lane_local){
+    __warpScanUnfolder<T,(step>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+    if ((lane_id & (step-1)) == 0){
+      lane_local += lane_recv;
+      lane_recv = __shfl_xor(lane_local, step);
+    }
+  }
+  static __device__ __tbdinline__ 
+  void warp_downsweep(const int lane_id, T& lane_recv, T& lane_local){
+    lane_recv = __shfl_up(lane_local, (step>>1));
+    if ((lane_id & step-1) == (step>>1))
+      lane_local += lane_recv;
+    __warpScanUnfolder<T,(step>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+  }
+}
+template<typename T>
+struct __warpScanUnfolder<T,1>{
+  static __device__ __tbdinline__ 
+  void warp_upsweep(const int lane_id, T& lane_recv, T& lane_local){
+    lane_recv = __shfl_xor(lane_local, 1);
+  }
+  static __device__ __tbdinline__ 
+  void warp_downsweep(const int lane_id, T& lane_recv, T& lane_local){}
+};
+
 // this constant is reserved due to the current hip bug!
 #define DEFUALT_REG_LIM 128
 
+
+// the following functions acquires tex size, and tries to use dynamic numbered texture objects
 hipError_t store_texture_max_dim(int devid);
 #ifdef __USE_TEXTURE__
 int __tex_sz;
+__constant__ unsigned int __d_tex_sz;
+
 #define MAXTEX ((const int)__tex_sz)
+#define DMAXTEX __d_tex_sz
 
 #ifdef __HIP_PLATFORM_NVCC__
 #include <cuda.h>
@@ -35,6 +80,8 @@ hipError_t store_texture_max_dim(int devid){
   	return hipCUDAErrorTohipError(err);
   }
   __tex_sz = cuda_prop.maxTexture1D;
+  err = hipMemcpyToSymbol(&__d_tex_sz, __tex_sz, sizeof(unsigned int));
+  return err;
 }
 #endif
 
@@ -69,18 +116,20 @@ extern ihipDevice_t* ihipGetDevice(int);
 
 hipError_t store_texture_max_dim(int devid){
   size_t res_buffer;
+  hipError_t err;
   hsa_agent_t* agent = &(ihipGetDevice(devid)->_hsaAgent);
   hsa_status_t status = hsa_amd_image_get_info_max_dim(*agent, HSA_EXT_AGENT_INFO_IMAGE_1D_MAX_ELEMENTS, &res_buffer);
   if(status != HSA_STATUS_SUCCESS){
   	return hipErrorRuntimeOther;
   }
   __tex_sz = static_cast<int>(res_buffer);
-  return hipSucess;
+  err = hipMemcpyToSymbol(&__d_tex_sz, __tex_sz, sizeof(unsigned int));
+  return err;
 }
 #endif //hip platform hcc
 
 #else // use texure
-hipError_t store_texture_max_dim(int devid){}
-#endif // use texure
+hipError_t store_texture_max_dim(int devid){return hipSucess;}
+#endif // not use texure
 
 #endif // _PLATFORM_H__

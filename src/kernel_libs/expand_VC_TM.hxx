@@ -97,7 +97,7 @@ __expand_VC_TM(active_set_t as, G g, F f, config_t conf){
     }
   }
 }
-
+/*
 template<typename G, typename F>
 __global__ void 
 __rexpand_VC_TM_BITMAP(active_set_t as, G g, F f, config_t conf){
@@ -143,7 +143,7 @@ __rexpand_VC_TM_BITMAP(active_set_t as, G g, F f, config_t conf){
     }
   }
 }
-
+*/
 
 
 template<ASFmt fmt, QueueMode M, typename G, typename F>

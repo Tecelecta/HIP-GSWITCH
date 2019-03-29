@@ -8,24 +8,25 @@
 #include "abstraction/config.hxx"
 
 #include "tempkernel.h"
+#include "utils/platform.hxx"
 
 template<typename G, typename F>
 __global__ void 
 __inspect_EC(active_set_t as, G g, F f, stat_t stat, config_t conf){
   const int STRIDE = hipBlockDim_x*hipGridDim_x;
   const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  const int lane = hipThreadIdx_x&31;
+  const int lane = hipThreadIdx_x&LANE_MASK;
   int active_num = 0;
   for(int idx=gtid; idx<as.size; idx+=STRIDE){
     bool tag_previous = as.bitmap.is_active(idx);
     bool tag_next     = false;
-    if(tag_previous){
+    if(tag_previous){ // this 32 has nothing to do with CL ops
       packed_t vv = g.dg_coo[idx];
-      int v0 = vv>>32;
+      int v0 = vv>>32; 
       int v1 = vv&((1ll<<32)-1);
       tag_next = (f.filter(v0, v1, NULL) == Active);
     }
-    unsigned int active = __ballot(tag_next);
+    balllot_t active = __ballot(tag_next);
     if(lane==0) as.bitmap.active.store_word_as_int(idx, active);
     if(tag_previous&tag_next) active_num ++;
   }
@@ -40,7 +41,7 @@ __global__ void
 __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
   const int STRIDE = hipBlockDim_x*hipGridDim_x;
   const int gtid = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  const int lane = hipThreadIdx_x&31;
+  const int lane = hipThreadIdx_x&LANE_MASK;
   const int* __restrict__ odegree = g.dg_odegree;
   const int* __restrict__ idegree = g.directed? g.dgr_odegree : g.dg_odegree;
   int active_num = 0;
@@ -57,8 +58,8 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
     Status s = f.filter(idx, g);
     bool tag_active   = (s==Active);
     bool tag_inactive = (s!=Inactive); // only inactive lane hold 0.
-    unsigned int active   = __ballot(tag_active);
-    unsigned int inactive = __ballot(tag_inactive);
+    balllot_t active   = __ballot(tag_active);
+    balllot_t inactive = __ballot(tag_inactive);
     if(lane==0) as.bitmap.active.store_word_as_int(idx, active);
     if(lane==0) as.bitmap.inactive.store_word_as_int(idx, inactive);
 
@@ -122,7 +123,7 @@ struct inspector_t{
     }
 
     if(need_inspect){ 
-      hipLaunchKernelGGL(TEMPLATE_G_F_CSR(__inspect_VC), dim3(CTANUM) , dim3(THDNUM), 0, 0,
+      hipLaunchKernelGGL(TSPEC_G_F_CSR(__inspect_VC), dim3(CTANUM) , dim3(THDNUM), 0, 0,
         as, g, f, stat, conf); // to bitmap
       //LOG("%d ", as.queue.get_qsize_host());
       set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges); 
@@ -142,7 +143,7 @@ struct inspector_t{
       fets.active_vertex_ratio = 1;
       return;
     }
-    hipLaunchKernelGGL(TEMPLATE_G_F_COO(__inspect_EC), dim3(CTANUM), dim3(THDNUM), 0, 0,
+    hipLaunchKernelGGL(TSPEC_G_F_COO(__inspect_EC), dim3(CTANUM), dim3(THDNUM), 0, 0,
       as, g, f, stat, conf);
     set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges);
     fets.flatten();

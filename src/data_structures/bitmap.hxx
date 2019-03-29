@@ -6,6 +6,8 @@
 #include "utils/utils.hxx"
 #include "utils/intrinsics.hxx"
 
+#include "utils/platform.hxx"
+
 template<typename word_t, int sft>
 struct bits_t{
   int build(int nvertexs){
@@ -49,6 +51,15 @@ struct bits_t{
   void store_word_as_int(int v, int word) { 
     int* ptr = (int*)dg_bits;
     ptr[v>>5] = word; 
+  }
+
+  /**
+   * I'm not sure whether this would work
+   */
+  __device__ __tbdinline__
+  void store_word_as_ballot_t(int v, ballot_t word){
+    int* ptr = (int*)dg_bits;
+    ptr[v>>LANE_SHFT] = word;
   }
 
   __device__ __tbdinline__
