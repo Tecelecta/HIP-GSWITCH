@@ -26,8 +26,8 @@ __expand_VC_TM_fused(active_set_t as, G g, F f, config_t conf){
   for(int idx=gtid; idx<assize; idx+=STRIDE){
     int v = ASProxy<fmt,M>::fetch(as, idx, want);
     if(v<0) continue; 
-    int start = tex1Dfetch<int>(g.dt_start_pos, v);
-    int end = start + tex1Dfetch<int>(g.dt_odegree, v);
+    int start = g.get_out_start_pos(v);
+    int end = start + g.get_out_degree(v);
     for(int i = start; i < end; ++i){
       int u = strict_adj_list[i];
       auto vdata = f.emit(v, g.fetch_edata(i), g);//f.emit(u, g.dg_edgedata+i, g);
@@ -75,8 +75,8 @@ __expand_VC_TM(active_set_t as, G g, F f, config_t conf){
   for(int idx=gtid; idx<assize; idx+=STRIDE){
     int v = ASProxy<fmt,M>::fetch(as, idx, want);
     if(v<0) continue; 
-    int start = tex1Dfetch<int>(g.dt_start_pos, v);
-    int end = start + tex1Dfetch<int>(g.dt_odegree, v);
+    int start = g.get_out_start_pos(v);
+    int end = start + g.get_out_degree(v);
     for(int i = start; i < end; ++i){
       int u = strict_adj_list[i];
       bool toprocess = true;

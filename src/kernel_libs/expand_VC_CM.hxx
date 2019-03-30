@@ -40,8 +40,8 @@ __expand_VC_CM_fused(active_set_t as, G g, F f, config_t conf){
     else v = -1;
     if(v >= 0){
       tmp[OFFSET_blk+phase] = v;
-      tmp[OFFSET_start_pos+phase] = tex1Dfetch<int>(g.dt_start_pos, v);
-      tmp[OFFSET_odegree+phase] = tex1Dfetch<int>(g.dt_odegree, v);
+      tmp[OFFSET_start_pos+phase] = g.get_out_start_pos(v);
+      tmp[OFFSET_odegree+phase] = g.get_out_degree(v);
     }else{
       tmp[OFFSET_blk+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;
@@ -150,8 +150,8 @@ __expand_VC_CM(active_set_t as, G g, F f, config_t conf){
     else v = -1;
     if(v >= 0){
       tmp[OFFSET_blk+phase] = v;
-      tmp[OFFSET_start_pos+phase] = tex1Dfetch<int>(g.dt_start_pos, v);
-      tmp[OFFSET_odegree+phase] = tex1Dfetch<int>(g.dt_odegree, v);
+      tmp[OFFSET_start_pos+phase] = g.get_out_start_pos(v);
+      tmp[OFFSET_odegree+phase] = g.get_out_degree(v);
     }else{
       tmp[OFFSET_blk+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;
@@ -248,8 +248,8 @@ __rexpand_VC_CM(active_set_t as, G g, F f, config_t conf){
     else v = -1;
     if(v >= 0){
       tmp[OFFSET_blk+phase] = v;
-      tmp[OFFSET_start_pos+phase] = tex1Dfetch<int>(g.dt_start_pos, v);
-      tmp[OFFSET_odegree+phase] = tex1Dfetch<int>(g.dt_odegree, v);
+      tmp[OFFSET_start_pos+phase] = g.get_out_start_pos(v);
+      tmp[OFFSET_odegree+phase] = g.get_out_degree(v);
     }else{
       tmp[OFFSET_blk+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;

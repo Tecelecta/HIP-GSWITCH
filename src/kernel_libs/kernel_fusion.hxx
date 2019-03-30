@@ -125,8 +125,8 @@ __super_fusion(active_set_t as, G g, F f, config_t conf){
     //if(hipThreadIdx_x==0) printf("%d\n", asize[c]);
     for(int idx=wid; idx<asize[c]; idx+=STRIDE){
       int v = aset[idx+c*OFFSET];
-      int start = tex1Dfetch<int>(g.dt_start_pos, v);
-      int end = start + tex1Dfetch<int>(g.dt_odegree, v);
+      int start = g.get_out_start_pos(v);
+      int end = start + g.get_out_degree(v);
       for(int i = start+lane; i < end; i+=cosize){
         int u = strict_adj_list[i];
         auto vdata = f.emit(v, g.fetch_edata(i), g);

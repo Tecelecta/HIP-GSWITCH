@@ -53,13 +53,13 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
 
   for(int idx=gtid; idx<as.size; idx+=STRIDE){
     int od = __ldg(odegree+idx);
-    int id = __ldg(indgree+idx);
+    int id = __ldg(idegree+idx);
 
     Status s = f.filter(idx, g);
     bool tag_active   = (s==Active);
     bool tag_inactive = (s!=Inactive); // only inactive lane hold 0.
-    balllot_t active   = __ballot(tag_active);
-    balllot_t inactive = __ballot(tag_inactive);
+    ballot_t active   = __ballot(tag_active);
+    ballot_t inactive = __ballot(tag_inactive);
     if(lane==0) as.bitmap.active.store_word_as_int(idx, active);
     if(lane==0) as.bitmap.inactive.store_word_as_int(idx, inactive);
 

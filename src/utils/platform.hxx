@@ -13,9 +13,9 @@
 #define LANE_MASK (WARP_SIZE-1)
 
 #if (LANE_SHFT == 5)
-typedef uint32_t ballot_t
+typedef uint32_t ballot_t;
 #elif (LANE_SHFT == 6)
-typedef uint64_t ballot_t
+typedef uint64_t ballot_t;
 #else
 #error no valid platform specified!
 #endif
@@ -25,14 +25,14 @@ void check_warpsize(hipDeviceProp_t &prop){
   int warp_sz = prop.warpSize;
   int warp_shft = 0;
   int tmp = warp_sz-1;
-  for(; tmp; ++__warp_shft) tmp&=(tmp-1);
+  for(; tmp; ++warp_shft) tmp&=(tmp-1);
   assert(warp_sz == WARP_SIZE && warp_shft == LANE_SHFT && "Warp Size doesn't match current platform!");
 }
 
 // this unfolder struct generates different warp scans
 template<typename T, unsigned step>
 struct __warpScanUnfolder{
-  static __device__ __tbdinline__ 
+  static __device__ __forceinline__ 
   void warp_upsweep(const int lane_id, T& lane_recv, T& lane_local){
     __warpScanUnfolder<T,(step>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
     if ((lane_id & (step-1)) == 0){
@@ -40,21 +40,22 @@ struct __warpScanUnfolder{
       lane_recv = __shfl_xor(lane_local, step);
     }
   }
-  static __device__ __tbdinline__ 
+  static __device__ __forceinline__ 
   void warp_downsweep(const int lane_id, T& lane_recv, T& lane_local){
     lane_recv = __shfl_up(lane_local, (step>>1));
     if ((lane_id & step-1) == (step>>1))
       lane_local += lane_recv;
     __warpScanUnfolder<T,(step>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
   }
-}
+};
+
 template<typename T>
 struct __warpScanUnfolder<T,1>{
-  static __device__ __tbdinline__ 
+  static __device__ __forceinline__ 
   void warp_upsweep(const int lane_id, T& lane_recv, T& lane_local){
     lane_recv = __shfl_xor(lane_local, 1);
   }
-  static __device__ __tbdinline__ 
+  static __device__ __forceinline__ 
   void warp_downsweep(const int lane_id, T& lane_recv, T& lane_local){}
 };
 
@@ -129,7 +130,7 @@ hipError_t store_texture_max_dim(int devid){
 #endif //hip platform hcc
 
 #else // use texure
-hipError_t store_texture_max_dim(int devid){return hipSucess;}
+hipError_t store_texture_max_dim(int devid){return hipSuccess;}
 #endif // not use texure
 
 #endif // _PLATFORM_H__

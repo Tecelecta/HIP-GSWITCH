@@ -43,8 +43,8 @@
 //    if(mode==0) v = tex1Dfetch<int>(as.small.dt_queue, idx);
 //    else if(mode==1)  v = tex1Dfetch<int>(as.medium.dt_queue, idx);
 //    else v = tex1Dfetch<int>(as.large.dt_queue, idx);
-//    int end = tex1Dfetch<int>(g.dt_odegree, v);
-//    int start = tex1Dfetch<int>(g.dt_start_pos, v);
+//    int end = g.get_out_degree(v);
+//    int start = g.get_out_start_pos(v);
 //    end += start;
 //
 //    for(int i=start+phase; i<end; i+=cosize){

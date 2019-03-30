@@ -31,7 +31,7 @@ __ELB_prepare(active_set_t as, G g, config_t conf){
   for(int idx=gtid; idx<assize; idx+=STRIDE){
     v = ASProxy<fmt,M>::fetch(as, idx, want);
     if(v>=0){
-      if(conf.conf_dir == Push) num = tex1Dfetch<int>(g.dt_odegree, v);
+      if(conf.conf_dir == Push) num = g.get_out_degree(v);
       else num = g.get_in_degree(v);
     }else num = 0;
     as.workset.dg_degree[idx] = num;
@@ -89,7 +89,7 @@ __expand_VC_ELB(active_set_t as, G g, F f, config_t conf){
       smem.v[i] = v;
       smem.v_degree_scan[i] = __ldg(as.workset.dg_udegree+idx)-idx;
       if(v>=0){
-        smem.v_start_pos[i] = tex1Dfetch<int>(g.dt_start_pos, v);
+        smem.v_start_pos[i] = g.get_out_start_pos(v);
       }
     }
     __syncthreads();
@@ -180,7 +180,7 @@ __rexpand_VC_ELB(active_set_t as, G g, F f, config_t conf){
       smem.v[i] = v;
       smem.v_degree_scan[i] = __ldg(as.workset.dg_udegree+idx)-idx;
       if(v>=0){
-        smem.v_start_pos[i] = tex1Dfetch<int>(g.dt_start_pos, v);
+        smem.v_start_pos[i] = g.get_out_start_pos(v);
       }
     }
     __syncthreads();
