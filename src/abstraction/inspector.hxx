@@ -7,7 +7,6 @@
 #include "abstraction/features.hxx"
 #include "abstraction/config.hxx"
 
-#include "tempkernel.h"
 #include "utils/platform.hxx"
 
 template<typename G, typename F>
@@ -26,7 +25,7 @@ __inspect_EC(active_set_t as, G g, F f, stat_t stat, config_t conf){
       int v1 = vv&((1ll<<32)-1);
       tag_next = (f.filter(v0, v1, NULL) == Active);
     }
-    balllot_t active = __ballot(tag_next);
+    ballot_t active = __ballot(tag_next);
     if(lane==0) as.bitmap.active.store_word_as_int(idx, active);
     if(tag_previous&tag_next) active_num ++;
   }
@@ -144,7 +143,7 @@ struct inspector_t{
       fets.active_vertex_ratio = 1;
       return;
     }
-    auto __inspect_EC_inst = __inspect_EC<device_graph_t<COO,E>,F>
+    auto __inspect_EC_inst = __inspect_EC<device_graph_t<COO,E>,F>;
     hipLaunchKernelGGL(__inspect_EC_inst, dim3(CTANUM), dim3(THDNUM), 0, 0,
       as, g, f, stat, conf);
     set_fets(as, g, f, stat, fets, conf, g.nvertexs, g.nedges);

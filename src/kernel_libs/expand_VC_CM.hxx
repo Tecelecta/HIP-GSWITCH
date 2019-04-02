@@ -9,7 +9,6 @@
 #include "data_structures/functor.hxx"
 #include "abstraction/config.hxx"
 
-#include "tempkernel.h"
 
 template<ASFmt fmt, QueueMode M, typename G, typename F>
 __global__ void 

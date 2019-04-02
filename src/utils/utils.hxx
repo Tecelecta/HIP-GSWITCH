@@ -109,12 +109,7 @@ struct rand_device<int>{
 
 
 template<typename data_t>
-__forceinline__ void build_tex(hipTextureObject_t *tex_obj, data_t* buf, int N){
-  int objs = CEIL(N, MAXTEX);
-}
-
-template<typename data_t>
-void __build_tex(hipTextureObject_t &tex_obj, data_t* buf, int N){
+void build_tex(hipTextureObject_t &tex_obj, data_t* buf, int N){
   hipResourceDesc resDesc;
   memset(&resDesc, 0, sizeof(resDesc));
   resDesc.resType = hipResourceTypeLinear;

@@ -60,6 +60,7 @@ __device__ ballot_t lanemask_lt(){
   return (1<<(hipThreadIdx_x&LANE_MASK))-1;
 }
 
+/*
 __device__ int atomicAggInc(int *ctr){
   ballot_t active = __ballot(1);
   int leader = __ffs(active) - 1;
@@ -72,6 +73,7 @@ __device__ int atomicAggInc(int *ctr){
   warp_res = __shfl(warp_res, leader);
   return warp_res + rank;
 }
+*/
 
 template<typename T>
 __device__ __tbdinline__
@@ -279,7 +281,7 @@ data_t __exshfl_down(data_t data, int delta, int width=WARP_SIZE){
   int N = sizeof(data_t)/sizeof(int);
   int* x = (int*)&data;
   for(int i = 0; i < N; ++i){
-    x[i] = __shfl_down(x[i], delta, witdh);
+    x[i] = __shfl_down(x[i], delta, width);
   }
   return *((data_t*)x);
 }

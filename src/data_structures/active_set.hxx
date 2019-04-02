@@ -10,7 +10,7 @@
 #include "data_structures/workset.hxx"
 #include "data_structures/notification.hxx"
 
-#include "tempkernel.h"
+#include "utils/tempkernel.h"
 
 //#include <moderngpu/kernel_sortedsearch.hxx>
 //#include <moderngpu/kernel_scan.hxx>

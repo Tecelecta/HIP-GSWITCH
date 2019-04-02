@@ -106,7 +106,7 @@ struct feature_t{
     cap += prop.major;
     // TODO the 66a1 device has no register info thus fails to init arch fets!
 #ifdef __HIP_PLATFORM_HCC__
-    register_lim = DEFAULT_REG_LIM;
+    register_lim = DEFUALT_REG_LIM;
 #else
     register_lim = prop.regsPerBlock/512;
 #endif
