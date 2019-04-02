@@ -29,7 +29,7 @@ void check_warpsize(hipDeviceProp_t &prop){
   assert(warp_sz == WARP_SIZE && warp_shft == LANE_SHFT && "Warp Size doesn't match current platform!");
 }
 
-// this unfolder struct generates different warp scans
+/* this unfolder struct generates different warp scans
 template<typename T, unsigned step>
 struct __warpScanUnfolder{
   static __device__ __forceinline__ 
@@ -49,6 +49,7 @@ struct __warpScanUnfolder{
   }
 };
 
+
 template<typename T>
 struct __warpScanUnfolder<T,1>{
   static __device__ __forceinline__ 
@@ -57,6 +58,21 @@ struct __warpScanUnfolder<T,1>{
   }
   static __device__ __forceinline__ 
   void warp_downsweep(const int lane_id, T& lane_recv, T& lane_local){}
+};
+*/
+template<int step>
+struct unroller_t{
+  template<typename func_t> static __device__ __tbdinline__
+  void iterate(func_t stat){
+    unroller_t<step-1>::iterate(stat);
+    stat(step-1);
+  }
+};
+
+template<>
+struct unroller_t<0>{
+  template<typename func_t> static __device__ __tbdinline__ 
+  void iterate(func_t stat){}
 };
 
 // this constant is reserved due to the current hip bug!

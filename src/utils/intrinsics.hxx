@@ -74,13 +74,21 @@ __device__ int atomicAggInc(int *ctr){
 }
 
 template<typename T>
-__device__ __tbdinline__ 
+__device__ __tbdinline__
 void warpScan(T thread_in, T &thread_out, T &sum){
   int lane_id = hipThreadIdx_x & LANE_MASK;
   T &lane_local = thread_out;
   T lane_recv;
   lane_local = thread_in;
-  __warpScanUnfolder<T,(WARP_SIZE>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+  //__warpScanUnfolder<T,(WARP_SIZE>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+  lane_recv = __shfl_xor(lane_local, 1);
+  unroller_t<LANE_SHFT-1>::iterate([&](int cycle){
+    int step=1<<(cycle+1);
+    if ((lane_id & (step-1)) == 0){
+      lane_local += lane_recv;
+      lane_recv = __shfl_xor(lane_local,step);
+    }
+  });
 
   if (lane_id == 0){
     lane_local += lane_recv;
@@ -91,8 +99,15 @@ void warpScan(T thread_in, T &thread_out, T &sum){
   }
   lane_local = lane_recv;
 
-  __warpScanUnfolder<T,(WARP_SIZE>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+  //__warpScanUnfolder<T,(WARP_SIZE>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+  unroller_t<LANE_SHFT-1>::iterate([&](int cycle){
+    int step=WARP_SIZE>>(cycle+2);
+    lane_recv = __shfl_up(lane_local, step);
+    if ((lane_id & (step*2-1)) == step)
+      lane_local += lane_recv;
+  });
 }
+
 
 /* this function demostrate how to produce warp-size adaptable code --lmy
 template<typename T>

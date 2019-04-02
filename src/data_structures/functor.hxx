@@ -75,8 +75,6 @@ struct vdata_t{
 template<Centric C, typename WA, typename RA, typename E>
 struct Functor{};
 
-#ifdef __HIP_PLATFORM_NVCC__
-
 template<typename WA, typename RA, typename E>
 struct Functor<EC,WA,RA,E>{
   typedef WA wa_t;
@@ -89,8 +87,8 @@ struct Functor<EC,WA,RA,E>{
   __device__ __tbdinline__
   RA* ra_of(int v){return data.fetch_ra(v);}
 
-  __device__ virtual Status filter(int v, int u, E* e){return Inactive;}
-  __device__ virtual void update(int v, int u, E* e){}
+  __device__ Status filter(int v, int u, E* e){return Inactive;}
+  __device__ void update(int v, int u, E* e){}
 };
 
 template<typename WA, typename RA, typename E>
@@ -105,39 +103,13 @@ struct Functor<VC,WA,RA,E>{
   __device__ __tbdinline__
   RA* ra_of(int v){return data.fetch_ra(v);}
 
-  __device__ virtual Status filter(int v, G g){return Inactive;}
-  __device__ virtual WA emit(int v, E* e, G g){return *data.fetch_wa(v);}
-  __device__ virtual bool cond(int v, WA msg, G g){return false;}
-  __device__ virtual bool comp(WA* v_data, WA msg, G g){return true;}
-  __device__ virtual bool compAtomic(WA* v_data, WA msg, G g){return true;}
-  __device__ virtual bool exit(int v, G g){return false;}
+  __device__ Status filter(int v, G g){return Inactive;}
+  __device__ WA emit(int v, E* e, G g){return *data.fetch_wa(v);}
+  __device__ bool cond(int v, WA msg, G g){return false;}
+  __device__ bool comp(WA* v_data, WA msg, G g){return true;}
+  __device__ bool compAtomic(WA* v_data, WA msg, G g){return true;}
+  __device__ bool exit(int v, G g){return false;}
 };
-
-#define GSWITCH_INTERFACE(name, centric, ...) struct name:Functor<centric, __VA_ARGS__> {
-#define GSWITCH_INTERFACE_END(name, centric, ...) };
-
-#else
-
-#define __FUNCTOR_ESSENCE_VC(WA, RA, E) \
-  typedef WA wa_t; \
-  typedef RA ra_t; \
-  using G=device_graph_t<CSR,E>; \
-  vdata_t<WA,RA> data; \
-  __device__ __tbdinline__ WA* wa_of(int v){return data.fetch_wa(v);} \
-  __device__ __tbdinline__ RA* ra_of(int v){return data.fetch_ra(v);} 
-
-#define __FUNCTOR_ESSENCE_EC(WA, RA, E) \
-  typedef WA wa_t; \
-  typedef RA ra_t; \
-  using G=device_graph_t<COO,E>; \
-  vdata_t<WA,RA> data; \
-  __device__ __tbdinline__ WA* wa_of(int v){return data.fetch_wa(v);} \
-  __device__ __tbdinline__ RA* ra_of(int v){return data.fetch_ra(v);} 
-
-#define GSWITCH_INTERFACE(name, centric, ...) template<> struct Functor<centric,__VA_ARGS__>{__FUNCTOR_ESSENCE_##centric(__VA_ARGS__)
-#define GSWITCH_INTERFACE_END(name, centric, ...) }; typedef struct Functor<centric, __VA_ARGS__> name;
-
-#endif 
 
 template<Centric C=VC, LB S=WM, Direction D=Push>
 struct ExpandProxy{};
