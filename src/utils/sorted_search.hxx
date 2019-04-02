@@ -113,10 +113,14 @@ void block_sort ( data_t* dg_a, int a_count,
       data_t *l_dga = dg_a+b_as;
       data_t *l_dgb = dg_b+b_bs;
       l_dgb -= b_acnt+1;
-      if(sidx < b_acnt+b_bcnt)
-        if(sidx < b_acnt)      l_buffer[cycle] = l_dga[sidx];
-    else if(sidx > b_acnt) l_buffer[cycle] = l_dgb[sidx];
-    else                   l_buffer[cycle] = MAX_32S;
+      if(sidx < b_acnt+b_bcnt){
+        if(sidx < b_acnt)
+          l_buffer[cycle] = l_dga[sidx];
+        else if(sidx > b_acnt) 
+          l_buffer[cycle] = l_dgb[sidx];
+        else                   
+          l_buffer[cycle] = MAX_32S; //seperate a and b, learned from blood!
+      }
         //ibuffer[sidx] = (sidx < b_acnt) ? l_dga[sidx]:l_dgb[sidx]; //try this later
     });
   
@@ -128,7 +132,7 @@ void block_sort ( data_t* dg_a, int a_count,
     unroller_t<THD_WORK>::iterate([&](int cycle){
       int sidx = cycle*THD_NUM + tid;
       ibuffer[sidx] = l_buffer[cycle];
-  });
+    });
   }
 
   //each thread partition on its own
@@ -139,7 +143,7 @@ void block_sort ( data_t* dg_a, int a_count,
   int ta_idx[THD_WORK]; //thread-local index buffer
   {
     int diag_ts = THD_WORK*tid;
-  int diag_te = MIN(diag_ts+THD_WORK, b_acnt+b_bcnt);
+    int diag_te = MIN(diag_ts+THD_WORK, b_acnt+b_bcnt);
     int t_as = merge_step(&ibuffer[0], b_acnt, &ibuffer[0]+b_acnt+1, b_bcnt, diag_ts);
     int t_ae = merge_step(&ibuffer[0], b_acnt, &ibuffer[0]+b_acnt+1, b_bcnt, diag_te);
     int t_bs = diag_ts - t_as;
@@ -163,21 +167,21 @@ void block_sort ( data_t* dg_a, int a_count,
   //__syncthreads();
 
   int ta_cursor=1;
-    for(int i=ta_idx[0]; i<t_bcnt&&ta_cursor<t_acnt; i++){
+  for(int i=ta_idx[0]; i<t_bcnt&&ta_cursor<t_acnt; i++){
     while(t_b_in[i]>=t_a_in[ta_cursor]){ //insert a after b when equal
-        ta_idx[ta_cursor] = i;
-        ta_cursor++;
-      }
+      ta_idx[ta_cursor] = i;
+      ta_cursor++;
     }
+  }
   
   //__syncthreads();
   //if(tid==0) printf("bid: %d linear search --passed\n", bid);
     //__syncthreads();
 
   while(ta_cursor<t_acnt){
-      ta_idx[ta_cursor] = ta_cursor+t_bcnt;
-      ta_cursor++;
-    }
+    ta_idx[ta_cursor] = ta_cursor+t_bcnt;
+    ta_cursor++;
+  }
 
   //__syncthreads();
   //if(tid==0) printf("bid:%d save to shared --passed\n", bid);
@@ -188,6 +192,57 @@ void block_sort ( data_t* dg_a, int a_count,
     }
   __syncthreads();
   }
+
+  /* alternative implemention, not fast enough
+  {
+    int diag_ts = THD_WORK*tid;
+    int diag_te = MIN(diag_ts+THD_WORK, b_acnt+b_bcnt);
+    int t_as = merge_step(&ibuffer[0], b_acnt, &ibuffer[0]+b_acnt+1, b_bcnt, diag_ts);
+    //int t_ae = merge_step(&ibuffer[0], b_acnt, &ibuffer[0]+b_acnt+1, b_bcnt, diag_te);
+    int t_bs = diag_ts - t_as;
+    //int t_be = diag_te - t_ae;
+    //int t_acnt = t_ae - t_as;
+    //int t_bcnt = t_be - t_bs;
+    int* t_a_in = &ibuffer[0]+t_as;
+    int* t_b_in = &ibuffer[0]+b_acnt+t_bs+1;
+    //do a binary+linear search of t_a_in into t_b_in
+    
+    //__syncthreads();  
+  //if(tid == 0) printf("bid:%d do a binary+linear--start\n", bid);
+  //__syncthreads();
+    //printf("[%d,%d] __upper_eq_bound(): t_a_in[0]:%d, diag_ts:%d, diag_te:%d, as:%d, ae:%d, bs:%d, be:%d\n", 
+  //    bid, tid, t_a_in[0], diag_ts,diag_te,t_as,t_ae,t_bs,t_be);
+  ta_idx[0] = __upper_eq_bound(t_b_in, THD_WORK, t_a_in[0]);
+    //printf("[%d,%d] __upper_eq_bound() --fin\n", bid, tid);
+
+  //__syncthreads();
+  //if(tid == 0) printf("bid:%d upper bound --passed\n",bid);
+  //__syncthreads();
+
+  int ta_cursor=1;
+  int tb_cursor=ta_idx[0];
+    for(int i=ta_idx[0]; i<THD_WORK; i++){
+    if(t_b_in[tb_cursor]>=t_a_in[ta_cursor]){ //insert a after b when equal
+        ta_idx[ta_cursor] = tb_cursor;
+        ta_cursor++;
+      } else {
+      tb_cursor++;
+    }
+    }
+  
+  //__syncthreads();
+  //if(tid==0) printf("bid: %d linear search --passed\n", bid);
+    //__syncthreads();
+  //__syncthreads();
+  //if(tid==0) printf("bid:%d save to shared --passed\n", bid);
+  //__syncthreads();
+    int t_acnt = ta_cursor;
+    for(int i=0; i<t_acnt; i++){
+      obuffer[t_as+i] = t_bs+ta_idx[i];
+    }
+  __syncthreads();
+  }
+  */
   //if(bid==0 && tid==0) printf("each thread partition--end\n");
 
   //convert shared index into global index and save into global mem
