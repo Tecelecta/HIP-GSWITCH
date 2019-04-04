@@ -8,6 +8,7 @@
 #include "abstraction/config.hxx"
 
 #include "utils/platform.hxx"
+#include "utils/sorted_search.hxx"
 
 template<typename G, typename F>
 __global__ void 
@@ -49,7 +50,7 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
   int pull_workload = 0;
   int max_push_deg = 0;
   int max_pull_deg = 0; 
-
+  
   for(int idx=gtid; idx<as.size; idx+=STRIDE){
     int od = __ldg(odegree+idx);
     int id = __ldg(idegree+idx);
@@ -59,8 +60,8 @@ __inspect_VC(active_set_t as, G g, F f, stat_t stat, config_t conf){
     bool tag_inactive = (s!=Inactive); // only inactive lane hold 0.
     ballot_t active   = __ballot(tag_active);
     ballot_t inactive = __ballot(tag_inactive);
-    if(lane==0) as.bitmap.active.store_word_as_int(idx, active);
-    if(lane==0) as.bitmap.inactive.store_word_as_int(idx, inactive);
+    if(lane==0) as.bitmap.active.store_word_as_ballot_t(idx, active);
+    if(lane==0) as.bitmap.inactive.store_word_as_ballot_t(idx, inactive);
 
     if(tag_active) {
       active_num++;

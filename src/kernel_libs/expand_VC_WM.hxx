@@ -12,6 +12,7 @@
 #include "abstraction/config.hxx"
 
 #include "utils/tempkernel.h"
+#include "utils/platform.hxx"
 
 template<ASFmt fmt, QueueMode M, typename G, typename F>
 __global__ void 
@@ -31,13 +32,13 @@ __expand_VC_WM_fused_wtf(active_set_t as, G g, F f, config_t conf){
   const int STRIDE  = hipBlockDim_x*hipGridDim_x;
   const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0) {if(gtid==0) as.halt_device();return;}
-  const int cosize  = 32;
+  const int cosize  = WARP_SIZE;//32;
   const int phase   = gtid & (cosize-1);
-  const int warp_id = hipThreadIdx_x >> 5;
+  const int warp_id = hipThreadIdx_x >> LANE_SHFT;//5;
   const int OFFSET_warp      = 3*cosize*warp_id;
   const int OFFSET_start_pos = OFFSET_warp + cosize;
   const int OFFSET_odegree   = OFFSET_warp + 2*cosize;
-  const int assize_align     = (assize&(cosize-1))?(((assize>>5)+1)<<5):assize;
+  const int assize_align     = (assize&(cosize-1))?(((assize>>LANE_SHFT/*5*/)+1)<<LANE_SHFT/*5*/):assize;
   Status want = conf.want();
 
   for(int idx=gtid; idx<assize_align; idx+=STRIDE){
@@ -56,6 +57,10 @@ __expand_VC_WM_fused_wtf(active_set_t as, G g, F f, config_t conf){
 
     //step 2: get sum of edges for these 32 vertexs and scan odegree;
     int nedges_warp=0;
+    int  thread_in  = tmp[OFFSET_odegree+phase];
+    int& thread_out = tmp[OFFSET_odegree+phase];
+    warpScan(thread_in, thread_out, nedges_warp);
+    /*
     int offset=1;
     for(int d=cosize>>1; d>0; d>>=1){
       if(phase<d){
@@ -80,6 +85,7 @@ __expand_VC_WM_fused_wtf(active_set_t as, G g, F f, config_t conf){
         tmp[OFFSET_odegree+bi] += t;
       }
     }
+    */
 
     int full_tier = assize_align-cosize;
     int width = idx<(full_tier)?cosize:(assize-full_tier);
@@ -151,13 +157,13 @@ __expand_VC_WM_fused(active_set_t as, G g, F f, config_t conf){
   const int STRIDE  = hipBlockDim_x*hipGridDim_x;
   const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
   if(assize==0) {if(gtid==0) as.halt_device();return;}
-  const int cosize  = 32;
+  const int cosize  = WARP_SIZE;//32;
   const int phase   = gtid & (cosize-1);
-  const int warp_id = hipThreadIdx_x >> 5;
+  const int warp_id = hipThreadIdx_x >> LANE_SHFT;//5;
   const int OFFSET_warp      = 3*cosize*warp_id;
   const int OFFSET_start_pos = OFFSET_warp + cosize;
   const int OFFSET_odegree   = OFFSET_warp + 2*cosize;
-  const int assize_align     = (assize&(cosize-1))?(((assize>>5)+1)<<5):assize;
+  const int assize_align     = (assize&(cosize-1))?(((assize>>LANE_SHFT)+1)<<LANE_SHFT):assize;
   Status want = conf.want();
 
   for(int idx=gtid; idx<assize_align; idx+=STRIDE){
@@ -176,6 +182,10 @@ __expand_VC_WM_fused(active_set_t as, G g, F f, config_t conf){
 
     //step 2: get sum of edges for these 32 vertexs and scan odegree;
     int nedges_warp=0;
+    int  thread_in  = tmp[OFFSET_odegree+phase];
+    int& thread_out = tmp[OFFSET_odegree+phase];
+    warpScan(thread_in, thread_out, nedges_warp);
+    /*
     int offset=1;
     for(int d=cosize>>1; d>0; d>>=1){
       if(phase<d){
@@ -200,6 +210,7 @@ __expand_VC_WM_fused(active_set_t as, G g, F f, config_t conf){
         tmp[OFFSET_odegree+bi] += t;
       }
     }
+    */
 
     int full_tier = assize_align-cosize;
     int width = idx<(full_tier)?cosize:(assize-full_tier);
@@ -260,9 +271,9 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
   const int assize  = ASProxy<fmt,M>::get_size(as);
   const int STRIDE  = hipBlockDim_x*hipGridDim_x;
   const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  const int cosize  = 32;
+  const int cosize  = WARP_SIZE;//32;
   const int phase   = gtid & (cosize-1);
-  const int warp_id = hipThreadIdx_x >> 5;
+  const int warp_id = hipThreadIdx_x >> LANE_SHFT;//5;
   const int OFFSET_warp      = 3*cosize*warp_id;
   const int OFFSET_start_pos = OFFSET_warp + cosize;
   const int OFFSET_odegree   = OFFSET_warp + 2*cosize;
@@ -283,19 +294,32 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
       tmp[OFFSET_warp+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;
     }
-
+    //tmp[OFFSET_odegree+phase] = gtid;
     //step 2: get sum of edges for these 32 vertexs and scan odegree;
     int nedges_warp=0;
+    int thread_in = tmp[OFFSET_odegree+phase];
+    int &thread_out = tmp[OFFSET_odegree+phase];
+    warpScan(thread_in,thread_out,nedges_warp);
+    //tmp[OFFSET_odegree+phase] = thread_out;
+    //tmp_container[gtid] = tmp[OFFSET_odegree+phase];
+
+    /*
     int offset=1;
     for(int d=cosize>>1; d>0; d>>=1){
       if(phase<d){
         int ai = offset*(2*phase+1)-1;
         int bi = offset*(2*phase+2)-1;
         tmp[OFFSET_odegree+bi] += tmp[OFFSET_odegree+ai];
+        if(offset==32){
+	  tmp_container[2*gtid]   = ai;
+	  tmp_container[2*gtid+1] = bi;
+	}
       }
+      //if(offset==8) tmp_container[gtid] = 1;//tmp[OFFSET_odegree+phase];
       offset<<=1;
     }
-
+    
+    //tmp_container[gtid] = tmp[OFFSET_odegree+phase];
     nedges_warp = tmp[OFFSET_odegree+cosize-1];
     if(!phase) tmp[OFFSET_odegree+cosize-1]=0;
 
@@ -310,6 +334,10 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
         tmp[OFFSET_odegree+bi] += t;
       }
     }
+    */
+    //return; //debug
+    
+    //tmp_container[gtid] = tmp[OFFSET_start_pos+phase];
 
     int full_tier = assize_align-cosize;
     int width = idx<(full_tier)?cosize:(assize-full_tier);
@@ -321,6 +349,7 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
       int ei = tmp[OFFSET_start_pos+id] + i-tmp[OFFSET_odegree+id];
       int u = __ldg(strict_adj_list+ei);
       bool toprocess = true;
+      //tmp_container[i] = ei;
 
       // check 1: if idempotent, we can prune the redundant update
       if(toprocess && conf.pruning()) 
@@ -353,13 +382,13 @@ __rexpand_VC_WM(active_set_t as, G g, F f, config_t conf){
   int assize  = ASProxy<fmt,M>::get_size(as);
   int STRIDE  = hipBlockDim_x*hipGridDim_x;
   int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  int cosize  = 32;
+  int cosize  = WARP_SIZE;//32;
   int phase   = gtid & (cosize - 1);
-  int warp_id = hipThreadIdx_x >> 5;
+  int warp_id = hipThreadIdx_x >> LANE_SHFT;//5;
   int OFFSET_warp      = 3*cosize*warp_id;
   int OFFSET_start_pos = OFFSET_warp + cosize;
   int OFFSET_odegree   = OFFSET_warp + 2*cosize;
-  int assize_align     = (assize&(cosize-1))?(((assize>>5)+1)<<5):assize;
+  int assize_align     = (assize&(cosize-1))?(((assize>>LANE_SHFT)+1)<<LANE_SHFT):assize;
   Status want = conf.want();
 
   for(int idx=gtid; idx<assize_align; idx+=STRIDE){
@@ -378,8 +407,12 @@ __rexpand_VC_WM(active_set_t as, G g, F f, config_t conf){
 
     //step 2: get sum of edges for these 32 vertexs and scan odegree;
     int nedges_warp=0;
+    int thread_in = tmp[OFFSET_odegree+phase];
+    int &thread_out = tmp[OFFSET_odegree+phase];
+    warpScan(thread_in, thread_out, nedges_warp);
+    /*
     int offset=1;
-    for(int d=32>>1; d>0; d>>=1){
+    for(int d=WARP_SIZE>>1; d>0; d>>=1){
       if(phase<d){
         int ai = offset*(2*phase+1)-1;
         int bi = offset*(2*phase+2)-1;
@@ -388,10 +421,10 @@ __rexpand_VC_WM(active_set_t as, G g, F f, config_t conf){
       offset<<=1;
     }
 
-    nedges_warp = tmp[OFFSET_odegree + 32-1];
-    if(!phase) tmp[OFFSET_odegree+32-1]=0;
+    nedges_warp = tmp[OFFSET_odegree + WARP_SIZE-1];
+    if(!phase) tmp[OFFSET_odegree+WARP_SIZE-1]=0;
 
-    for(int d=1; d<32; d<<=1){
+    for(int d=1; d<WARP_SIZE; d<<=1){
       offset >>=1;
       if(phase<d){
         int ai = offset*(2*phase+1)-1;
@@ -401,7 +434,7 @@ __rexpand_VC_WM(active_set_t as, G g, F f, config_t conf){
         tmp[OFFSET_odegree+bi] += t;
       }
     }
-
+    */
     // Binary search will not get the index which is out of range
     int full_tier = assize_align-cosize;
     int width = idx<(full_tier)?cosize:(assize-full_tier);
@@ -415,8 +448,8 @@ __rexpand_VC_WM(active_set_t as, G g, F f, config_t conf){
       if(tmp[OFFSET_warp+id] < 0) continue; // v < 0
       int ei = tmp[OFFSET_start_pos+id] + i-tmp[OFFSET_odegree+id];
       int insegID = MIN((i-tmp[OFFSET_odegree+id]), phase);
-      int rod = ((id==31)? (nedges_warp): (tmp[OFFSET_odegree+id+1])) - i - 1;
-      int segsize = insegID + 1 + MIN(31-phase, rod);
+      int rod = ((id==LANE_MASK)? (nedges_warp): (tmp[OFFSET_odegree+id+1])) - i - 1;
+      int segsize = insegID + 1 + MIN(LANE_MASK-phase, rod);
 
       int v = tmp[OFFSET_warp+id];
       int u = __ldg(strict_adj_list+ei);
@@ -464,6 +497,16 @@ struct ExpandProxy<VC,WM,Push>{
       else 
         Launch_Expand_VC(WM_fused, as, g, f, conf);
     }else{
+      /*
+      int *h_tmp;
+      printf("warp size: %d\n",WARP_SIZE);
+      hipMalloc(&h_tmp,sizeof(int)*conf.ctanum*conf.thdnum);
+      hipLaunchKernelGGL(TSPEC_QUEUE_NORMAL(__expand_VC_WM), dim3(conf.ctanum), dim3(conf.thdnum), 0, 0, as, g, f, conf, h_tmp);
+      for(int blk=0; blk<conf.ctanum; blk++){
+        dump_arr(h_tmp+blk*conf.thdnum, conf.thdnum);
+      }
+      hipFree(h_tmp);
+      */
       Launch_Expand_VC(WM, as, g, f, conf);
     }
       //__expand_VC_WM_fused<<<32,TH>>>(as, g, f, conf);

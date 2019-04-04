@@ -60,7 +60,7 @@ struct Block_Scan{
       lane_local = lane_recv;
 
       __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
-    }
+    } 
 
     static __device__ __tbdinline__ void Warp_LogicScan(int thread_in, T &thread_out){
       ballot_t warp_flag = __ballot(thread_in);

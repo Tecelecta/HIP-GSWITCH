@@ -25,7 +25,7 @@ struct executor_t{
   void filter(active_set_t &as, G& g, F& f, stat_t& stat, feature_t& fets, config_t& conf){
     double s = stat.last_filter_time;
     __filter(as, g, f, conf);
-
+    
     // specify grid size.
     conf.thdnum = THDNUM_EXPAND * (fets.register_lim/90);
     if(conf.conf_fuse_inspect) { 

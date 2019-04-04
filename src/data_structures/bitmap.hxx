@@ -58,7 +58,7 @@ struct bits_t{
    */
   __device__ __tbdinline__
   void store_word_as_ballot_t(int v, ballot_t word){
-    int* ptr = (int*)dg_bits;
+    ballot_t* ptr = (ballot_t*)dg_bits;
     ptr[v>>LANE_SHFT] = word;
   }
 

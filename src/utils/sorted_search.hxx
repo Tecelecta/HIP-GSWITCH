@@ -295,8 +295,8 @@ template<typename data_t>
 static void dump_arr(data_t *dg_arr, int len){
   data_t *h_arr = new data_t[len];
   TOHOST(dg_arr, h_arr, len);
-  for(int i=0; i<len; i++) std::cout << h_arr[i] << "\t";
-  std::cout << std::endl;
+  for(int i=0; i<len; i++) printf("%d,", h_arr[i]);
+  printf("\n");
   delete [] h_arr;
 }
 

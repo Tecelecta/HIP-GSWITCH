@@ -10,6 +10,8 @@
 #include "data_structures/functor.hxx"
 #include "abstraction/config.hxx"
 
+#include "utils/platform.hxx"
+
 // popc for char
 __device__ __forceinline__ int popc(char a) {int c;for(c=0;a;++c) a&=(a-1);return c;}
 
@@ -28,7 +30,7 @@ template<QueueMode M>
 __global__ void __filter_unfixed(active_set_t as){
   const int STRIDE  = hipBlockDim_x*hipGridDim_x; 
   const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  const int lane    = hipThreadIdx_x&31;
+  const int lane    = hipThreadIdx_x&LANE_MASK;
   const int n_bytes = as.bitmap.active.bytes_size(); 
   const char* bits1 = (char*)(void*)as.bitmap.active.to_bytes(); 
   const char* bits2 = (char*)(void*)as.bitmap.inactive.to_bytes(); 
@@ -60,7 +62,7 @@ template<QueueMode M>
 __global__ void __filter_active(active_set_t as){ 
   const int STRIDE  = hipBlockDim_x*hipGridDim_x; 
   const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  const int lane    = hipThreadIdx_x&31;
+  const int lane    = hipThreadIdx_x&LANE_MASK;
   const int n_bytes = as.bitmap.active.bytes_size(); 
   const char* bits  = (char*)(void*)as.bitmap.active.to_bytes(); 
   int* base = Qproxy<M>::output_base(as.queue);
@@ -88,7 +90,7 @@ template<QueueMode M>
 __global__ void __filter_inactive(active_set_t as){ 
   const int STRIDE  = hipBlockDim_x*hipGridDim_x;
   const int gtid    = hipThreadIdx_x + hipBlockIdx_x*hipBlockDim_x;
-  const int lane    = hipThreadIdx_x&31; 
+  const int lane    = hipThreadIdx_x&LANE_MASK; 
   const int n_bytes = as.bitmap.inactive.bytes_size(); 
   const char* bits  = (char*)(void*)as.bitmap.inactive.to_bytes(); 
   int* base = Qproxy<M>::output_base(as.queue);
@@ -225,8 +227,9 @@ else __filter_##acc<Cached>(as, conf);                        \
       if(!conf.conf_pruning) as.bitmap.visited.reset();
     }
 
-
+    //int* output_base = as.queue.output_base_Normal();
     as.queue.swap();
+    //dump_arr(output_base, as.queue.get_qsize_host());
   }
 
 #undef Launch_Filter
