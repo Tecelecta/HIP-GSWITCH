@@ -294,32 +294,37 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
       tmp[OFFSET_warp+phase] = -1;
       tmp[OFFSET_odegree+phase] = 0;
     }
-    //tmp[OFFSET_odegree+phase] = gtid;
     //step 2: get sum of edges for these 32 vertexs and scan odegree;
     int nedges_warp=0;
+    
     int thread_in = tmp[OFFSET_odegree+phase];
     int &thread_out = tmp[OFFSET_odegree+phase];
     warpScan(thread_in,thread_out,nedges_warp);
+    
     //tmp[OFFSET_odegree+phase] = thread_out;
     //tmp_container[gtid] = tmp[OFFSET_odegree+phase];
-
     /*
     int offset=1;
     for(int d=cosize>>1; d>0; d>>=1){
       if(phase<d){
         int ai = offset*(2*phase+1)-1;
         int bi = offset*(2*phase+2)-1;
-        tmp[OFFSET_odegree+bi] += tmp[OFFSET_odegree+ai];
-        if(offset==32){
+        //tmp[OFFSET_odegree+bi] += tmp[OFFSET_odegree+ai];
+        int av = tmp[OFFSET_odegree+ai];
+	int bv = tmp[OFFSET_odegree+bi];
+        tmp[OFFSET_odegree+bi] = av+bv;
+	
+	if(offset==32){
 	  tmp_container[2*gtid]   = ai;
 	  tmp_container[2*gtid+1] = bi;
 	}
+	
       }
       //if(offset==8) tmp_container[gtid] = 1;//tmp[OFFSET_odegree+phase];
       offset<<=1;
     }
     
-    //tmp_container[gtid] = tmp[OFFSET_odegree+phase];
+    tmp_container[gtid] = tmp[OFFSET_odegree+phase];
     nedges_warp = tmp[OFFSET_odegree+cosize-1];
     if(!phase) tmp[OFFSET_odegree+cosize-1]=0;
 
@@ -334,9 +339,9 @@ __expand_VC_WM(active_set_t as, G g, F f, config_t conf){
         tmp[OFFSET_odegree+bi] += t;
       }
     }
-    */
-    //return; //debug
     
+    return; //debug
+    */
     //tmp_container[gtid] = tmp[OFFSET_start_pos+phase];
 
     int full_tier = assize_align-cosize;

@@ -31,7 +31,15 @@ struct Block_Scan{
       T lane_recv;
 
       lane_local = thread_in;
-      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+      //__warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+      lane_recv = __shfl_xor(lane_local, 1);
+      unroller_t<LANE_SHFT-1>::iterate([&](int cycle){
+        int step=1<<(cycle+1);
+        if ((lane_id & (step-1)) == 0){
+          lane_local += lane_recv;
+          lane_recv = __shfl_xor(lane_local,step);
+        }
+      });
 
       if (lane_id == 0){
         lane_local += lane_recv;
@@ -42,7 +50,13 @@ struct Block_Scan{
       }
       lane_local = lane_recv;
 
-      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+      //__warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+      unroller_t<LANE_SHFT-1>::iterate([&](int cycle){
+        int step=WARP_SIZE>>(cycle+2);
+        lane_recv = __shfl_up(lane_local, step);
+        if ((lane_id & (step*2-1)) == step)
+          lane_local += lane_recv;
+      });
     }
 
     static __device__ __tbdinline__ 
@@ -51,7 +65,15 @@ struct Block_Scan{
       T &lane_local = thread_out;
       T lane_recv;
       lane_local = thread_in;
-      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+      //__warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_upsweep(lane_id, lane_recv, lane_local);
+      lane_recv = __shfl_xor(lane_local, 1);
+      unroller_t<LANE_SHFT-1>::iterate([&](int cycle){
+        int step=1<<(cycle+1);
+        if ((lane_id & (step-1)) == 0){
+          lane_local += lane_recv;
+          lane_recv = __shfl_xor(lane_local,step);
+        }
+      });
 
       if (lane_id == 0){
         lane_local += lane_recv;
@@ -59,7 +81,13 @@ struct Block_Scan{
       }
       lane_local = lane_recv;
 
-      __warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+      //__warpScanUnfolder<T,(WARP_THREADS>>1)>::warp_downsweep(lane_id, lane_recv, lane_local);
+      unroller_t<LANE_SHFT-1>::iterate([&](int cycle){
+        int step=WARP_SIZE>>(cycle+2);
+        lane_recv = __shfl_up(lane_local, step);
+        if ((lane_id & (step*2-1)) == step)
+          lane_local += lane_recv;
+      });    
     } 
 
     static __device__ __tbdinline__ void Warp_LogicScan(int thread_in, T &thread_out){
@@ -206,7 +234,7 @@ __device__ int block_scan(int* tmp, int phase){
 __device__ int warp_scan(int* tmp, int phase){
   int total_warp=0;
   int offset=1;
-  for(int d=32>>1; d>0; d>>=1){
+  for(int d=WARP_SIZE>>1; d>0; d>>=1){
     if(phase<d){
       int ai = offset*(2*phase+1)-1;
       int bi = offset*(2*phase+2)-1;
@@ -215,8 +243,8 @@ __device__ int warp_scan(int* tmp, int phase){
     offset<<=1;
   }
 
-  total_warp = tmp[32-1];
-  if(!phase) tmp[32-1]=0;
+  total_warp = tmp[WARP_SIZE-1];
+  if(!phase) tmp[WARP_SIZE-1]=0;
 
   for(int d=1; d<32; d<<=1){
     offset >>=1;
