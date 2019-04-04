@@ -29,6 +29,7 @@ struct fwdata_t{
   int nsp; // dft = 0
 };
 
+
 struct Forward:Functor<VC,fwdata_t,Empty,Empty>{
   __device__ Status filter(int vid, G g){
     fwdata_t* v = wa_of(vid);
@@ -37,9 +38,9 @@ struct Forward:Functor<VC,fwdata_t,Empty,Empty>{
     else return Fixed;
   }
   __device__ fwdata_t emit(int vid, Empty* em, G g){
-	  fwdata_t vdata = *wa_of(vid);
-	  vdata.level++;
-	  return vdata;
+    fwdata_t vdata = *wa_of(vid);
+    vdata.level++;
+    return vdata;
   }
   __device__ bool cond(int v, fwdata_t u, G g){
     return wa_of(v)->level < 0 || wa_of(v)->level == g.get_level();
@@ -228,8 +229,13 @@ void validation(bwdata_t* A, bwdata_t* B, int N){
 template<typename F, typename H>
 void set_functor(F& f, H& h){
   fwdata_t* fd = f.data.h_wa;
-  h.data.init_ra([fd](int i){return fd[i].level;});
-  h.data.init_wa([fd](int i){return bwdata_t{fd[i].nsp,0.0};});
+  h.data.init_ra([fd](int i)->int{return fd[i].level;});
+  h.data.init_wa([fd](int i)->bwdata_t{
+    struct bwdata_t retval;// = {fd[i].nsp,0.0};
+    retval.nsp = fd[i].nsp;
+    retval.dep = 0.0;
+    return retval;
+  });
 }
 
 //"/home/mengke/data/com-orkut/com-orkut.ungraph.txt"
@@ -259,8 +265,12 @@ int main(int argc, char* argv[]){
   if(root < 0) root = g.hg.random_root();
   LOG(" -- Root is: %d\n", root);
   fets.use_root = root;
-  f.data.init_wa([root](int i){
-    return i==root?fwdata_t{0,1}:fwdata_t{-100,0};
+  f.data.init_wa([root](int i)->fwdata_t{
+    //return i==root?fwdata_t{0,1}:fwdata_t{-100,0};
+    struct fwdata_t retval;
+    if(i==root) retval.level=0, retval.nsp=1;
+    else retval.level=-100, retval.nsp=0;
+    return retval;
   });
   init_conf(stats, fets, conf, g, f);
 
@@ -279,4 +289,3 @@ int main(int argc, char* argv[]){
 
   return 0;
 }
-
